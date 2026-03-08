@@ -12,7 +12,7 @@ class SchemaCache:
 
     def __init__(self, cache_dir: Path | None = None):
         # Use default cache directory if not specified / 지정되지 않으면 기본 캐시 디렉터리 사용
-        self._dir = cache_dir or Path.home() / ".mcp-to-cli" / "cache"
+        self._dir = cache_dir or Path.home() / ".mcp-tool-forge" / "cache"
         self._dir.mkdir(parents=True, exist_ok=True)
 
     def save(self, server_name: str, tools: list[dict]) -> None:

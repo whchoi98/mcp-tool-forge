@@ -9,7 +9,7 @@ from rich.console import Console
 console = Console()
 
 # Default plugin directory for Claude Code / Claude Code 기본 플러그인 디렉터리
-DEFAULT_PLUGIN_DIR = Path.home() / ".claude" / "plugins" / "mcp-to-cli-tools"
+DEFAULT_PLUGIN_DIR = Path.home() / ".claude" / "plugins" / "mcp-tool-forge"
 
 
 class SkillRegistrar:
@@ -49,7 +49,7 @@ class SkillRegistrar:
         """Create a minimal plugin.json for Claude Code.
         Claude Code용 최소 plugin.json을 생성한다."""
         plugin_config = {
-            "name": "mcp-to-cli-tools",
+            "name": "mcp-tool-forge",
             "version": "0.1.0",
             "description": "Auto-generated AWS CLI/boto3 tools from MCP servers",
             "skills": {

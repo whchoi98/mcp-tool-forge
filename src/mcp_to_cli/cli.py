@@ -14,10 +14,10 @@ console = Console(width=200)
 
 
 @click.group()
-@click.version_option(version="0.1.0", prog_name="mcp-to-cli")
+@click.version_option(version="0.1.0", prog_name="mcp-tool-forge")
 def main():
-    """MCP-to-CLI: Convert MCP server tools to boto3/CLI/schema/skill outputs.
-    MCP-to-CLI: MCP 서버 도구를 boto3/CLI/스키마/스킬 출력으로 변환한다."""
+    """MCP Tool Forge: Convert MCP server tools to boto3/CLI/schema/skill outputs.
+    MCP Tool Forge: MCP 서버 도구를 boto3/CLI/스키마/스킬 출력으로 변환한다."""
     pass
 
 

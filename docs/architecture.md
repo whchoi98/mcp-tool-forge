@@ -2,9 +2,9 @@
 
 ## System Overview / 시스템 개요
 
-MCP-to-CLI is a Python CLI tool that connects to AWS MCP servers, extracts tool schemas, and converts them to multiple output formats for use in different agent runtimes.
+MCP Tool Forge is a Python CLI tool that connects to AWS MCP servers, extracts tool schemas, and converts them to multiple output formats for use in different agent runtimes.
 
-MCP-to-CLI는 AWS MCP 서버에 연결하여 도구 스키마를 추출하고, 다양한 에이전트 런타임에서 사용할 수 있도록 여러 출력 형식으로 변환하는 Python CLI 도구입니다.
+MCP Tool Forge는 AWS MCP 서버에 연결하여 도구 스키마를 추출하고, 다양한 에이전트 런타임에서 사용할 수 있도록 여러 출력 형식으로 변환하는 Python CLI 도구입니다.
 
 ```
 MCP Server (stdio)  -->  Connector  -->  Parser  -->  Pipeline  -->  Generators
@@ -57,7 +57,7 @@ MCP Server (stdio)  -->  Connector  -->  Parser  -->  Pipeline  -->  Generators
 
 ## Data Flow / 데이터 흐름
 
-1. User runs `mcp-to-cli convert --server <name>` / 사용자가 `mcp-to-cli convert --server <name>` 실행
+1. User runs `mcp-tool-forge convert --server <name>` / 사용자가 `mcp-tool-forge convert --server <name>` 실행
 2. Pipeline checks cache -> connects to MCP server -> extracts tools / 파이프라인이 캐시 확인 -> MCP 서버 연결 -> 도구 추출
 3. Parser converts raw schemas to `ToolDefinition` objects / 파서가 원시 스키마를 `ToolDefinition` 객체로 변환
 4. Mapping loader checks static YAML, then optionally LLM mapper / 매핑 로더가 정적 YAML 확인 후 선택적으로 LLM 매퍼 사용
@@ -66,6 +66,6 @@ MCP Server (stdio)  -->  Connector  -->  Parser  -->  Pipeline  -->  Generators
 ## Infrastructure / 인프라
 
 - Python 3.11 package (hatchling build)
-- Schema cache / 스키마 캐시: `~/.mcp-to-cli/cache/`
-- Plugin output / 플러그인 출력: `~/.claude/plugins/mcp-to-cli-tools/`
+- Schema cache / 스키마 캐시: `~/.mcp-tool-forge/cache/`
+- Plugin output / 플러그인 출력: `~/.claude/plugins/mcp-tool-forge-tools/`
 - LLM: Bedrock `us.anthropic.claude-3-5-haiku` in us-east-1

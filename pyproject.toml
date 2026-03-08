@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "mcp-to-cli"
+name = "mcp-tool-forge"
 version = "0.1.0"
 description = "Convert MCP server tools to boto3/CLI/schema/skill outputs"
 requires-python = ">=3.11"
@@ -24,4 +24,7 @@ dev = [
 ]
 
 [project.scripts]
-mcp-to-cli = "mcp_to_cli.cli:main"
+mcp-tool-forge = "mcp_to_cli.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcp_to_cli"]

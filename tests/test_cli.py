@@ -11,7 +11,7 @@ def test_cli_help():
     runner = CliRunner()
     result = runner.invoke(main, ["--help"])
     assert result.exit_code == 0
-    assert "MCP-to-CLI" in result.output
+    assert "MCP Tool Forge" in result.output
 
 
 def test_list_servers():

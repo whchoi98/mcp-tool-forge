@@ -24,7 +24,7 @@ tools:
 ```
 
 ## Adding New Mappings / 새 매핑 추가 방법
-1. Extract tool schema from real MCP server (`mcp-to-cli list-tools`) / 실제 MCP 서버에서 tool schema 추출 (`mcp-to-cli list-tools`)
+1. Extract tool schema from real MCP server (`mcp-tool-forge list-tools`) / 실제 MCP 서버에서 tool schema 추출 (`mcp-tool-forge list-tools`)
 2. Find the corresponding API method in boto3 docs / boto3 문서에서 해당 API 메서드 확인
 3. Map parameter names (MCP snake_case -> boto3 PascalCase) / 파라미터 이름 매핑 (MCP snake_case -> boto3 PascalCase)
 4. Exclude `ctx` parameter (MCP-only) / `ctx` 파라미터는 MCP 전용이므로 제외

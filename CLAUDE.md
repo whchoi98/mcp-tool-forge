@@ -1,5 +1,5 @@
-# MCP-to-CLI Converter
-# MCP-to-CLI 변환 도구
+# MCP Tool Forge
+# MCP Tool Forge - MCP 도구 변환 도구
 
 A Python CLI tool that extracts tool schemas from MCP servers and converts them to 5 formats: boto3/CLI/schema/agentcore/skill.
 
@@ -19,7 +19,7 @@ MCP 서버의 tool schema를 추출하여 boto3/CLI/schema/agentcore/skill 5가�
 ## Project Structure / 프로젝트 구조
 
 ```
-mcp-to-cli/
+mcp-tool-forge/
 ├── src/mcp_to_cli/
 │   ├── cli.py              # Click CLI entry point / Click CLI 진입점
 │   ├── pipeline.py          # 3-phase orchestrator (extract -> map -> generate) / 3단계 오케스트레이터
@@ -29,7 +29,7 @@ mcp-to-cli/
 │   ├── registry.yaml        # 63 servers (package names, runtime, category) / 63개 서버 설정
 │   ├── mapping_loader.py    # Static YAML mapping loader / 정적 YAML 매핑 로더
 │   ├── llm_mapper.py        # Bedrock Claude LLM mapping (Phase 3) / Bedrock Claude LLM 매핑
-│   ├── cache.py             # Schema cache (~/.mcp-to-cli/cache/) / 스키마 캐시
+│   ├── cache.py             # Schema cache (~/.mcp-tool-forge/cache/) / 스키마 캐시
 │   ├── validator.py         # Generated code syntax validator/fixer / 생성 코드 검증/수정
 │   ├── skill_registrar.py   # Claude Code skill registration / Claude Code 스킬 등록
 │   ├── models.py            # Dataclasses (ToolParam, ToolDefinition, etc.) / 데이터 클래스
@@ -67,7 +67,7 @@ python3.11 -m mcp_to_cli.cli register --server <name> -d output
 ## Conventions / 규칙
 
 ### Pipeline Phases / 파이프라인 단계
-1. **Extract / 추출**: MCP SDK `tools/list` (cached in ~/.mcp-to-cli/cache/)
+1. **Extract / 추출**: MCP SDK `tools/list` (cached in ~/.mcp-tool-forge/cache/)
 2. **Map - Static / 정적 매핑**: `mappings/*.yaml` for known boto3/CLI mappings
 3. **Map - LLM / LLM 매핑**: Bedrock Haiku (`us.anthropic.claude-3-5-haiku-20241022-v1:0`)
 4. **Generate / 생성**: Jinja2 templates -> 5 output formats
