@@ -1,0 +1,389 @@
+tools:
+  list_users:
+    boto3:
+      client: iam
+      method: list_users
+      params:
+        PathPrefix: path_prefix
+        MaxItems: max_items
+    cli:
+      command: "aws iam list-users"
+      params:
+        --path-prefix: path_prefix
+        --max-items: max_items
+
+  get_user:
+    boto3:
+      client: iam
+      method: get_user
+      params:
+        UserName: user_name
+    cli:
+      command: "aws iam get-user"
+      params:
+        --user-name: user_name
+
+  create_user:
+    boto3:
+      client: iam
+      method: create_user
+      params:
+        UserName: user_name
+        Path: path
+        PermissionsBoundary: permissions_boundary
+    cli:
+      command: "aws iam create-user"
+      params:
+        --user-name: user_name
+        --path: path
+        --permissions-boundary: permissions_boundary
+
+  delete_user:
+    boto3:
+      client: iam
+      method: delete_user
+      params:
+        UserName: user_name
+        Force: force
+    cli:
+      command: "aws iam delete-user"
+      params:
+        --user-name: user_name
+        --force: force
+
+  list_roles:
+    boto3:
+      client: iam
+      method: list_roles
+      params:
+        PathPrefix: path_prefix
+        MaxItems: max_items
+    cli:
+      command: "aws iam list-roles"
+      params:
+        --path-prefix: path_prefix
+        --max-items: max_items
+
+  create_role:
+    boto3:
+      client: iam
+      method: create_role
+      params:
+        RoleName: role_name
+        AssumeRolePolicyDocument: assume_role_policy_document
+        Path: path
+        Description: description
+        MaxSessionDuration: max_session_duration
+        PermissionsBoundary: permissions_boundary
+    cli:
+      command: "aws iam create-role"
+      params:
+        --role-name: role_name
+        --assume-role-policy-document: assume_role_policy_document
+        --path: path
+        --description: description
+        --max-session-duration: max_session_duration
+        --permissions-boundary: permissions_boundary
+
+  list_policies:
+    boto3:
+      client: iam
+      method: list_policies
+      params:
+        Scope: scope
+        OnlyAttached: only_attached
+        PathPrefix: path_prefix
+        MaxItems: max_items
+    cli:
+      command: "aws iam list-policies"
+      params:
+        --scope: scope
+        --only-attached: only_attached
+        --path-prefix: path_prefix
+        --max-items: max_items
+
+  get_managed_policy_document:
+    boto3:
+      client: iam
+      method: get_policy_version
+      params:
+        PolicyArn: policy_arn
+        VersionId: version_id
+    cli:
+      command: "aws iam get-policy-version"
+      params:
+        --policy-arn: policy_arn
+        --version-id: version_id
+
+  attach_user_policy:
+    boto3:
+      client: iam
+      method: attach_user_policy
+      params:
+        UserName: user_name
+        PolicyArn: policy_arn
+    cli:
+      command: "aws iam attach-user-policy"
+      params:
+        --user-name: user_name
+        --policy-arn: policy_arn
+
+  detach_user_policy:
+    boto3:
+      client: iam
+      method: detach_user_policy
+      params:
+        UserName: user_name
+        PolicyArn: policy_arn
+    cli:
+      command: "aws iam detach-user-policy"
+      params:
+        --user-name: user_name
+        --policy-arn: policy_arn
+
+  create_access_key:
+    boto3:
+      client: iam
+      method: create_access_key
+      params:
+        UserName: user_name
+    cli:
+      command: "aws iam create-access-key"
+      params:
+        --user-name: user_name
+
+  delete_access_key:
+    boto3:
+      client: iam
+      method: delete_access_key
+      params:
+        UserName: user_name
+        AccessKeyId: access_key_id
+    cli:
+      command: "aws iam delete-access-key"
+      params:
+        --user-name: user_name
+        --access-key-id: access_key_id
+
+  simulate_principal_policy:
+    boto3:
+      client: iam
+      method: simulate_principal_policy
+      params:
+        PolicySourceArn: policy_source_arn
+        ActionNames: action_names
+        ResourceArns: resource_arns
+        ContextEntries: context_entries
+    cli:
+      command: "aws iam simulate-principal-policy"
+      params:
+        --policy-source-arn: policy_source_arn
+        --action-names: action_names
+        --resource-arns: resource_arns
+        --context-entries: context_entries
+
+  list_groups:
+    boto3:
+      client: iam
+      method: list_groups
+      params:
+        PathPrefix: path_prefix
+        MaxItems: max_items
+    cli:
+      command: "aws iam list-groups"
+      params:
+        --path-prefix: path_prefix
+        --max-items: max_items
+
+  get_group:
+    boto3:
+      client: iam
+      method: get_group
+      params:
+        GroupName: group_name
+    cli:
+      command: "aws iam get-group"
+      params:
+        --group-name: group_name
+
+  create_group:
+    boto3:
+      client: iam
+      method: create_group
+      params:
+        GroupName: group_name
+        Path: path
+    cli:
+      command: "aws iam create-group"
+      params:
+        --group-name: group_name
+        --path: path
+
+  delete_group:
+    boto3:
+      client: iam
+      method: delete_group
+      params:
+        GroupName: group_name
+        Force: force
+    cli:
+      command: "aws iam delete-group"
+      params:
+        --group-name: group_name
+        --force: force
+
+  add_user_to_group:
+    boto3:
+      client: iam
+      method: add_user_to_group
+      params:
+        GroupName: group_name
+        UserName: user_name
+    cli:
+      command: "aws iam add-user-to-group"
+      params:
+        --group-name: group_name
+        --user-name: user_name
+
+  remove_user_from_group:
+    boto3:
+      client: iam
+      method: remove_user_from_group
+      params:
+        GroupName: group_name
+        UserName: user_name
+    cli:
+      command: "aws iam remove-user-from-group"
+      params:
+        --group-name: group_name
+        --user-name: user_name
+
+  attach_group_policy:
+    boto3:
+      client: iam
+      method: attach_group_policy
+      params:
+        GroupName: group_name
+        PolicyArn: policy_arn
+    cli:
+      command: "aws iam attach-group-policy"
+      params:
+        --group-name: group_name
+        --policy-arn: policy_arn
+
+  detach_group_policy:
+    boto3:
+      client: iam
+      method: detach_group_policy
+      params:
+        GroupName: group_name
+        PolicyArn: policy_arn
+    cli:
+      command: "aws iam detach-group-policy"
+      params:
+        --group-name: group_name
+        --policy-arn: policy_arn
+
+  put_user_policy:
+    boto3:
+      client: iam
+      method: put_user_policy
+      params:
+        UserName: user_name
+        PolicyName: policy_name
+        PolicyDocument: policy_document
+    cli:
+      command: "aws iam put-user-policy"
+      params:
+        --user-name: user_name
+        --policy-name: policy_name
+        --policy-document: policy_document
+
+  get_user_policy:
+    boto3:
+      client: iam
+      method: get_user_policy
+      params:
+        UserName: user_name
+        PolicyName: policy_name
+    cli:
+      command: "aws iam get-user-policy"
+      params:
+        --user-name: user_name
+        --policy-name: policy_name
+
+  delete_user_policy:
+    boto3:
+      client: iam
+      method: delete_user_policy
+      params:
+        UserName: user_name
+        PolicyName: policy_name
+    cli:
+      command: "aws iam delete-user-policy"
+      params:
+        --user-name: user_name
+        --policy-name: policy_name
+
+  put_role_policy:
+    boto3:
+      client: iam
+      method: put_role_policy
+      params:
+        RoleName: role_name
+        PolicyName: policy_name
+        PolicyDocument: policy_document
+    cli:
+      command: "aws iam put-role-policy"
+      params:
+        --role-name: role_name
+        --policy-name: policy_name
+        --policy-document: policy_document
+
+  get_role_policy:
+    boto3:
+      client: iam
+      method: get_role_policy
+      params:
+        RoleName: role_name
+        PolicyName: policy_name
+    cli:
+      command: "aws iam get-role-policy"
+      params:
+        --role-name: role_name
+        --policy-name: policy_name
+
+  delete_role_policy:
+    boto3:
+      client: iam
+      method: delete_role_policy
+      params:
+        RoleName: role_name
+        PolicyName: policy_name
+    cli:
+      command: "aws iam delete-role-policy"
+      params:
+        --role-name: role_name
+        --policy-name: policy_name
+
+  list_user_policies:
+    boto3:
+      client: iam
+      method: list_user_policies
+      params:
+        UserName: user_name
+    cli:
+      command: "aws iam list-user-policies"
+      params:
+        --user-name: user_name
+
+  list_role_policies:
+    boto3:
+      client: iam
+      method: list_role_policies
+      params:
+        RoleName: role_name
+    cli:
+      command: "aws iam list-role-policies"
+      params:
+        --role-name: role_name

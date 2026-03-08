@@ -4,7 +4,7 @@ from pathlib import Path
 from rich.console import Console
 from mcp_to_cli.cache import SchemaCache
 from mcp_to_cli.connector import MCPConnector
-from mcp_to_cli.generators import Boto3Generator, CliGenerator, SchemaGenerator, SkillGenerator
+from mcp_to_cli.generators import AgentCoreGenerator, Boto3Generator, CliGenerator, SchemaGenerator, SkillGenerator
 from mcp_to_cli.llm_mapper import LLMMapper
 from mcp_to_cli.mapping_loader import MappingLoader
 from mcp_to_cli.models import MappingResult, ServerConfig, ToolDefinition
@@ -24,6 +24,7 @@ class Pipeline:
         self._cli_gen = CliGenerator()
         self._schema_gen = SchemaGenerator()
         self._skill_gen = SkillGenerator()
+        self._agentcore_gen = AgentCoreGenerator()
 
     async def _extract_tools(self, config: ServerConfig, use_cache: bool = True) -> list[dict]:
         if use_cache:
@@ -47,7 +48,7 @@ class Pipeline:
         outputs: list[str] | None = None,
         llm_assist: bool = False,
     ) -> dict:
-        outputs = outputs or ["boto3", "cli", "schema", "skill"]
+        outputs = outputs or ["boto3", "cli", "schema", "skill", "agentcore"]
         server_dir = self._output_dir / config.name
 
         # Phase 1: Extract
@@ -84,6 +85,8 @@ class Pipeline:
                 self._write_schema(server_dir, config.name, tools)
             elif output_type == "skill":
                 self._write_skills(server_dir, mapped)
+            elif output_type == "agentcore":
+                self._write_agentcore(server_dir, config.name, tools)
 
         return {
             "server": config.name,
@@ -121,6 +124,13 @@ class Pipeline:
         code = self._schema_gen.generate_module(server_name, tools)
         (out_dir / "tools.json").write_text(code)
         console.print(f"  [green]Wrote:[/] {out_dir / 'tools.json'}")
+
+    def _write_agentcore(self, server_dir: Path, server_name: str, tools: list[ToolDefinition]) -> None:
+        out_dir = server_dir / "agentcore"
+        out_dir.mkdir(parents=True, exist_ok=True)
+        config = self._agentcore_gen.generate_tool_config(server_name, tools)
+        (out_dir / "tool_config.json").write_text(config)
+        console.print(f"  [green]Wrote:[/] {out_dir / 'tool_config.json'}")
 
     def _write_skills(self, server_dir: Path, mapped: list[tuple]) -> None:
         out_dir = server_dir / "skill"
