@@ -1,3 +1,6 @@
+# IAM MCP tool -> boto3/CLI mappings / IAM MCP 도구 -> boto3/CLI 매핑
+# 29 tools: users, roles, policies, groups, access keys, inline policies
+# 29개 도구: 사용자, 역할, 정책, 그룹, 액세스 키, 인라인 정책
 tools:
   list_users:
     boto3:

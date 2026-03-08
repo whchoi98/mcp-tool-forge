@@ -1,5 +1,7 @@
+# MCP Server Registry / MCP 서버 레지스트리
+# 63 AWS MCP server configurations / 63개 AWS MCP 서버 설정
 servers:
-  # Essential Setup
+  # Essential Setup / 필수 설정
   aws-mcp-server:
     package: "mcp-proxy-for-aws"
     runtime: uvx
@@ -7,7 +9,7 @@ servers:
     category: Essential Setup
     description: "Secure AWS operations with API access and docs"
 
-  # Documentation
+  # Documentation / 문서
   aws-documentation-mcp-server:
     package: "awslabs.aws-documentation-mcp-server"
     runtime: uvx
@@ -22,7 +24,7 @@ servers:
     category: Documentation
     description: "AWS docs, code examples, official resources (HTTP remote endpoint)"
 
-  # Infrastructure & Deployment
+  # Infrastructure & Deployment / 인프라 및 배포
   aws-cloudcontrol-mcp-server:
     package: "awslabs.ccapi-mcp-server"
     runtime: uvx
@@ -86,7 +88,7 @@ servers:
     category: "Infrastructure & Deployment"
     description: "AWS Support case management"
 
-  # AI & Machine Learning
+  # AI & Machine Learning / AI 및 머신러닝
   amazon-bedrock-kb-retrieval-mcp-server:
     package: "awslabs.bedrock-kb-retrieval-mcp-server"
     runtime: uvx
@@ -157,7 +159,7 @@ servers:
     category: "AI & Machine Learning"
     description: "Build and manage intelligent agents"
 
-  # Data & Analytics
+  # Data & Analytics / 데이터 및 분석
   aws-dynamodb-mcp-server:
     package: "awslabs.dynamodb-mcp-server"
     runtime: uvx
@@ -284,7 +286,7 @@ servers:
     category: "Data & Analytics"
     description: "Spark upgrades and migration"
 
-  # Developer Tools & Support
+  # Developer Tools & Support / 개발자 도구 및 지원
   git-repo-research-mcp-server:
     package: "awslabs.git-repo-research-mcp-server"
     runtime: uvx
@@ -334,7 +336,7 @@ servers:
     category: "Developer Tools & Support"
     description: "MSK cluster management"
 
-  # Integration & Messaging
+  # Integration & Messaging / 통합 및 메시징
   openapi-mcp-server:
     package: "awslabs.openapi-mcp-server"
     runtime: uvx
@@ -370,7 +372,7 @@ servers:
     category: "Integration & Messaging"
     description: "Place search and geocoding"
 
-  # Cost & Operations
+  # Cost & Operations / 비용 및 운영
   aws-billing-mcp-server:
     package: "awslabs.billing-cost-management-mcp-server"
     runtime: uvx
@@ -427,7 +429,7 @@ servers:
     category: "Cost & Operations"
     description: "Security assessment"
 
-  # Healthcare & Lifesciences
+  # Healthcare & Lifesciences / 헬스케어 및 생명과학
   aws-healthomics-mcp-server:
     package: "awslabs.aws-healthomics-mcp-server"
     runtime: uvx

@@ -1,3 +1,5 @@
+"""Command-line interface for MCP-to-CLI converter.
+MCP-to-CLI 변환기의 명령줄 인터페이스."""
 from __future__ import annotations
 import asyncio
 from pathlib import Path
@@ -7,20 +9,23 @@ from rich.table import Table
 from mcp_to_cli.pipeline import Pipeline
 from mcp_to_cli.registry import ServerRegistry
 
+# Rich console for formatted terminal output / 서식화된 터미널 출력을 위한 Rich 콘솔
 console = Console(width=200)
 
 
 @click.group()
 @click.version_option(version="0.1.0", prog_name="mcp-to-cli")
 def main():
-    """MCP-to-CLI: Convert MCP server tools to boto3/CLI/schema/skill outputs."""
+    """MCP-to-CLI: Convert MCP server tools to boto3/CLI/schema/skill outputs.
+    MCP-to-CLI: MCP 서버 도구를 boto3/CLI/스키마/스킬 출력으로 변환한다."""
     pass
 
 
 @main.command()
 @click.option("--category", "-c", help="Filter by category")
 def list_servers(category):
-    """List all registered MCP servers."""
+    """List all registered MCP servers.
+    등록된 모든 MCP 서버를 나열한다."""
     registry = ServerRegistry()
     if category:
         servers = registry.list_by_category(category)
@@ -33,6 +38,7 @@ def list_servers(category):
     table.add_column("Runtime", style="yellow")
     table.add_column("Package", style="dim")
 
+    # Sort by category then name for consistent display / 일관된 표시를 위해 카테고리, 이름 순 정렬
     for s in sorted(servers, key=lambda x: (x.category, x.name)):
         table.add_row(s.name, s.category, s.runtime, s.package)
 
@@ -43,7 +49,8 @@ def list_servers(category):
 @main.command()
 @click.option("--server", "-s", required=True, help="Server name from registry")
 def list_tools(server):
-    """List tools from an MCP server (connects to server)."""
+    """List tools from an MCP server (connects to server).
+    MCP 서버의 도구를 나열한다 (서버에 접속)."""
     registry = ServerRegistry()
     config = registry.get(server)
     if not config:
@@ -60,6 +67,7 @@ def list_tools(server):
         table.add_column("Description")
         table.add_column("Params", style="yellow")
         for t in tools:
+            # Extract parameter names from input schema / 입력 스키마에서 매개변수 이름 추출
             params = ", ".join(t.get("inputSchema", {}).get("properties", {}).keys())
             table.add_row(t["name"], t.get("description", "")[:80], params)
         console.print(table)
@@ -75,15 +83,18 @@ def list_tools(server):
 @click.option("--llm-assist", is_flag=True, help="Use LLM for unmapped tools (Phase 3)")
 @click.option("--output-dir", "-d", default="output", help="Output directory")
 def convert(server, all_flag, output, llm_assist, output_dir):
-    """Convert MCP tools to boto3/CLI/schema/skill outputs."""
+    """Convert MCP tools to boto3/CLI/schema/skill outputs.
+    MCP 도구를 boto3/CLI/스키마/스킬 출력으로 변환한다."""
     if not server and not all_flag:
         console.print("[red]Error:[/] Specify --server or --all-servers")
         raise SystemExit(1)
 
+    # Parse requested output formats / 요청된 출력 형식 파싱
     outputs = ["boto3", "cli", "schema", "skill", "agentcore"] if output == "all" else output.split(",")
     registry = ServerRegistry()
     out_path = Path(output_dir)
 
+    # Resolve server configurations / 서버 구성 해석
     if all_flag:
         configs = registry.list_servers()
     else:
@@ -104,6 +115,7 @@ def convert(server, all_flag, output, llm_assist, output_dir):
                 console.print(f"[red]Error[/] converting {cfg.name}: {e}")
                 results.append({"server": cfg.name, "error": str(e)})
 
+        # Display summary table / 요약 테이블 표시
         console.print("\n[bold]Summary:[/]")
         table = Table()
         table.add_column("Server", style="cyan")
@@ -130,14 +142,15 @@ def convert(server, all_flag, output, llm_assist, output_dir):
 @click.option("--output-dir", "-d", default="output", help="Directory with generated outputs")
 @click.option("--plugin-dir", "-p", default=None, help="Claude Code plugin directory")
 def register(server, all_flag, output_dir, plugin_dir):
-    """Register generated skills with Claude Code."""
+    """Register generated skills with Claude Code.
+    생성된 스킬을 Claude Code에 등록한다."""
     from mcp_to_cli.skill_registrar import SkillRegistrar
 
     out_path = Path(output_dir)
     registrar = SkillRegistrar(Path(plugin_dir) if plugin_dir else None)
 
     if not server and not all_flag:
-        # List currently registered
+        # List currently registered skills / 현재 등록된 스킬 목록 표시
         registered = registrar.list_registered()
         if not registered:
             console.print("No skills registered yet. Use --server or --all-servers.")
@@ -151,6 +164,7 @@ def register(server, all_flag, output_dir, plugin_dir):
         return
 
     if all_flag:
+        # Register skills from all server output directories / 모든 서버 출력 디렉터리에서 스킬 등록
         total = 0
         if not out_path.exists():
             console.print(f"[red]Error:[/] Output directory not found: {out_path}")
@@ -161,6 +175,7 @@ def register(server, all_flag, output_dir, plugin_dir):
                 total += registrar.register_skills(skills_dir, server_dir.name)
         console.print(f"\n[bold]Total:[/] {total} skills registered")
     else:
+        # Register skills for a single server / 단일 서버의 스킬 등록
         skills_dir = out_path / server / "skill"
         registrar.register_skills(skills_dir, server)
 

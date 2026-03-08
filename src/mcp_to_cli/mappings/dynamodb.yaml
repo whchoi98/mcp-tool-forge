@@ -1,3 +1,6 @@
+# DynamoDB MCP tool -> boto3/CLI mappings / DynamoDB MCP 도구 -> boto3/CLI 매핑
+# 6 tools: put_item, get_item, query, scan, delete_item, update_item
+# 6개 도구: put_item, get_item, query, scan, delete_item, update_item
 tools:
   dynamodb_put_item:
     boto3:
