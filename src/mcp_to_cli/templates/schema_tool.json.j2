@@ -1,0 +1,17 @@
+{
+  "name": "{{ tool.name }}",
+  "description": {{ tool.description | tojson }},
+  "parameters": {
+    "type": "object",
+    "properties": {
+{% for param in tool.params %}
+      "{{ param.name }}": {
+        "type": "{{ param.type }}",
+        "description": {{ param.description | tojson }}
+      }{% if not loop.last %},{% endif %}
+
+{% endfor %}
+    },
+    "required": [{% for p in tool.params if p.required %}"{{ p.name }}"{% if not loop.last %}, {% endif %}{% endfor %}]
+  }
+}

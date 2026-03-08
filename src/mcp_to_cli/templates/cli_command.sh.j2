@@ -1,0 +1,10 @@
+# {{ tool.name }}: {{ tool.description }}
+# Usage: {{ tool.name }}{% for p in tool.params %} <{{ p.name }}>{% endfor %}
+
+{{ tool.name }}() {
+    {{ mapping.cli_command }} \
+{% for cli_flag, param_name in mapping.cli_params.items() %}
+        {{ cli_flag }} "${{ param_name | upper }}"{% if not loop.last %} \{% endif %}
+
+{% endfor %}
+}
