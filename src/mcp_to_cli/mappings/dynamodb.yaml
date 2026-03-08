@@ -1,0 +1,84 @@
+tools:
+  dynamodb_put_item:
+    boto3:
+      client: dynamodb
+      method: put_item
+      params:
+        TableName: table_name
+        Item: item
+        ConditionExpression: condition_expression
+    cli:
+      command: "aws dynamodb put-item"
+      params:
+        --table-name: table_name
+        --item: item
+        --condition-expression: condition_expression
+
+  dynamodb_get_item:
+    boto3:
+      client: dynamodb
+      method: get_item
+      params:
+        TableName: table_name
+        Key: key
+    cli:
+      command: "aws dynamodb get-item"
+      params:
+        --table-name: table_name
+        --key: key
+
+  dynamodb_query:
+    boto3:
+      client: dynamodb
+      method: query
+      params:
+        TableName: table_name
+        KeyConditionExpression: key_condition
+        ExpressionAttributeValues: expression_values
+    cli:
+      command: "aws dynamodb query"
+      params:
+        --table-name: table_name
+        --key-condition-expression: key_condition
+        --expression-attribute-values: expression_values
+
+  dynamodb_scan:
+    boto3:
+      client: dynamodb
+      method: scan
+      params:
+        TableName: table_name
+    cli:
+      command: "aws dynamodb scan"
+      params:
+        --table-name: table_name
+
+  dynamodb_delete_item:
+    boto3:
+      client: dynamodb
+      method: delete_item
+      params:
+        TableName: table_name
+        Key: key
+    cli:
+      command: "aws dynamodb delete-item"
+      params:
+        --table-name: table_name
+        --key: key
+
+  dynamodb_update_item:
+    boto3:
+      client: dynamodb
+      method: update_item
+      params:
+        TableName: table_name
+        Key: key
+        UpdateExpression: update_expression
+        ExpressionAttributeValues: expression_values
+    cli:
+      command: "aws dynamodb update-item"
+      params:
+        --table-name: table_name
+        --key: key
+        --update-expression: update_expression
+        --expression-attribute-values: expression_values
