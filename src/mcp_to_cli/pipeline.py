@@ -2,6 +2,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 from rich.console import Console
+from mcp_to_cli.cache import SchemaCache
 from mcp_to_cli.connector import MCPConnector
 from mcp_to_cli.generators import Boto3Generator, CliGenerator, SchemaGenerator, SkillGenerator
 from mcp_to_cli.llm_mapper import LLMMapper
@@ -16,6 +17,7 @@ class Pipeline:
     def __init__(self, output_dir: Path | None = None):
         self._output_dir = output_dir or Path("output")
         self._connector = MCPConnector()
+        self._cache = SchemaCache()
         self._mapping_loader = MappingLoader()
         self._llm_mapper = LLMMapper()
         self._boto3_gen = Boto3Generator()
@@ -23,8 +25,15 @@ class Pipeline:
         self._schema_gen = SchemaGenerator()
         self._skill_gen = SkillGenerator()
 
-    async def _extract_tools(self, config: ServerConfig) -> list[dict]:
-        return await self._connector.list_tools_from_config(config)
+    async def _extract_tools(self, config: ServerConfig, use_cache: bool = True) -> list[dict]:
+        if use_cache:
+            cached = self._cache.load(config.name)
+            if cached:
+                console.print(f"  [dim]Using cached schema ({len(cached)} tools)[/]")
+                return cached
+        tools = await self._connector.list_tools_from_config(config)
+        self._cache.save(config.name, tools)
+        return tools
 
     def _resolve_mapping(self, tool: ToolDefinition) -> MappingResult | None:
         return self._mapping_loader.find_mapping(tool)
