@@ -35,7 +35,7 @@ class LLMMapper:
     """Maps MCP tools to AWS API calls using an LLM via Amazon Bedrock.
     Amazon Bedrock을 통해 LLM을 사용하여 MCP 도구를 AWS API 호출에 매핑합니다."""
 
-    def __init__(self, model_id: str = "us.anthropic.claude-3-5-haiku-20241022-v1:0", region: str = "us-east-1"):
+    def __init__(self, model_id: str = "global.anthropic.claude-sonnet-4-6-v1", region: str = "us-east-1"):
         self._model_id = model_id  # Bedrock model identifier / Bedrock 모델 식별자
         self._region = region  # AWS region for Bedrock / Bedrock용 AWS 리전
 
