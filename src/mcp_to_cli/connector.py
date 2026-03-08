@@ -1,18 +1,17 @@
 from __future__ import annotations
 
 import asyncio
-import json
 import os
-from typing import Any
+import tempfile
+
+from mcp import ClientSession
+from mcp.client.stdio import StdioServerParameters, stdio_client
 
 from mcp_to_cli.models import ServerConfig
 
 
 class MCPConnector:
-    """Connects to MCP servers and extracts tool schemas."""
-
-    def __init__(self):
-        self._process: asyncio.subprocess.Process | None = None
+    """Connects to MCP servers and extracts tool schemas via MCP SDK."""
 
     def _build_command(
         self, runtime: str, package: str, extra_args: list[str]
@@ -24,71 +23,50 @@ class MCPConnector:
         else:
             raise ValueError(f"Unknown runtime: {runtime}")
 
-    async def connect_stdio(self, config: ServerConfig) -> None:
+    def _build_server_params(self, config: ServerConfig) -> StdioServerParameters:
         cmd, args = self._build_command(config.runtime, config.package, config.args)
-        env = {**os.environ, **config.env}
-        self._process = await asyncio.create_subprocess_exec(
-            cmd, *args,
-            stdin=asyncio.subprocess.PIPE,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-            env=env,
-        )
+        env = {**os.environ, **config.env} if config.env else None
+        return StdioServerParameters(command=cmd, args=args, env=env)
 
-    async def _send_jsonrpc(self, method: str, params: dict | None = None) -> dict:
-        if not self._process or not self._process.stdin or not self._process.stdout:
-            raise RuntimeError("Not connected to any MCP server")
-        request: dict[str, Any] = {"jsonrpc": "2.0", "id": 1, "method": method}
-        if params:
-            request["params"] = params
-        msg = json.dumps(request)
-        content = f"Content-Length: {len(msg)}\r\n\r\n{msg}"
-        self._process.stdin.write(content.encode())
-        await self._process.stdin.drain()
-        headers: dict[str, str] = {}
-        while True:
-            line = await self._process.stdout.readline()
-            line_str = line.decode().strip()
-            if not line_str:
-                break
-            if ":" in line_str:
-                key, value = line_str.split(":", 1)
-                headers[key.strip()] = value.strip()
-        content_length = int(headers.get("Content-Length", 0))
-        if content_length > 0:
-            body = await self._process.stdout.readexactly(content_length)
-            return json.loads(body)
-        return {}
+    async def list_tools_from_config(
+        self, config: ServerConfig, timeout: float = 60
+    ) -> list[dict]:
+        """Connect to MCP server, list tools, return raw dicts."""
+        params = self._build_server_params(config)
 
-    async def _call_tools_list(self) -> list[dict]:
-        await self._send_jsonrpc("initialize", {
-            "protocolVersion": "2024-11-05",
-            "capabilities": {},
-            "clientInfo": {"name": "mcp-to-cli", "version": "0.1.0"},
-        })
-        notif = json.dumps({"jsonrpc": "2.0", "method": "notifications/initialized"})
-        content = f"Content-Length: {len(notif)}\r\n\r\n{notif}"
-        if self._process and self._process.stdin:
-            self._process.stdin.write(content.encode())
-            await self._process.stdin.drain()
-        response = await self._send_jsonrpc("tools/list")
-        return response.get("result", {}).get("tools", [])
+        async def _connect() -> list[dict]:
+            errfile = tempfile.NamedTemporaryFile(mode="w", suffix=".log", delete=False)
+            try:
+                async with stdio_client(params, errlog=errfile) as (read, write):
+                    async with ClientSession(read, write) as session:
+                        await session.initialize()
+                        result = await session.list_tools()
+                        return [
+                            {
+                                "name": tool.name,
+                                "description": tool.description or "",
+                                "inputSchema": tool.inputSchema,
+                            }
+                            for tool in result.tools
+                        ]
+            finally:
+                errfile.close()
+                try:
+                    os.unlink(errfile.name)
+                except OSError:
+                    pass
+
+        try:
+            return await asyncio.wait_for(_connect(), timeout=timeout)
+        except asyncio.TimeoutError:
+            raise TimeoutError(
+                f"Timed out connecting to {config.name} after {timeout}s"
+            )
 
     async def list_tools(self) -> list[dict]:
+        """Legacy interface - use list_tools_from_config instead."""
         return await self._call_tools_list()
 
-    async def list_tools_from_config(self, config: ServerConfig) -> list[dict]:
-        try:
-            await self.connect_stdio(config)
-            return await asyncio.wait_for(self.list_tools(), timeout=30)
-        finally:
-            await self.disconnect()
-
-    async def disconnect(self) -> None:
-        if self._process:
-            try:
-                self._process.terminate()
-                await asyncio.wait_for(self._process.wait(), timeout=5)
-            except (asyncio.TimeoutError, ProcessLookupError):
-                self._process.kill()
-            self._process = None
+    async def _call_tools_list(self) -> list[dict]:
+        """Legacy raw JSON-RPC - kept for tests that mock this."""
+        raise NotImplementedError("Use list_tools_from_config with MCP SDK")

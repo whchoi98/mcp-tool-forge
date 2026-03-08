@@ -1,20 +1,7 @@
 import pytest
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, patch, MagicMock
 from mcp_to_cli.connector import MCPConnector
-
-
-@pytest.mark.asyncio
-async def test_list_tools_returns_parsed_schemas():
-    mock_tools = [
-        {"name": "test_tool", "description": "A test tool",
-         "inputSchema": {"type": "object", "properties": {"param1": {"type": "string"}}, "required": ["param1"]}}
-    ]
-    connector = MCPConnector()
-    with patch.object(connector, "_call_tools_list", new_callable=AsyncMock) as mock:
-        mock.return_value = mock_tools
-        tools = await connector.list_tools()
-        assert len(tools) == 1
-        assert tools[0]["name"] == "test_tool"
+from mcp_to_cli.models import ServerConfig
 
 
 def test_build_stdio_command_npx():
@@ -30,3 +17,25 @@ def test_build_stdio_command_uvx():
     cmd, args = connector._build_command("uvx", "awslabs.aws-dynamodb-mcp-server", [])
     assert cmd == "uvx"
     assert "awslabs.aws-dynamodb-mcp-server" in args
+
+
+def test_build_server_params():
+    connector = MCPConnector()
+    config = ServerConfig(
+        name="test", package="test-pkg", runtime="uvx",
+        transport="stdio", category="Test",
+    )
+    params = connector._build_server_params(config)
+    assert params.command == "uvx"
+    assert "test-pkg" in params.args
+
+
+def test_build_server_params_with_env():
+    connector = MCPConnector()
+    config = ServerConfig(
+        name="test", package="test-pkg", runtime="npx",
+        transport="stdio", category="Test", env={"FOO": "bar"},
+    )
+    params = connector._build_server_params(config)
+    assert params.env is not None
+    assert params.env["FOO"] == "bar"
