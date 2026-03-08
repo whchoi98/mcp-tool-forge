@@ -1,8 +1,8 @@
 servers:
   # Essential Setup
   aws-mcp-server:
-    package: "@anthropic/aws-mcp-server"
-    runtime: npx
+    package: "mcp-proxy-for-aws"
+    runtime: uvx
     transport: stdio
     category: Essential Setup
     description: "Secure AWS operations with API access and docs"
@@ -18,35 +18,20 @@ servers:
   aws-knowledge-mcp-server:
     package: "@anthropic/aws-knowledge-mcp-server"
     runtime: npx
-    transport: stdio
+    transport: sse
     category: Documentation
-    description: "AWS docs, code examples, official resources"
-
-  # Core
-  aws-api-mcp-server:
-    package: "@anthropic/aws-api-mcp-server"
-    runtime: npx
-    transport: stdio
-    category: Core
-    description: "AWS service interactions via CLI commands"
-
-  core-mcp-server:
-    package: "@awslabs/core-mcp-server"
-    runtime: npx
-    transport: stdio
-    category: Core
-    description: "Intelligent MCP server orchestration"
+    description: "AWS docs, code examples, official resources (HTTP remote endpoint)"
 
   # Infrastructure & Deployment
   aws-cloudcontrol-mcp-server:
-    package: "awslabs.aws-cloudcontrol-mcp-server"
+    package: "awslabs.ccapi-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Infrastructure & Deployment"
     description: "AWS resource management with CRUDL and security scanning"
 
   aws-cloudformation-mcp-server:
-    package: "awslabs.aws-cloudformation-mcp-server"
+    package: "awslabs.cfn-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Infrastructure & Deployment"
@@ -60,14 +45,14 @@ servers:
     description: "Terraform workflows with security scanning"
 
   amazon-eks-mcp-server:
-    package: "awslabs.amazon-eks-mcp-server"
+    package: "awslabs.eks-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Infrastructure & Deployment"
     description: "Kubernetes cluster management"
 
   amazon-ecs-mcp-server:
-    package: "awslabs.amazon-ecs-mcp-server"
+    package: "awslabs-ecs-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Infrastructure & Deployment"
@@ -88,7 +73,7 @@ servers:
     description: "Serverless lifecycle with SAM CLI"
 
   aws-lambda-tool-mcp-server:
-    package: "awslabs.aws-lambda-tool-mcp-server"
+    package: "awslabs.lambda-tool-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Infrastructure & Deployment"
@@ -103,7 +88,7 @@ servers:
 
   # AI & Machine Learning
   amazon-bedrock-kb-retrieval-mcp-server:
-    package: "awslabs.amazon-bedrock-kb-retrieval-mcp-server"
+    package: "awslabs.bedrock-kb-retrieval-mcp-server"
     runtime: uvx
     transport: stdio
     category: "AI & Machine Learning"
@@ -117,14 +102,14 @@ servers:
     description: "Enterprise search and RAG"
 
   amazon-q-business-mcp-server:
-    package: "awslabs.amazon-q-business-mcp-server"
+    package: "awslabs.amazon-qbusiness-anonymous-mcp-server"
     runtime: uvx
     transport: stdio
     category: "AI & Machine Learning"
     description: "Q Business anonymous access"
 
   amazon-q-index-mcp-server:
-    package: "awslabs.amazon-q-index-mcp-server"
+    package: "awslabs.amazon-qindex-mcp-server"
     runtime: uvx
     transport: stdio
     category: "AI & Machine Learning"
@@ -138,28 +123,28 @@ servers:
     description: "Document parsing and extraction"
 
   amazon-nova-canvas-mcp-server:
-    package: "awslabs.amazon-nova-canvas-mcp-server"
+    package: "awslabs.nova-canvas-mcp-server"
     runtime: uvx
     transport: stdio
     category: "AI & Machine Learning"
     description: "AI image generation"
 
   amazon-bedrock-data-automation-mcp-server:
-    package: "awslabs.amazon-bedrock-data-automation-mcp-server"
+    package: "awslabs.aws-bedrock-data-automation-mcp-server"
     runtime: uvx
     transport: stdio
     category: "AI & Machine Learning"
     description: "Analyze docs, images, videos, audio"
 
   amazon-bedrock-custom-model-mcp-server:
-    package: "awslabs.amazon-bedrock-custom-model-mcp-server"
+    package: "awslabs.aws-bedrock-custom-model-import-mcp-server"
     runtime: uvx
     transport: stdio
     category: "AI & Machine Learning"
     description: "Custom model management in Bedrock"
 
   amazon-sagemaker-mcp-server:
-    package: "awslabs.amazon-sagemaker-mcp-server"
+    package: "awslabs.sagemaker-ai-mcp-server"
     runtime: uvx
     transport: stdio
     category: "AI & Machine Learning"
@@ -174,42 +159,42 @@ servers:
 
   # Data & Analytics
   aws-dynamodb-mcp-server:
-    package: "awslabs.aws-dynamodb-mcp-server"
+    package: "awslabs.dynamodb-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Data & Analytics"
     description: "DynamoDB operations and table management"
 
   amazon-aurora-postgresql-mcp-server:
-    package: "awslabs.amazon-aurora-postgresql-mcp-server"
+    package: "awslabs.postgres-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Data & Analytics"
     description: "PostgreSQL via RDS Data API"
 
   aws-s3-tables-mcp-server:
-    package: "awslabs.aws-s3-tables-mcp-server"
+    package: "awslabs.s3-tables-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Data & Analytics"
     description: "S3 table management and SQL queries"
 
   amazon-aurora-mysql-mcp-server:
-    package: "awslabs.amazon-aurora-mysql-mcp-server"
+    package: "awslabs.mysql-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Data & Analytics"
     description: "MySQL via RDS Data API"
 
   amazon-aurora-dsql-mcp-server:
-    package: "awslabs.amazon-aurora-dsql-mcp-server"
+    package: "awslabs.aurora-dsql-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Data & Analytics"
     description: "Distributed SQL"
 
   amazon-documentdb-mcp-server:
-    package: "awslabs.amazon-documentdb-mcp-server"
+    package: "awslabs.documentdb-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Data & Analytics"
@@ -230,28 +215,28 @@ servers:
     description: "Cassandra-compatible operations"
 
   amazon-timestream-influxdb-mcp-server:
-    package: "awslabs.amazon-timestream-influxdb-mcp-server"
+    package: "awslabs.timestream-for-influxdb-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Data & Analytics"
     description: "InfluxDB time-series operations"
 
   amazon-elasticache-mcp-server:
-    package: "awslabs.amazon-elasticache-mcp-server"
+    package: "awslabs.elasticache-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Data & Analytics"
     description: "ElastiCache management"
 
   amazon-elasticache-valkey-mcp-server:
-    package: "awslabs.amazon-elasticache-valkey-mcp-server"
+    package: "awslabs.valkey-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Data & Analytics"
     description: "Valkey data structures and caching"
 
   amazon-elasticache-memcached-mcp-server:
-    package: "awslabs.amazon-elasticache-memcached-mcp-server"
+    package: "awslabs.memcached-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Data & Analytics"
@@ -279,7 +264,7 @@ servers:
     description: "Glue and EMR data processing"
 
   amazon-redshift-mcp-server:
-    package: "awslabs.amazon-redshift-mcp-server"
+    package: "awslabs.redshift-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Data & Analytics"
@@ -329,14 +314,14 @@ servers:
     description: "React and web development"
 
   synthetic-data-mcp-server:
-    package: "awslabs.synthetic-data-mcp-server"
+    package: "awslabs.syntheticdata-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Developer Tools & Support"
     description: "Test data generation"
 
   aws-iam-mcp-server:
-    package: "awslabs.aws-iam-mcp-server"
+    package: "awslabs.iam-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Developer Tools & Support"
@@ -372,14 +357,14 @@ servers:
     description: "RabbitMQ and ActiveMQ"
 
   aws-stepfunctions-mcp-server:
-    package: "awslabs.aws-stepfunctions-mcp-server"
+    package: "awslabs.stepfunctions-tool-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Integration & Messaging"
     description: "Workflow orchestration"
 
   amazon-location-mcp-server:
-    package: "awslabs.amazon-location-mcp-server"
+    package: "awslabs.aws-location-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Integration & Messaging"
@@ -401,14 +386,14 @@ servers:
     description: "Cost estimation"
 
   aws-cost-explorer-mcp-server:
-    package: "awslabs.aws-cost-explorer-mcp-server"
+    package: "awslabs.cost-explorer-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Cost & Operations"
     description: "Cost analysis and reporting"
 
   aws-managed-prometheus-mcp-server:
-    package: "awslabs.aws-managed-prometheus-mcp-server"
+    package: "awslabs.prometheus-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Cost & Operations"
@@ -422,7 +407,7 @@ servers:
     description: "Application monitoring"
 
   amazon-cloudwatch-mcp-server:
-    package: "awslabs.amazon-cloudwatch-mcp-server"
+    package: "awslabs.cloudwatch-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Cost & Operations"
