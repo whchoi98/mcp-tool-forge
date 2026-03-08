@@ -40,5 +40,6 @@ class ServerConfig:
     runtime: str  # "npx" | "uvx"
     transport: str  # "stdio" | "sse"
     category: str
+    description: str = ""
     env: dict[str, str] = field(default_factory=dict)
     args: list[str] = field(default_factory=list)

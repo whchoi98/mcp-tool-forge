@@ -1,0 +1,465 @@
+servers:
+  # Essential Setup
+  aws-mcp-server:
+    package: "@anthropic/aws-mcp-server"
+    runtime: npx
+    transport: stdio
+    category: Essential Setup
+    description: "Secure AWS operations with API access and docs"
+
+  # Documentation
+  aws-documentation-mcp-server:
+    package: "awslabs.aws-documentation-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: Documentation
+    description: "Latest AWS documentation and API references"
+
+  aws-knowledge-mcp-server:
+    package: "@anthropic/aws-knowledge-mcp-server"
+    runtime: npx
+    transport: stdio
+    category: Documentation
+    description: "AWS docs, code examples, official resources"
+
+  # Core
+  aws-api-mcp-server:
+    package: "@anthropic/aws-api-mcp-server"
+    runtime: npx
+    transport: stdio
+    category: Core
+    description: "AWS service interactions via CLI commands"
+
+  core-mcp-server:
+    package: "@awslabs/core-mcp-server"
+    runtime: npx
+    transport: stdio
+    category: Core
+    description: "Intelligent MCP server orchestration"
+
+  # Infrastructure & Deployment
+  aws-cloudcontrol-mcp-server:
+    package: "awslabs.aws-cloudcontrol-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Infrastructure & Deployment"
+    description: "AWS resource management with CRUDL and security scanning"
+
+  aws-cloudformation-mcp-server:
+    package: "awslabs.aws-cloudformation-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Infrastructure & Deployment"
+    description: "CloudFormation resource management"
+
+  aws-terraform-mcp-server:
+    package: "awslabs.terraform-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Infrastructure & Deployment"
+    description: "Terraform workflows with security scanning"
+
+  amazon-eks-mcp-server:
+    package: "awslabs.amazon-eks-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Infrastructure & Deployment"
+    description: "Kubernetes cluster management"
+
+  amazon-ecs-mcp-server:
+    package: "awslabs.amazon-ecs-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Infrastructure & Deployment"
+    description: "Container orchestration and ECS deployment"
+
+  finch-mcp-server:
+    package: "awslabs.finch-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Infrastructure & Deployment"
+    description: "Local container building with ECR"
+
+  aws-serverless-mcp-server:
+    package: "awslabs.aws-serverless-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Infrastructure & Deployment"
+    description: "Serverless lifecycle with SAM CLI"
+
+  aws-lambda-tool-mcp-server:
+    package: "awslabs.aws-lambda-tool-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Infrastructure & Deployment"
+    description: "Execute Lambda functions as AI tools"
+
+  aws-support-mcp-server:
+    package: "awslabs.aws-support-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Infrastructure & Deployment"
+    description: "AWS Support case management"
+
+  # AI & Machine Learning
+  amazon-bedrock-kb-retrieval-mcp-server:
+    package: "awslabs.amazon-bedrock-kb-retrieval-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "AI & Machine Learning"
+    description: "Query knowledge bases with citations"
+
+  amazon-kendra-index-mcp-server:
+    package: "awslabs.amazon-kendra-index-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "AI & Machine Learning"
+    description: "Enterprise search and RAG"
+
+  amazon-q-business-mcp-server:
+    package: "awslabs.amazon-q-business-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "AI & Machine Learning"
+    description: "Q Business anonymous access"
+
+  amazon-q-index-mcp-server:
+    package: "awslabs.amazon-q-index-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "AI & Machine Learning"
+    description: "Enterprise Q index search"
+
+  document-loader-mcp-server:
+    package: "awslabs.document-loader-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "AI & Machine Learning"
+    description: "Document parsing and extraction"
+
+  amazon-nova-canvas-mcp-server:
+    package: "awslabs.amazon-nova-canvas-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "AI & Machine Learning"
+    description: "AI image generation"
+
+  amazon-bedrock-data-automation-mcp-server:
+    package: "awslabs.amazon-bedrock-data-automation-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "AI & Machine Learning"
+    description: "Analyze docs, images, videos, audio"
+
+  amazon-bedrock-custom-model-mcp-server:
+    package: "awslabs.amazon-bedrock-custom-model-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "AI & Machine Learning"
+    description: "Custom model management in Bedrock"
+
+  amazon-sagemaker-mcp-server:
+    package: "awslabs.amazon-sagemaker-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "AI & Machine Learning"
+    description: "SageMaker resource management"
+
+  amazon-bedrock-agentcore-mcp-server:
+    package: "awslabs.amazon-bedrock-agentcore-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "AI & Machine Learning"
+    description: "Build and manage intelligent agents"
+
+  # Data & Analytics
+  aws-dynamodb-mcp-server:
+    package: "awslabs.aws-dynamodb-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Data & Analytics"
+    description: "DynamoDB operations and table management"
+
+  amazon-aurora-postgresql-mcp-server:
+    package: "awslabs.amazon-aurora-postgresql-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Data & Analytics"
+    description: "PostgreSQL via RDS Data API"
+
+  aws-s3-tables-mcp-server:
+    package: "awslabs.aws-s3-tables-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Data & Analytics"
+    description: "S3 table management and SQL queries"
+
+  amazon-aurora-mysql-mcp-server:
+    package: "awslabs.amazon-aurora-mysql-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Data & Analytics"
+    description: "MySQL via RDS Data API"
+
+  amazon-aurora-dsql-mcp-server:
+    package: "awslabs.amazon-aurora-dsql-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Data & Analytics"
+    description: "Distributed SQL"
+
+  amazon-documentdb-mcp-server:
+    package: "awslabs.amazon-documentdb-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Data & Analytics"
+    description: "MongoDB-compatible operations"
+
+  amazon-neptune-mcp-server:
+    package: "awslabs.amazon-neptune-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Data & Analytics"
+    description: "Graph queries"
+
+  amazon-keyspaces-mcp-server:
+    package: "awslabs.amazon-keyspaces-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Data & Analytics"
+    description: "Cassandra-compatible operations"
+
+  amazon-timestream-influxdb-mcp-server:
+    package: "awslabs.amazon-timestream-influxdb-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Data & Analytics"
+    description: "InfluxDB time-series operations"
+
+  amazon-elasticache-mcp-server:
+    package: "awslabs.amazon-elasticache-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Data & Analytics"
+    description: "ElastiCache management"
+
+  amazon-elasticache-valkey-mcp-server:
+    package: "awslabs.amazon-elasticache-valkey-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Data & Analytics"
+    description: "Valkey data structures and caching"
+
+  amazon-elasticache-memcached-mcp-server:
+    package: "awslabs.amazon-elasticache-memcached-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Data & Analytics"
+    description: "Memcached caching operations"
+
+  aws-appsync-mcp-server:
+    package: "awslabs.aws-appsync-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Data & Analytics"
+    description: "AppSync API management"
+
+  aws-iot-sitewise-mcp-server:
+    package: "awslabs.aws-iot-sitewise-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Data & Analytics"
+    description: "Industrial IoT asset management"
+
+  amazon-data-processing-mcp-server:
+    package: "awslabs.amazon-data-processing-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Data & Analytics"
+    description: "Glue and EMR data processing"
+
+  amazon-redshift-mcp-server:
+    package: "awslabs.amazon-redshift-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Data & Analytics"
+    description: "Redshift querying"
+
+  amazon-sagemaker-spark-troubleshooting-mcp-server:
+    package: "awslabs.amazon-sagemaker-spark-troubleshooting-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Data & Analytics"
+    description: "Spark troubleshooting"
+
+  amazon-sagemaker-spark-upgrade-mcp-server:
+    package: "awslabs.amazon-sagemaker-spark-upgrade-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Data & Analytics"
+    description: "Spark upgrades and migration"
+
+  # Developer Tools & Support
+  git-repo-research-mcp-server:
+    package: "awslabs.git-repo-research-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Developer Tools & Support"
+    description: "Semantic code search"
+
+  code-doc-gen-mcp-server:
+    package: "awslabs.code-doc-gen-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Developer Tools & Support"
+    description: "Automated documentation"
+
+  aws-diagram-mcp-server:
+    package: "awslabs.aws-diagram-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Developer Tools & Support"
+    description: "Architecture diagram generation"
+
+  frontend-mcp-server:
+    package: "awslabs.frontend-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Developer Tools & Support"
+    description: "React and web development"
+
+  synthetic-data-mcp-server:
+    package: "awslabs.synthetic-data-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Developer Tools & Support"
+    description: "Test data generation"
+
+  aws-iam-mcp-server:
+    package: "awslabs.aws-iam-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Developer Tools & Support"
+    description: "IAM management"
+
+  aws-msk-mcp-server:
+    package: "awslabs.aws-msk-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Developer Tools & Support"
+    description: "MSK cluster management"
+
+  # Integration & Messaging
+  openapi-mcp-server:
+    package: "awslabs.openapi-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Integration & Messaging"
+    description: "Dynamic API integration via OpenAPI"
+
+  amazon-sns-sqs-mcp-server:
+    package: "awslabs.amazon-sns-sqs-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Integration & Messaging"
+    description: "SNS/SQS messaging"
+
+  amazon-mq-mcp-server:
+    package: "awslabs.amazon-mq-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Integration & Messaging"
+    description: "RabbitMQ and ActiveMQ"
+
+  aws-stepfunctions-mcp-server:
+    package: "awslabs.aws-stepfunctions-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Integration & Messaging"
+    description: "Workflow orchestration"
+
+  amazon-location-mcp-server:
+    package: "awslabs.amazon-location-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Integration & Messaging"
+    description: "Place search and geocoding"
+
+  # Cost & Operations
+  aws-billing-mcp-server:
+    package: "awslabs.aws-billing-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Cost & Operations"
+    description: "Billing and cost management"
+
+  aws-pricing-mcp-server:
+    package: "awslabs.aws-pricing-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Cost & Operations"
+    description: "Cost estimation"
+
+  aws-cost-explorer-mcp-server:
+    package: "awslabs.aws-cost-explorer-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Cost & Operations"
+    description: "Cost analysis and reporting"
+
+  aws-managed-prometheus-mcp-server:
+    package: "awslabs.aws-managed-prometheus-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Cost & Operations"
+    description: "Prometheus monitoring"
+
+  amazon-cloudwatch-appsignals-mcp-server:
+    package: "awslabs.amazon-cloudwatch-appsignals-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Cost & Operations"
+    description: "Application monitoring"
+
+  amazon-cloudwatch-mcp-server:
+    package: "awslabs.amazon-cloudwatch-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Cost & Operations"
+    description: "Metrics, alarms, and logs"
+
+  aws-cloudtrail-mcp-server:
+    package: "awslabs.aws-cloudtrail-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Cost & Operations"
+    description: "API activity and audit logs"
+
+  aws-well-architected-mcp-server:
+    package: "awslabs.aws-well-architected-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Cost & Operations"
+    description: "Security assessment"
+
+  # Healthcare & Lifesciences
+  aws-healthomics-mcp-server:
+    package: "awslabs.aws-healthomics-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Healthcare & Lifesciences"
+    description: "Lifescience workflows"
+
+  healthimaging-mcp-server:
+    package: "awslabs.healthimaging-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Healthcare & Lifesciences"
+    description: "DICOM and medical imaging"
+
+  healthlake-mcp-server:
+    package: "awslabs.healthlake-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Healthcare & Lifesciences"
+    description: "FHIR interactions"
