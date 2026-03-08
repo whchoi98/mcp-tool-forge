@@ -19,7 +19,7 @@ class MCPConnector:
         if runtime == "npx":
             return "npx", ["-y", package] + extra_args
         elif runtime == "uvx":
-            return "uvx", [package] + extra_args
+            return "uvx", package.split() + extra_args
         else:
             raise ValueError(f"Unknown runtime: {runtime}")
 

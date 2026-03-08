@@ -52,7 +52,7 @@ servers:
     description: "Kubernetes cluster management"
 
   amazon-ecs-mcp-server:
-    package: "awslabs-ecs-mcp-server"
+    package: "--from awslabs-ecs-mcp-server ecs-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Infrastructure & Deployment"
@@ -256,7 +256,7 @@ servers:
     category: "Data & Analytics"
     description: "Industrial IoT asset management"
 
-  amazon-data-processing-mcp-server:
+  amazon-data-processing-mcp-server: # NOT YET ON PYPI
     package: "awslabs.amazon-data-processing-mcp-server"
     runtime: uvx
     transport: stdio
@@ -270,14 +270,14 @@ servers:
     category: "Data & Analytics"
     description: "Redshift querying"
 
-  amazon-sagemaker-spark-troubleshooting-mcp-server:
+  amazon-sagemaker-spark-troubleshooting-mcp-server: # NOT YET ON PYPI
     package: "awslabs.amazon-sagemaker-spark-troubleshooting-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Data & Analytics"
     description: "Spark troubleshooting"
 
-  amazon-sagemaker-spark-upgrade-mcp-server:
+  amazon-sagemaker-spark-upgrade-mcp-server: # NOT YET ON PYPI
     package: "awslabs.amazon-sagemaker-spark-upgrade-mcp-server"
     runtime: uvx
     transport: stdio
@@ -372,7 +372,7 @@ servers:
 
   # Cost & Operations
   aws-billing-mcp-server:
-    package: "awslabs.aws-billing-mcp-server"
+    package: "awslabs.billing-cost-management-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Cost & Operations"
@@ -400,7 +400,7 @@ servers:
     description: "Prometheus monitoring"
 
   amazon-cloudwatch-appsignals-mcp-server:
-    package: "awslabs.amazon-cloudwatch-appsignals-mcp-server"
+    package: "awslabs.cloudwatch-appsignals-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Cost & Operations"
@@ -414,7 +414,7 @@ servers:
     description: "Metrics, alarms, and logs"
 
   aws-cloudtrail-mcp-server:
-    package: "awslabs.aws-cloudtrail-mcp-server"
+    package: "awslabs.cloudtrail-mcp-server"
     runtime: uvx
     transport: stdio
     category: "Cost & Operations"
