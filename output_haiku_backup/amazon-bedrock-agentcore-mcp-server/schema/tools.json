@@ -1,0 +1,68 @@
+{
+  "server": "amazon-bedrock-agentcore-mcp-server",
+  "tools": [
+    {
+      "name": "search_agentcore_docs",
+      "description": "Search curated AgentCore documentation and return ranked results with snippets.\n\n    This tool provides access to the complete Amazon Bedrock AgentCore documentation including:\n\n    **Platform Overview:**\n    - What is Bedrock AgentCore, security overview, quotas and limits\n\n    **Platform Services:**\n    - AgentCore Runtime (serverless deployment and scaling)\n    - AgentCore Memory (persistent knowledge with event and semantic memory)\n    - AgentCore Code Interpreter (secure code execution in isolated sandboxes)\n    - AgentCore Browser (fast, secure cloud-based browser for web interaction)\n    - AgentCore Gateway (transform existing APIs into agent tools)\n    - AgentCore Observability (real-time monitoring and tracing)\n    - AgentCore Identity (secure authentication and access management)\n\n    **Getting Started:**\n    - Prerequisites & environment setup\n    - Building your first agent or transforming existing code\n    - Local development & testing\n    - Deployment to AgentCore using CLI\n    - Troubleshooting & enhancement\n\n    **Examples & Tutorials:**\n    - Basic agent creation, memory integration, tool usage\n    - Streaming responses, error handling, authentication\n    - Customer service agents, code review assistants, data analysis\n    - Multi-agent workflows and integrations\n\n    **API Reference:**\n    - Data plane and control API documentation\n\n    Use this to find relevant AgentCore documentation for any development question.\n\n    Args:\n        query: Search query string (e.g., \"bedrock agentcore\", \"memory integration\", \"deployment guide\")\n        k: Maximum number of results to return (default: 5)\n\n    Returns:\n        List of dictionaries containing:\n        - url: Document URL\n        - title: Display title\n        - score: Relevance score (0-1, higher is better)\n        - snippet: Contextual content preview\n\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": ""
+          },
+          "k": {
+            "type": "integer",
+            "description": ""
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    },
+    {
+      "name": "fetch_agentcore_doc",
+      "description": "Fetch full document content by URL.\n\n    Retrieves complete AgentCore documentation content from URLs found via search_agentcore_docs\n    or provided directly. Use this to get full documentation pages including:\n\n    - Complete platform overview and service documentation\n    - Detailed getting started guides with step-by-step instructions\n    - Full API reference documentation\n    - Comprehensive tutorial and example code\n    - Complete deployment and configuration instructions\n    - Integration guides for various frameworks (Strands, LangGraph, CrewAI, etc.)\n\n    This provides the full content when search snippets aren't sufficient for\n    understanding or implementing AgentCore features.\n\n    Args:\n        uri: Document URI (supports http/https URLs)\n\n    Returns:\n        Dictionary containing:\n        - url: Canonical document URL\n        - title: Document title\n        - content: Full document text content\n        - error: Error message (if fetch failed)\n\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "uri": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "uri"
+        ]
+      }
+    },
+    {
+      "name": "manage_agentcore_runtime",
+      "description": "Provides comprehensive information on how to deploy and manage agents in AgentCore Runtime.\n\n    This tool returns detailed documentation about:\n    - Code requirements before deployment\n    - Step-by-step CLI deployment workflow\n    - Validation checklist for agent code and dependencies\n    - Common issues and how to avoid them\n\n    Use this tool to understand the complete process of deploying agents to AgentCore Runtime.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "manage_agentcore_memory",
+      "description": "Provides comprehensive information on how to manage AgentCore Memory resources.\n\n    This tool returns detailed documentation about:\n    - Memory resource creation and configuration\n    - Complete CLI command reference\n\n    Use this tool to understand the complete process of working with AgentCore Memory.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "manage_agentcore_gateway",
+      "description": "Provides comprehensive information on how to deploy and manage MCP Gateways in AgentCore.\n\n    This tool returns detailed documentation about:\n    - Gateway creation and configuration requirements\n    - Step-by-step CLI deployment workflow\n    - Target management for Lambda, OpenAPI, and Smithy models\n    - Authentication and authorization setup\n    - Common issues and troubleshooting\n\n    Use this tool to understand the complete process of deploying and managing MCP Gateways.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    }
+  ]
+}

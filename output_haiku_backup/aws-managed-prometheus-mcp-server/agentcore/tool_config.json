@@ -1,0 +1,161 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "ExecuteQuery",
+        "description": "Execute a PromQL query against Amazon Managed Prometheus.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "workspace_id": {
+                "type": "string",
+                "description": "The Prometheus workspace ID to use (e.g., ws-12345678-abcd-1234-efgh-123456789012). Optional if a URL is configured via command line arguments."
+              },
+              "query": {
+                "type": "string",
+                "description": "The PromQL query to execute"
+              },
+              "time": {
+                "type": "string",
+                "description": "Optional timestamp for query evaluation (RFC3339 or Unix timestamp)"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region (defaults to current region)"
+              },
+              "profile": {
+                "type": "string",
+                "description": "AWS profile to use (defaults to None)"
+              }
+            },
+            "required": [
+              "query"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "ExecuteRangeQuery",
+        "description": "Execute a range query and return the result.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "workspace_id": {
+                "type": "string",
+                "description": "The Prometheus workspace ID to use (e.g., ws-12345678-abcd-1234-efgh-123456789012). Optional if a URL is configured via command line arguments."
+              },
+              "query": {
+                "type": "string",
+                "description": "The PromQL query to execute"
+              },
+              "start": {
+                "type": "string",
+                "description": "Start timestamp (RFC3339 or Unix timestamp)"
+              },
+              "end": {
+                "type": "string",
+                "description": "End timestamp (RFC3339 or Unix timestamp)"
+              },
+              "step": {
+                "type": "string",
+                "description": "Query resolution step width (duration format, e.g. '15s', '1m', '1h')"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region (defaults to current region)"
+              },
+              "profile": {
+                "type": "string",
+                "description": "AWS profile to use (defaults to None)"
+              }
+            },
+            "required": [
+              "query",
+              "start",
+              "end",
+              "step"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "ListMetrics",
+        "description": "Get a list of all metric names.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "workspace_id": {
+                "type": "string",
+                "description": "The Prometheus workspace ID to use (e.g., ws-12345678-abcd-1234-efgh-123456789012). Optional if a URL is configured via command line arguments."
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region (defaults to current region)"
+              },
+              "profile": {
+                "type": "string",
+                "description": "AWS profile to use (defaults to None)"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "GetServerInfo",
+        "description": "Get information about the Prometheus server configuration.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "workspace_id": {
+                "type": "string",
+                "description": "The Prometheus workspace ID to use (e.g., ws-12345678-abcd-1234-efgh-123456789012). Optional if a URL is configured via command line arguments."
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region (defaults to current region)"
+              },
+              "profile": {
+                "type": "string",
+                "description": "AWS profile to use (defaults to None)"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "GetAvailableWorkspaces",
+        "description": "List all available Prometheus workspaces in the specified region.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "region": {
+                "type": "string",
+                "description": "AWS region (defaults to current region)"
+              },
+              "profile": {
+                "type": "string",
+                "description": "AWS profile to use (defaults to None)"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    }
+  ]
+}

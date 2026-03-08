@@ -1,0 +1,69 @@
+{
+  "server": "synthetic-data-mcp-server",
+  "tools": [
+    {
+      "name": "get_data_gen_instructions",
+      "description": "Get instructions for generating synthetic data based on a business description.\n\n    This tool analyzes a business description and provides detailed instructions\n    for generating synthetic data in JSON Lines format.\n\n    Parameters:\n        business_description: A description of the business use case\n\n    Returns:\n        A dictionary containing detailed instructions for generating synthetic data\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "business_description": {
+            "type": "string",
+            "description": "A detailed description of the business domain and use case. The more specific and comprehensive the description, the better the data generation instructions will be."
+          }
+        },
+        "required": [
+          "business_description"
+        ]
+      }
+    },
+    {
+      "name": "validate_and_save_data",
+      "description": "Validate JSON Lines data and save it as CSV files.\n\n    This tool validates the structure of JSON Lines data and saves it as CSV files\n    using pandas.\n\n    Parameters:\n        data: Dictionary mapping table names to lists of records\n        workspace_dir: CRITICAL - The current workspace directory\n        output_dir: Optional subdirectory within workspace_dir to save CSV files to\n\n    Returns:\n        A dictionary containing validation results and paths to saved CSV files\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "input_data": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "input_data"
+        ]
+      }
+    },
+    {
+      "name": "load_to_storage",
+      "description": "Load data to one or more storage targets.\n\n    This tool uses the UnifiedDataLoader to load data to configured storage targets.\n    Currently supports:\n    - S3: Load data as CSV, JSON, or Parquet files with optional partitioning\n\n    Example targets configuration:\n    ```python\n    targets = [\n        {\n            'type': 's3',\n            'config': {\n                'bucket': 'my-bucket',\n                'prefix': 'data/users/',\n                'format': 'parquet',\n                'partitioning': {'enabled': True, 'columns': ['region']},\n                'storage': {'class': 'INTELLIGENT_TIERING', 'encryption': 'AES256'},\n            },\n        }\n    ]\n    ```\n\n    Parameters:\n        data: Dictionary mapping table names to lists of records\n        targets: List of target configurations\n\n    Returns:\n        Dictionary containing results for each target\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "input_data": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "input_data"
+        ]
+      }
+    },
+    {
+      "name": "execute_pandas_code",
+      "description": "Execute pandas code to generate synthetic data and save it as CSV files.\n\n    This tool runs pandas code in a restricted environment to generate synthetic data.\n    It then saves any generated DataFrames as CSV files.\n\n    ## Features\n\n    1. **Multiple DataFrame Detection**: The tool automatically finds all pandas DataFrames defined in your code and saves them as separate CSV files.\n\n    2. **Referential Integrity Checking**: For multi-table data models, the tool checks for foreign key relationships and validates that references are valid.\n\n    3. **Third Normal Form Validation**: The tool identifies potential 3NF violations like functional dependencies between non-key attributes.\n\n    ## Code Requirements\n\n    - Your code should define one or more pandas DataFrames\n    - No need to include imports - pandas is already available as 'pd'\n    - No need to include save logic - all DataFrames will be automatically saved\n\n    ## Example Usage\n\n    ```python\n    # Simple table\n    customers_df = pd.DataFrame(\n        {\n            'customer_id': [1, 2, 3],\n            'name': ['Alice', 'Bob', 'Charlie'],\n            'city': ['New York', 'San Francisco', 'Chicago'],\n        }\n    )\n\n    # Related table with foreign key\n    orders_df = pd.DataFrame(\n        {'order_id': [101, 102, 103], 'customer_id': [1, 2, 3], 'amount': [99.99, 149.99, 199.99]}\n    )\n    ```\n\n    Parameters:\n        code: Python code using pandas to generate synthetic data\n        workspace_dir: CRITICAL - The current workspace directory\n        output_dir: Optional subdirectory within workspace_dir to save CSV files to\n\n    Returns:\n        A dictionary containing execution results and paths to saved CSV files\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "input_data": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "input_data"
+        ]
+      }
+    }
+  ]
+}

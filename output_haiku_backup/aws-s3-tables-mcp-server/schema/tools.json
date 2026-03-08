@@ -1,0 +1,536 @@
+{
+  "server": "aws-s3-tables-mcp-server",
+  "tools": [
+    {
+      "name": "list_table_buckets",
+      "description": "List all S3 table buckets for your AWS account.\n\n    Permissions:\n    You must have the s3tables:ListTableBuckets permission to use this operation.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region_name": {
+            "type": "string",
+            "description": "The AWS region name where the operation should be performed."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list_namespaces",
+      "description": "List all namespaces across all S3 table buckets.\n\n    Permissions:\n    You must have the s3tables:ListNamespaces permission to use this operation.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region_name": {
+            "type": "string",
+            "description": "The AWS region name where the operation should be performed."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list_tables",
+      "description": "List all S3 tables across all table buckets and namespaces.\n\n    Permissions:\n    You must have the s3tables:ListTables permission to use this operation.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region_name": {
+            "type": "string",
+            "description": "The AWS region name where the operation should be performed."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create_table_bucket",
+      "description": "Creates an S3 table bucket.\n\n    Permissions:\n    You must have the s3tables:CreateTableBucket permission to use this operation.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the table bucket to create. Must be 3-63 characters long and contain only lowercase letters, numbers, and hyphens."
+          },
+          "region_name": {
+            "type": "string",
+            "description": "The AWS region name where the operation should be performed."
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "create_namespace",
+      "description": "Create a new namespace in an S3 table bucket.\n\n    Creates a namespace. A namespace is a logical grouping of tables within your S3 table bucket,\n    which you can use to organize S3 tables.\n\n    Permissions:\n    You must have the s3tables:CreateNamespace permission to use this operation.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "table_bucket_arn": {
+            "type": "string",
+            "description": "Table bucket ARN"
+          },
+          "namespace": {
+            "type": "string",
+            "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "region_name": {
+            "type": "string",
+            "description": "The AWS region name where the operation should be performed."
+          }
+        },
+        "required": [
+          "table_bucket_arn",
+          "namespace"
+        ]
+      }
+    },
+    {
+      "name": "create_table",
+      "description": "Create a new S3 table in an S3 table bucket.\n\n    Creates a new S3 table associated with the given S3 namespace in an S3 table bucket.\n    The S3 table can be configured with specific format and metadata settings. Metadata contains the schema of the table.\n    Do not use the metadata parameter if the schema is unclear.\n\n    Supported Iceberg Primitive Types:\n    - boolean: True or false\n    - int: 32-bit signed integers (can promote to long)\n    - long: 64-bit signed integers\n    - float: 32-bit IEEE 754 floating point (can promote to double)\n    - double: 64-bit IEEE 754 floating point\n    - decimal(P,S): Fixed-point decimal with precision P and scale S (precision must be 38 or less)\n    - date: Calendar date without timezone or time\n    - time: Time of day, microsecond precision, without date or timezone\n    - timestamp: Timestamp, microsecond precision, without timezone (represents date and time regardless of zone)\n    - timestamptz: Timestamp, microsecond precision, with timezone (stored as UTC)\n    - string: Arbitrary-length character sequences (UTF-8 encoded)\n\n    Note: Binary field types (binary, fixed, uuid) are not supported.\n\n    Example of S3 table metadata:\n    {\n        \"metadata\": {\n            \"iceberg\": {\n                \"schema\": {\n                    \"type\": \"struct\",\n                    \"fields\": [\n                        {\n                            \"id\": 1,\n                            \"name\": \"id\",\n                            \"type\": \"long\",\n                            \"required\": true\n                        },\n                        {\n                            \"id\": 2,\n                            \"name\": \"bool_field\",\n                            \"type\": \"boolean\",\n                            \"required\": false\n                        },\n                        {\n                            \"id\": 3,\n                            \"name\": \"int_field\",\n                            \"type\": \"int\",\n                            \"required\": false\n                        },\n                        {\n                            \"id\": 4,\n                            \"name\": \"long_field\",\n                            \"type\": \"long\",\n                            \"required\": false\n                        },\n                        {\n                            \"id\": 5,\n                            \"name\": \"float_field\",\n                            \"type\": \"float\",\n                            \"required\": false\n                        },\n                        {\n                            \"id\": 6,\n                            \"name\": \"double_field\",\n                            \"type\": \"double\",\n                            \"required\": false\n                        },\n                        {\n                            \"id\": 7,\n                            \"name\": \"decimal_field\",\n                            \"type\": \"decimal(10,2)\",\n                            \"required\": false\n                        },\n                        {\n                            \"id\": 8,\n                            \"name\": \"date_field\",\n                            \"type\": \"date\",\n                            \"required\": false\n                        },\n                        {\n                            \"id\": 9,\n                            \"name\": \"time_field\",\n                            \"type\": \"time\",\n                            \"required\": false\n                        },\n                        {\n                            \"id\": 10,\n                            \"name\": \"timestamp_field\",\n                            \"type\": \"timestamp\",\n                            \"required\": false\n                        },\n                        {\n                            \"id\": 11,\n                            \"name\": \"timestamptz_field\",\n                            \"type\": \"timestamptz\",\n                            \"required\": false\n                        },\n                        {\n                            \"id\": 12,\n                            \"name\": \"string_field\",\n                            \"type\": \"string\",\n                            \"required\": false\n                        }\n                    ]\n                },\n                \"partition-spec\": [\n                    {\n                        \"source-id\": 8,\n                        \"field-id\": 1000,\n                        \"transform\": \"month\",\n                        \"name\": \"date_field_month\"\n                    }\n                ],\n                \"table-properties\": {\n                    \"description\": \"Example table demonstrating supported Iceberg primitive types\"\n                }\n            }\n        }\n    }\n\n    Permissions:\n    You must have the s3tables:CreateTable permission to use this operation.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "table_bucket_arn": {
+            "type": "string",
+            "description": "Table bucket ARN"
+          },
+          "namespace": {
+            "type": "string",
+            "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the table. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "format": {
+            "type": "string",
+            "description": "The format for the S3 table."
+          },
+          "metadata": {
+            "type": "string",
+            "description": "The metadata for the S3 table."
+          },
+          "region_name": {
+            "type": "string",
+            "description": "The AWS region name where the operation should be performed."
+          }
+        },
+        "required": [
+          "table_bucket_arn",
+          "namespace",
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "get_table_maintenance_config",
+      "description": "Get details about the maintenance configuration of a table.\n\n    Gets details about the maintenance configuration of a table. For more information, see S3 Tables maintenance in the Amazon Simple Storage Service User Guide.\n\n    Permissions:\n    You must have the s3tables:GetTableMaintenanceConfiguration permission to use this operation.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "table_bucket_arn": {
+            "type": "string",
+            "description": "Table bucket ARN"
+          },
+          "namespace": {
+            "type": "string",
+            "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the table. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "region_name": {
+            "type": "string",
+            "description": "The AWS region name where the operation should be performed."
+          }
+        },
+        "required": [
+          "table_bucket_arn",
+          "namespace",
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "get_maintenance_job_status",
+      "description": "Get the status of a maintenance job for a table.\n\n    Gets the status of a maintenance job for a table. For more information, see S3 Tables maintenance in the Amazon Simple Storage Service User Guide.\n\n    Permissions:\n    You must have the s3tables:GetTableMaintenanceJobStatus permission to use this operation.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "table_bucket_arn": {
+            "type": "string",
+            "description": "Table bucket ARN"
+          },
+          "namespace": {
+            "type": "string",
+            "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the table. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "region_name": {
+            "type": "string",
+            "description": "The AWS region name where the operation should be performed."
+          }
+        },
+        "required": [
+          "table_bucket_arn",
+          "namespace",
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "get_table_metadata_location",
+      "description": "Get the location of the S3 table metadata.\n\n    Gets the S3 URI location of the table metadata, which contains the schema and other\n    table configuration information.\n\n    Permissions:\n    You must have the s3tables:GetTableMetadataLocation permission to use this operation.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "table_bucket_arn": {
+            "type": "string",
+            "description": "Table bucket ARN"
+          },
+          "namespace": {
+            "type": "string",
+            "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the table. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "region_name": {
+            "type": "string",
+            "description": "The AWS region name where the operation should be performed."
+          }
+        },
+        "required": [
+          "table_bucket_arn",
+          "namespace",
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "rename_table",
+      "description": "Rename an S3 table or move it to a different S3 namespace.\n\n    Renames an S3 table or moves it to a different S3 namespace within the same S3 table bucket.\n    This operation maintains the table's data and configuration while updating its location.\n\n    Permissions:\n    You must have the s3tables:RenameTable permission to use this operation.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "table_bucket_arn": {
+            "type": "string",
+            "description": "Table bucket ARN"
+          },
+          "namespace": {
+            "type": "string",
+            "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the table. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "new_name": {
+            "type": "string",
+            "description": "The name of the table. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "new_namespace_name": {
+            "type": "string",
+            "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "version_token": {
+            "type": "string",
+            "description": "The version token of the S3 table. Must be 1-2048 characters long."
+          },
+          "region_name": {
+            "type": "string",
+            "description": "The AWS region name where the operation should be performed."
+          }
+        },
+        "required": [
+          "table_bucket_arn",
+          "namespace",
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "update_table_metadata_location",
+      "description": "Update the metadata location for an S3 table.\n\n    Updates the metadata location for an S3 table. The metadata location of an S3 table must be an S3 URI that begins with the S3 table's warehouse location.\n    The metadata location for an Apache Iceberg S3 table must end with .metadata.json, or if the metadata file is Gzip-compressed, .metadata.json.gz.\n\n    Permissions:\n    You must have the s3tables:UpdateTableMetadataLocation permission to use this operation.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "table_bucket_arn": {
+            "type": "string",
+            "description": "Table bucket ARN"
+          },
+          "namespace": {
+            "type": "string",
+            "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the table. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "metadata_location": {
+            "type": "string",
+            "description": "The new metadata location for the S3 table. Must be 1-2048 characters long."
+          },
+          "version_token": {
+            "type": "string",
+            "description": "The version token of the S3 table. Must be 1-2048 characters long."
+          },
+          "region_name": {
+            "type": "string",
+            "description": "The AWS region name where the operation should be performed."
+          }
+        },
+        "required": [
+          "table_bucket_arn",
+          "namespace",
+          "name",
+          "metadata_location",
+          "version_token"
+        ]
+      }
+    },
+    {
+      "name": "query_database",
+      "description": "Execute SQL queries against S3 Tables using PyIceberg/Daft.\n\n    This tool provides a secure interface to run read-only SQL queries against your S3 Tables data using the PyIceberg and Daft engine.\n    Use a correct region for warehouse, region, and uri.\n\n    Example input values:\n        warehouse: 'arn:aws:s3tables:<Region>:<accountID>:bucket/<bucketname>'\n        region: 'us-west-2'\n        namespace: 'retail_data'\n        query: 'SELECT * FROM customers LIMIT 10'\n        uri: 'https://s3tables.us-west-2.amazonaws.com/iceberg'\n        catalog_name: 's3tablescatalog'\n        rest_signing_name: 's3tables'\n        rest_sigv4_enabled: 'true'\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "warehouse": {
+            "type": "string",
+            "description": "Warehouse string for Iceberg catalog"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region for S3Tables/Iceberg REST endpoint"
+          },
+          "namespace": {
+            "type": "string",
+            "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "query": {
+            "type": "string",
+            "description": "Optional SQL query. If not provided, will execute SELECT * FROM table. Must be a read operation."
+          },
+          "uri": {
+            "type": "string",
+            "description": "REST URI for Iceberg catalog"
+          },
+          "catalog_name": {
+            "type": "string",
+            "description": "Catalog name"
+          },
+          "rest_signing_name": {
+            "type": "string",
+            "description": "REST signing name"
+          },
+          "rest_sigv4_enabled": {
+            "type": "string",
+            "description": "Enable SigV4 signing"
+          }
+        },
+        "required": [
+          "warehouse",
+          "region",
+          "namespace",
+          "uri"
+        ]
+      }
+    },
+    {
+      "name": "import_csv_to_table",
+      "description": "Import data from a CSV file into an S3 table.\n\n    This tool reads data from a CSV file stored in S3 and imports it into an S3 table.\n    If the table doesn't exist, it will be created with a schema inferred from the CSV file.\n    If the table exists, the CSV file schema must be compatible with the table's schema.\n    The tool will validate the schema before attempting to import the data.\n    If preserve_case is True, the column names will not be converted to snake_case. Otherwise, the column names will be converted to snake_case.\n\n    Returns error dictionary with status and error message if:\n        - URL is not a valid S3 URL\n        - File is not a CSV file\n        - File cannot be accessed\n        - Table does not exist\n        - CSV headers don't match table schema\n        - Any other error occurs\n\n    Example input values:\n        warehouse: 'arn:aws:s3tables:<Region>:<accountID>:bucket/<bucketname>'\n        region: 'us-west-2'\n        namespace: 'retail_data'\n        table_name: 'customers'\n        s3_url: 's3://bucket-name/path/to/file.csv'\n        uri: 'https://s3tables.us-west-2.amazonaws.com/iceberg'\n        catalog_name: 's3tablescatalog'\n        rest_signing_name: 's3tables'\n        rest_sigv4_enabled: 'true'\n        preserve_case: False\n\n    Permissions:\n    You must have:\n    - s3:GetObject permission for the CSV file\n    - s3tables:GetTable and s3tables:GetTables permissions to access table information\n    - s3tables:PutTableData permission to write to the table\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "warehouse": {
+            "type": "string",
+            "description": "Warehouse string for Iceberg catalog"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region for S3Tables/Iceberg REST endpoint"
+          },
+          "namespace": {
+            "type": "string",
+            "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "table_name": {
+            "type": "string",
+            "description": "The name of the table. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "s3_url": {
+            "type": "string",
+            "description": "The S3 URL of the file to preview (format: s3://bucket-name/key)"
+          },
+          "uri": {
+            "type": "string",
+            "description": "REST URI for Iceberg catalog"
+          },
+          "catalog_name": {
+            "type": "string",
+            "description": "Catalog name"
+          },
+          "rest_signing_name": {
+            "type": "string",
+            "description": "REST signing name"
+          },
+          "rest_sigv4_enabled": {
+            "type": "string",
+            "description": "Enable SigV4 signing"
+          },
+          "preserve_case": {
+            "type": "boolean",
+            "description": "Preserve case of column names"
+          }
+        },
+        "required": [
+          "warehouse",
+          "region",
+          "namespace",
+          "table_name",
+          "s3_url",
+          "uri"
+        ]
+      }
+    },
+    {
+      "name": "import_parquet_to_table",
+      "description": "Import data from a Parquet file into an existing S3 table.\n\n    This tool reads data from a Parquet file stored in S3 and imports it into an existing S3 table.\n    The table must already exist. The Parquet file schema must be compatible with the table's schema.\n    The tool will validate the schema before attempting to import the data.\n    If preserve_case is True, the column names will not be converted to snake_case. Otherwise, the column names will be converted to snake_case.\n\n    Returns error dictionary with status and error message if:\n        - URL is not a valid S3 URL\n        - File is not a Parquet file\n        - File cannot be accessed\n        - Table does not exist\n        - Parquet schema is incompatible with existing table schema\n        - Any other error occurs\n\n    Returns success dictionary with:\n        - status: 'success'\n        - message: Success message with row count\n        - rows_processed: Number of rows imported\n        - file_processed: Name of the processed file\n\n    Example input values:\n        warehouse: 'arn:aws:s3tables:<Region>:<accountID>:bucket/<bucketname>'\n        region: 'us-west-2'\n        namespace: 'retail_data'\n        table_name: 'customers'\n        s3_url: 's3://bucket-name/path/to/file.parquet'\n        uri: 'https://s3tables.us-west-2.amazonaws.com/iceberg'\n        catalog_name: 's3tablescatalog'\n        rest_signing_name: 's3tables'\n        rest_sigv4_enabled: 'true'\n        preserve_case: False\n\n    Permissions:\n    You must have:\n    - s3:GetObject permission for the Parquet file\n    - s3tables:GetTable and s3tables:GetTables permissions to access table information\n    - s3tables:PutTableData permission to write to the table\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "warehouse": {
+            "type": "string",
+            "description": "Warehouse string for Iceberg catalog"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region for S3Tables/Iceberg REST endpoint"
+          },
+          "namespace": {
+            "type": "string",
+            "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "table_name": {
+            "type": "string",
+            "description": "The name of the table. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "s3_url": {
+            "type": "string",
+            "description": "The S3 URL of the file to preview (format: s3://bucket-name/key)"
+          },
+          "uri": {
+            "type": "string",
+            "description": "REST URI for Iceberg catalog"
+          },
+          "catalog_name": {
+            "type": "string",
+            "description": "Catalog name"
+          },
+          "rest_signing_name": {
+            "type": "string",
+            "description": "REST signing name"
+          },
+          "rest_sigv4_enabled": {
+            "type": "string",
+            "description": "Enable SigV4 signing"
+          },
+          "preserve_case": {
+            "type": "boolean",
+            "description": "Preserve case of column names"
+          }
+        },
+        "required": [
+          "warehouse",
+          "region",
+          "namespace",
+          "table_name",
+          "s3_url",
+          "uri"
+        ]
+      }
+    },
+    {
+      "name": "get_bucket_metadata_config",
+      "description": "Get the metadata table configuration for a regular general purpose S3 bucket.\n\n    Retrieves the metadata table configuration for a regular general purpose bucket in s3. This configuration\n    determines how metadata is stored and managed for the bucket.\n    The response includes:\n    - S3 Table Bucket ARN\n    - S3 Table ARN\n    - S3 Table Name\n    - S3 Table Namespace\n\n    Description:\n    Amazon S3 Metadata accelerates data discovery by automatically capturing metadata for the objects in your general purpose buckets and storing it in read-only, fully managed Apache Iceberg tables that you can query. These read-only tables are called metadata tables. As objects are added to, updated, and removed from your general purpose buckets, S3 Metadata automatically refreshes the corresponding metadata tables to reflect the latest changes.\n    By default, S3 Metadata provides three types of metadata:\n    - System-defined metadata, such as an object's creation time and storage class\n    - Custom metadata, such as tags and user-defined metadata that was included during object upload\n    - Event metadata, such as when an object is updated or deleted, and the AWS account that made the request\n\n    Metadata table schema:\n    - bucket: String\n    - key: String\n    - sequence_number: String\n    - record_type: String\n    - record_timestamp: Timestamp (no time zone)\n    - version_id: String\n    - is_delete_marker: Boolean\n    - size: Long\n    - last_modified_date: Timestamp (no time zone)\n    - e_tag: String\n    - storage_class: String\n    - is_multipart: Boolean\n    - encryption_status: String\n    - is_bucket_key_enabled: Boolean\n    - kms_key_arn: String\n    - checksum_algorithm: String\n    - object_tags: Map<String, String>\n    - user_metadata: Map<String, String>\n    - requester: String\n    - source_ip_address: String\n    - request_id: String\n\n    Permissions:\n    You must have the s3:GetBucketMetadataConfiguration permission to use this operation.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "bucket": {
+            "type": "string",
+            "description": "The name of the S3 bucket to get metadata table configuration for."
+          },
+          "region_name": {
+            "type": "string",
+            "description": "The AWS region name where the operation should be performed."
+          }
+        },
+        "required": [
+          "bucket"
+        ]
+      }
+    },
+    {
+      "name": "append_rows_to_table",
+      "description": "Append rows to an Iceberg table using PyIceberg/Daft.\n\n    This tool appends data rows to an existing Iceberg table using the PyIceberg engine.\n    The rows parameter must be a list of dictionaries, each representing a row.\n    Check the schema of the table before appending rows.\n\n    Example input values:\n        warehouse: 'arn:aws:s3tables:<Region>:<accountID>:bucket/<bucketname>'\n        region: 'us-west-2'\n        namespace: 'retail_data'\n        table_name: 'customers'\n        rows: [{\"customer_id\": 1, \"customer_name\": \"Alice\"}, ...]\n        uri: 'https://s3tables.us-west-2.amazonaws.com/iceberg'\n        catalog_name: 's3tablescatalog'\n        rest_signing_name: 's3tables'\n        rest_sigv4_enabled: 'true'\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "warehouse": {
+            "type": "string",
+            "description": "Warehouse string for Iceberg catalog"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region for S3Tables/Iceberg REST endpoint"
+          },
+          "namespace": {
+            "type": "string",
+            "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "table_name": {
+            "type": "string",
+            "description": "The name of the table. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+          },
+          "rows": {
+            "type": "array",
+            "description": "List of rows to append, each as a dict"
+          },
+          "uri": {
+            "type": "string",
+            "description": "REST URI for Iceberg catalog"
+          },
+          "catalog_name": {
+            "type": "string",
+            "description": "Catalog name"
+          },
+          "rest_signing_name": {
+            "type": "string",
+            "description": "REST signing name"
+          },
+          "rest_sigv4_enabled": {
+            "type": "string",
+            "description": "Enable SigV4 signing"
+          }
+        },
+        "required": [
+          "warehouse",
+          "region",
+          "namespace",
+          "table_name",
+          "rows",
+          "uri"
+        ]
+      }
+    }
+  ]
+}

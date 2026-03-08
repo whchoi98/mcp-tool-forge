@@ -1,0 +1,1181 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "create-replication-group",
+        "description": "Create an Amazon ElastiCache replication group.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "request": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "request"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "connect-jump-host-replication-group",
+        "description": "Configures an existing EC2 instance as a jump host to access an ElastiCache replication group.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "replication_group_id": {
+                "type": "string",
+                "description": ""
+              },
+              "instance_id": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "replication_group_id",
+              "instance_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get-ssh-tunnel-command-replication-group",
+        "description": "Generates an SSH tunnel command to connect to an ElastiCache replication group through an EC2 jump host.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "replication_group_id": {
+                "type": "string",
+                "description": ""
+              },
+              "instance_id": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "replication_group_id",
+              "instance_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create-jump-host-replication-group",
+        "description": "Creates an EC2 jump host instance to access an ElastiCache replication group via SSH tunnel.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "replication_group_id": {
+                "type": "string",
+                "description": ""
+              },
+              "key_name": {
+                "type": "string",
+                "description": ""
+              },
+              "subnet_id": {
+                "type": "string",
+                "description": ""
+              },
+              "security_group_id": {
+                "type": "string",
+                "description": ""
+              },
+              "instance_type": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "replication_group_id",
+              "key_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "delete-replication-group",
+        "description": "Delete an Amazon ElastiCache replication group.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "replication_group_id": {
+                "type": "string",
+                "description": ""
+              },
+              "retain_primary_cluster": {
+                "type": "string",
+                "description": ""
+              },
+              "final_snapshot_name": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "replication_group_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe-replication-groups",
+        "description": "Describe one or more ElastiCache replication groups.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "replication_group_id": {
+                "type": "string",
+                "description": ""
+              },
+              "max_records": {
+                "type": "string",
+                "description": ""
+              },
+              "marker": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "modify-replication-group-shard-configuration",
+        "description": "Modify the shard configuration of an existing Amazon ElastiCache replication group.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "replication_group_id": {
+                "type": "string",
+                "description": ""
+              },
+              "node_group_count": {
+                "type": "integer",
+                "description": ""
+              },
+              "apply_immediately": {
+                "type": "string",
+                "description": ""
+              },
+              "resharding_configuration": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "replication_group_id",
+              "node_group_count"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "modify-replication-group",
+        "description": "Modify an existing Amazon ElastiCache replication group.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "request": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "request"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "test-migration",
+        "description": "Test migration to an Amazon ElastiCache replication group.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "request": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "request"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "start-migration",
+        "description": "Start migration to an Amazon ElastiCache replication group.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "request": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "request"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "complete-migration",
+        "description": "Complete migration to an Amazon ElastiCache replication group.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "request": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "request"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create-cache-cluster",
+        "description": "Create an Amazon ElastiCache cache cluster.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "request": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "request"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "delete-cache-cluster",
+        "description": "Delete an Amazon ElastiCache cache cluster.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "cache_cluster_id": {
+                "type": "string",
+                "description": ""
+              },
+              "final_snapshot_identifier": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "cache_cluster_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe-cache-clusters",
+        "description": "Describe one or more ElastiCache cache clusters.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "cache_cluster_id": {
+                "type": "string",
+                "description": ""
+              },
+              "max_records": {
+                "type": "string",
+                "description": ""
+              },
+              "marker": {
+                "type": "string",
+                "description": ""
+              },
+              "show_cache_node_info": {
+                "type": "string",
+                "description": ""
+              },
+              "show_cache_clusters_not_in_replication_groups": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "modify-cache-cluster",
+        "description": "Modify an existing Amazon ElastiCache cache cluster.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "request": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "request"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "connect-jump-host-cache-cluster",
+        "description": "Configures an existing EC2 instance as a jump host to access an ElastiCache cluster.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "cache_cluster_id": {
+                "type": "string",
+                "description": ""
+              },
+              "instance_id": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "cache_cluster_id",
+              "instance_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get-ssh-tunnel-command-cache-cluster",
+        "description": "Generates an SSH tunnel command to connect to an ElastiCache cluster through an EC2 jump host.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "cache_cluster_id": {
+                "type": "string",
+                "description": ""
+              },
+              "instance_id": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "cache_cluster_id",
+              "instance_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create-jump-host-cache-cluster",
+        "description": "Creates an EC2 jump host instance to access an ElastiCache cluster via SSH tunnel.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "cache_cluster_id": {
+                "type": "string",
+                "description": ""
+              },
+              "key_name": {
+                "type": "string",
+                "description": ""
+              },
+              "subnet_id": {
+                "type": "string",
+                "description": ""
+              },
+              "security_group_id": {
+                "type": "string",
+                "description": ""
+              },
+              "instance_type": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "cache_cluster_id",
+              "key_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get-cost-and-usage",
+        "description": "Get cost and usage data for ElastiCache resources.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "request": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "request"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get-metric-statistics",
+        "description": "Get CloudWatch metric statistics.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "metric_name": {
+                "type": "string",
+                "description": ""
+              },
+              "start_time": {
+                "type": "string",
+                "description": ""
+              },
+              "end_time": {
+                "type": "string",
+                "description": ""
+              },
+              "period": {
+                "type": "integer",
+                "description": ""
+              },
+              "dimensions": {
+                "type": "string",
+                "description": ""
+              },
+              "statistics": {
+                "type": "string",
+                "description": ""
+              },
+              "extended_statistics": {
+                "type": "string",
+                "description": ""
+              },
+              "unit": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "metric_name",
+              "start_time",
+              "end_time",
+              "period"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get-log-events",
+        "description": "Get log events from CloudWatch Logs.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "log_stream_name": {
+                "type": "string",
+                "description": ""
+              },
+              "log_group_name": {
+                "type": "string",
+                "description": ""
+              },
+              "log_group_identifier": {
+                "type": "string",
+                "description": ""
+              },
+              "start_time": {
+                "type": "string",
+                "description": ""
+              },
+              "end_time": {
+                "type": "string",
+                "description": ""
+              },
+              "next_token": {
+                "type": "string",
+                "description": ""
+              },
+              "limit": {
+                "type": "string",
+                "description": ""
+              },
+              "start_from_head": {
+                "type": "string",
+                "description": ""
+              },
+              "unmask": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "log_stream_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create-log-group",
+        "description": "Create a new CloudWatch Logs log group.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "log_group_name": {
+                "type": "string",
+                "description": ""
+              },
+              "kms_key_id": {
+                "type": "string",
+                "description": ""
+              },
+              "tags": {
+                "type": "string",
+                "description": ""
+              },
+              "log_group_class": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "log_group_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe-log-groups",
+        "description": "Describe CloudWatch Logs log groups.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "account_identifiers": {
+                "type": "string",
+                "description": ""
+              },
+              "log_group_name_prefix": {
+                "type": "string",
+                "description": ""
+              },
+              "log_group_name_pattern": {
+                "type": "string",
+                "description": ""
+              },
+              "include_linked_accounts": {
+                "type": "string",
+                "description": ""
+              },
+              "log_group_class": {
+                "type": "string",
+                "description": ""
+              },
+              "log_group_identifiers": {
+                "type": "string",
+                "description": ""
+              },
+              "starting_token": {
+                "type": "string",
+                "description": ""
+              },
+              "page_size": {
+                "type": "string",
+                "description": ""
+              },
+              "max_items": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe-log-streams",
+        "description": "Describe CloudWatch Logs log streams.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "log_group_name": {
+                "type": "string",
+                "description": ""
+              },
+              "log_group_identifier": {
+                "type": "string",
+                "description": ""
+              },
+              "log_stream_name_prefix": {
+                "type": "string",
+                "description": ""
+              },
+              "order_by": {
+                "type": "string",
+                "description": ""
+              },
+              "descending": {
+                "type": "string",
+                "description": ""
+              },
+              "starting_token": {
+                "type": "string",
+                "description": ""
+              },
+              "page_size": {
+                "type": "string",
+                "description": ""
+              },
+              "max_items": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "filter-log-events",
+        "description": "Filter log events from CloudWatch Logs.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "log_group_name": {
+                "type": "string",
+                "description": ""
+              },
+              "log_group_identifier": {
+                "type": "string",
+                "description": ""
+              },
+              "log_stream_names": {
+                "type": "string",
+                "description": ""
+              },
+              "log_stream_name_prefix": {
+                "type": "string",
+                "description": ""
+              },
+              "start_time": {
+                "type": "string",
+                "description": ""
+              },
+              "end_time": {
+                "type": "string",
+                "description": ""
+              },
+              "filter_pattern": {
+                "type": "string",
+                "description": ""
+              },
+              "interleaved": {
+                "type": "string",
+                "description": ""
+              },
+              "unmask": {
+                "type": "string",
+                "description": ""
+              },
+              "starting_token": {
+                "type": "string",
+                "description": ""
+              },
+              "page_size": {
+                "type": "string",
+                "description": ""
+              },
+              "max_items": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list-delivery-streams",
+        "description": "List your delivery streams.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "limit": {
+                "type": "string",
+                "description": ""
+              },
+              "delivery_stream_type": {
+                "type": "string",
+                "description": ""
+              },
+              "exclusive_start_delivery_stream_name": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "batch-apply-update-action",
+        "description": "Apply service update to multiple ElastiCache resources.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "service_update_name": {
+                "type": "string",
+                "description": ""
+              },
+              "replication_group_ids": {
+                "type": "string",
+                "description": ""
+              },
+              "cache_cluster_ids": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "service_update_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "batch-stop-update-action",
+        "description": "Stop service update for multiple ElastiCache resources.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "service_update_name": {
+                "type": "string",
+                "description": ""
+              },
+              "replication_group_ids": {
+                "type": "string",
+                "description": ""
+              },
+              "cache_cluster_ids": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "service_update_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe-cache-engine-versions",
+        "description": "Returns a list of the available cache engines and their versions.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "engine": {
+                "type": "string",
+                "description": ""
+              },
+              "engine_version": {
+                "type": "string",
+                "description": ""
+              },
+              "cache_parameter_group_family": {
+                "type": "string",
+                "description": ""
+              },
+              "max_records": {
+                "type": "string",
+                "description": ""
+              },
+              "marker": {
+                "type": "string",
+                "description": ""
+              },
+              "default_only": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe-engine-default-parameters",
+        "description": "Returns the default engine and system parameter information for the specified cache engine family.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "cache_parameter_group_family": {
+                "type": "string",
+                "description": ""
+              },
+              "max_records": {
+                "type": "string",
+                "description": ""
+              },
+              "marker": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "cache_parameter_group_family"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe-events",
+        "description": "Returns events related to clusters, cache security groups, and parameter groups.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "source_type": {
+                "type": "string",
+                "description": ""
+              },
+              "source_identifier": {
+                "type": "string",
+                "description": ""
+              },
+              "start_time": {
+                "type": "string",
+                "description": ""
+              },
+              "end_time": {
+                "type": "string",
+                "description": ""
+              },
+              "duration": {
+                "type": "string",
+                "description": ""
+              },
+              "max_records": {
+                "type": "string",
+                "description": ""
+              },
+              "marker": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe-service-updates",
+        "description": "Returns details of the service updates.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "service_update_name": {
+                "type": "string",
+                "description": ""
+              },
+              "service_update_status": {
+                "type": "string",
+                "description": ""
+              },
+              "starting_token": {
+                "type": "string",
+                "description": ""
+              },
+              "page_size": {
+                "type": "string",
+                "description": ""
+              },
+              "max_items": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create-serverless-cache",
+        "description": "Create a new Amazon ElastiCache serverless cache.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "request": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "request"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "delete-serverless-cache",
+        "description": "Delete an Amazon ElastiCache serverless cache.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "serverless_cache_name": {
+                "type": "string",
+                "description": ""
+              },
+              "final_snapshot_name": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "serverless_cache_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe-serverless-caches",
+        "description": "Describe Amazon ElastiCache serverless caches in your AWS account.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "serverless_cache_name": {
+                "type": "string",
+                "description": ""
+              },
+              "max_items": {
+                "type": "string",
+                "description": ""
+              },
+              "starting_token": {
+                "type": "string",
+                "description": ""
+              },
+              "page_size": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "modify-serverless-cache",
+        "description": "Modify an Amazon ElastiCache serverless cache.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "request": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "request"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "connect-jump-host-serverless-cache",
+        "description": "Configures an existing EC2 instance as a jump host to access an ElastiCache serverless cache.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "serverless_cache_name": {
+                "type": "string",
+                "description": ""
+              },
+              "instance_id": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "serverless_cache_name",
+              "instance_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get-ssh-tunnel-command-serverless-cache",
+        "description": "Generates an SSH tunnel command to connect to an ElastiCache serverless cache through an EC2 jump host.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "serverless_cache_name": {
+                "type": "string",
+                "description": ""
+              },
+              "instance_id": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "serverless_cache_name",
+              "instance_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create-jump-host-serverless-cache",
+        "description": "Creates an EC2 jump host instance to access an ElastiCache serverless cache via SSH tunnel.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "serverless_cache_name": {
+                "type": "string",
+                "description": ""
+              },
+              "key_name": {
+                "type": "string",
+                "description": ""
+              },
+              "subnet_id": {
+                "type": "string",
+                "description": ""
+              },
+              "security_group_id": {
+                "type": "string",
+                "description": ""
+              },
+              "instance_type": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "serverless_cache_name",
+              "key_name"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

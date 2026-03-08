@@ -1,0 +1,114 @@
+{
+  "server": "amazon-nova-canvas-mcp-server",
+  "tools": [
+    {
+      "name": "generate_image",
+      "description": "Generate an image using Amazon Nova Canvas with text prompt.\n\n    This tool uses Amazon Nova Canvas to generate images based on a text prompt.\n    The generated image will be saved to a file and the path will be returned.\n\n    IMPORTANT FOR ASSISTANT: Always send the current workspace directory when calling this tool!\n    The workspace_dir parameter should be set to the directory where the user is currently working\n    so that images are saved to a location accessible to the user.\n\n    ## Prompt Best Practices\n\n    An effective prompt often includes short descriptions of:\n    1. The subject\n    2. The environment\n    3. (optional) The position or pose of the subject\n    4. (optional) Lighting description\n    5. (optional) Camera position/framing\n    6. (optional) The visual style or medium (\"photo\", \"illustration\", \"painting\", etc.)\n\n    Do not use negation words like \"no\", \"not\", \"without\" in your prompt. Instead, use the\n    negative_prompt parameter to specify what you don't want in the image.\n\n    You should always include \"people, anatomy, hands, low quality, low resolution, low detail\" in your negative_prompt\n\n    ## Example Prompts\n\n    - \"realistic editorial photo of female teacher standing at a blackboard with a warm smile\"\n    - \"whimsical and ethereal soft-shaded story illustration: A woman in a large hat stands at the ship's railing looking out across the ocean\"\n    - \"drone view of a dark river winding through a stark Iceland landscape, cinematic quality\"\n\n    Returns:\n        McpImageGenerationResponse: A response containing the generated image paths.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "The text description of the image to generate (1-1024 characters)"
+          },
+          "negative_prompt": {
+            "type": "string",
+            "description": "Text to define what not to include in the image (1-1024 characters)"
+          },
+          "filename": {
+            "type": "string",
+            "description": "The name of the file to save the image to (without extension)"
+          },
+          "width": {
+            "type": "integer",
+            "description": "The width of the generated image (320-4096, divisible by 16)"
+          },
+          "height": {
+            "type": "integer",
+            "description": "The height of the generated image (320-4096, divisible by 16)"
+          },
+          "quality": {
+            "type": "string",
+            "description": "The quality of the generated image (\"standard\" or \"premium\")"
+          },
+          "cfg_scale": {
+            "type": "number",
+            "description": "How strongly the image adheres to the prompt (1.1-10.0)"
+          },
+          "seed": {
+            "type": "string",
+            "description": "Seed for generation (0-858,993,459)"
+          },
+          "number_of_images": {
+            "type": "integer",
+            "description": "The number of images to generate (1-5)"
+          },
+          "workspace_dir": {
+            "type": "string",
+            "description": "The current workspace directory where the image should be saved.\n        CRITICAL: Assistant must always provide the current IDE workspace directory parameter to save images to the user's current project."
+          }
+        },
+        "required": [
+          "prompt"
+        ]
+      }
+    },
+    {
+      "name": "generate_image_with_colors",
+      "description": "Generate an image using Amazon Nova Canvas with color guidance.\n\n    This tool uses Amazon Nova Canvas to generate images based on a text prompt and color palette.\n    The generated image will be saved to a file and the path will be returned.\n\n    IMPORTANT FOR Assistant: Always send the current workspace directory when calling this tool!\n    The workspace_dir parameter should be set to the directory where the user is currently working\n    so that images are saved to a location accessible to the user.\n\n    ## Prompt Best Practices\n\n    An effective prompt often includes short descriptions of:\n    1. The subject\n    2. The environment\n    3. (optional) The position or pose of the subject\n    4. (optional) Lighting description\n    5. (optional) Camera position/framing\n    6. (optional) The visual style or medium (\"photo\", \"illustration\", \"painting\", etc.)\n\n    Do not use negation words like \"no\", \"not\", \"without\" in your prompt. Instead, use the\n    negative_prompt parameter to specify what you don't want in the image.\n\n    ## Example Colors\n\n    - [\"#FF5733\", \"#33FF57\", \"#3357FF\"] - A vibrant color scheme with red, green, and blue\n    - [\"#000000\", \"#FFFFFF\"] - A high contrast black and white scheme\n    - [\"#FFD700\", \"#B87333\"] - A gold and bronze color scheme\n\n    Returns:\n        McpImageGenerationResponse: A response containing the generated image paths.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "The text description of the image to generate (1-1024 characters)"
+          },
+          "colors": {
+            "type": "array",
+            "description": "List of up to 10 hexadecimal color values (e.g., \"#FF9800\")"
+          },
+          "negative_prompt": {
+            "type": "string",
+            "description": "Text to define what not to include in the image (1-1024 characters)"
+          },
+          "filename": {
+            "type": "string",
+            "description": "The name of the file to save the image to (without extension)"
+          },
+          "width": {
+            "type": "integer",
+            "description": "The width of the generated image (320-4096, divisible by 16)"
+          },
+          "height": {
+            "type": "integer",
+            "description": "The height of the generated image (320-4096, divisible by 16)"
+          },
+          "quality": {
+            "type": "string",
+            "description": "The quality of the generated image (\"standard\" or \"premium\")"
+          },
+          "cfg_scale": {
+            "type": "number",
+            "description": "How strongly the image adheres to the prompt (1.1-10.0)"
+          },
+          "seed": {
+            "type": "string",
+            "description": "Seed for generation (0-858,993,459)"
+          },
+          "number_of_images": {
+            "type": "integer",
+            "description": "The number of images to generate (1-5)"
+          },
+          "workspace_dir": {
+            "type": "string",
+            "description": "The current workspace directory where the image should be saved. CRITICAL: Assistant must always provide this parameter to save images to the user's current project."
+          }
+        },
+        "required": [
+          "prompt",
+          "colors"
+        ]
+      }
+    }
+  ]
+}

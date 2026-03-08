@@ -1,0 +1,998 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "cost-explorer",
+        "description": "Retrieves AWS cost and usage data using the Cost Explorer API.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "operation": {
+                "type": "string",
+                "description": ""
+              },
+              "start_date": {
+                "type": "string",
+                "description": ""
+              },
+              "end_date": {
+                "type": "string",
+                "description": ""
+              },
+              "granularity": {
+                "type": "string",
+                "description": ""
+              },
+              "metrics": {
+                "type": "string",
+                "description": ""
+              },
+              "group_by": {
+                "type": "string",
+                "description": ""
+              },
+              "filter": {
+                "type": "string",
+                "description": ""
+              },
+              "dimension": {
+                "type": "string",
+                "description": ""
+              },
+              "search_string": {
+                "type": "string",
+                "description": ""
+              },
+              "max_results": {
+                "type": "string",
+                "description": ""
+              },
+              "next_token": {
+                "type": "string",
+                "description": ""
+              },
+              "max_pages": {
+                "type": "string",
+                "description": ""
+              },
+              "metric": {
+                "type": "string",
+                "description": ""
+              },
+              "prediction_interval_level": {
+                "type": "integer",
+                "description": ""
+              },
+              "tag_key": {
+                "type": "string",
+                "description": ""
+              },
+              "cost_category_name": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "compute-optimizer",
+        "description": "Retrieves recommendations from AWS Compute Optimizer.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "operation": {
+                "type": "string",
+                "description": ""
+              },
+              "max_results": {
+                "type": "string",
+                "description": ""
+              },
+              "filters": {
+                "type": "string",
+                "description": ""
+              },
+              "account_ids": {
+                "type": "string",
+                "description": ""
+              },
+              "next_token": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cost-optimization",
+        "description": "Retrieves cost optimization recommendations from AWS Cost Optimization Hub.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "operation": {
+                "type": "string",
+                "description": ""
+              },
+              "resource_id": {
+                "type": "string",
+                "description": ""
+              },
+              "resource_type": {
+                "type": "string",
+                "description": ""
+              },
+              "max_results": {
+                "type": "string",
+                "description": ""
+              },
+              "filters": {
+                "type": "string",
+                "description": ""
+              },
+              "group_by": {
+                "type": "string",
+                "description": ""
+              },
+              "include_all_recommendations": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "storage-lens",
+        "description": "Query S3 Storage Lens metrics data using Athena SQL.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": ""
+              },
+              "manifest_location": {
+                "type": "string",
+                "description": ""
+              },
+              "output_location": {
+                "type": "string",
+                "description": ""
+              },
+              "database_name": {
+                "type": "string",
+                "description": ""
+              },
+              "table_name": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "query"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "aws-pricing",
+        "description": "Comprehensive AWS pricing analysis tool that provides access to AWS service pricing information and cost analysis capabilities.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "operation": {
+                "type": "string",
+                "description": ""
+              },
+              "service_code": {
+                "type": "string",
+                "description": ""
+              },
+              "attribute_name": {
+                "type": "string",
+                "description": ""
+              },
+              "region": {
+                "type": "string",
+                "description": ""
+              },
+              "filters": {
+                "type": "string",
+                "description": ""
+              },
+              "max_results": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "bcm-pricing-calc",
+        "description": "Allows working with workload estimates using the AWS Billing and Cost Management Pricing Calculator API.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "operation": {
+                "type": "string",
+                "description": ""
+              },
+              "identifier": {
+                "type": "string",
+                "description": ""
+              },
+              "created_after": {
+                "type": "string",
+                "description": ""
+              },
+              "created_before": {
+                "type": "string",
+                "description": ""
+              },
+              "expires_after": {
+                "type": "string",
+                "description": ""
+              },
+              "expires_before": {
+                "type": "string",
+                "description": ""
+              },
+              "status_filter": {
+                "type": "string",
+                "description": ""
+              },
+              "name_filter": {
+                "type": "string",
+                "description": ""
+              },
+              "name_match_option": {
+                "type": "string",
+                "description": ""
+              },
+              "usage_account_id_filter": {
+                "type": "string",
+                "description": ""
+              },
+              "service_code_filter": {
+                "type": "string",
+                "description": ""
+              },
+              "usage_type_filter": {
+                "type": "string",
+                "description": ""
+              },
+              "operation_filter": {
+                "type": "string",
+                "description": ""
+              },
+              "location_filter": {
+                "type": "string",
+                "description": ""
+              },
+              "usage_group_filter": {
+                "type": "string",
+                "description": ""
+              },
+              "next_token": {
+                "type": "string",
+                "description": ""
+              },
+              "max_results": {
+                "type": "string",
+                "description": ""
+              },
+              "max_pages": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "budgets",
+        "description": "Retrieves AWS budget information using the AWS Budgets API.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "budget_name": {
+                "type": "string",
+                "description": ""
+              },
+              "max_results": {
+                "type": "integer",
+                "description": ""
+              },
+              "account_id": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cost-anomaly",
+        "description": "Retrieves AWS cost anomalies using the Cost Explorer GetAnomalies API.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "start_date": {
+                "type": "string",
+                "description": ""
+              },
+              "end_date": {
+                "type": "string",
+                "description": ""
+              },
+              "monitor_arn": {
+                "type": "string",
+                "description": ""
+              },
+              "feedback": {
+                "type": "string",
+                "description": ""
+              },
+              "max_results": {
+                "type": "string",
+                "description": ""
+              },
+              "total_impact_operator": {
+                "type": "string",
+                "description": ""
+              },
+              "total_impact_start": {
+                "type": "string",
+                "description": ""
+              },
+              "total_impact_end": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "start_date",
+              "end_date"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cost-comparison",
+        "description": "Retrieves AWS cost comparisons between two one-month periods.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "operation": {
+                "type": "string",
+                "description": ""
+              },
+              "baseline_start_date": {
+                "type": "string",
+                "description": ""
+              },
+              "baseline_end_date": {
+                "type": "string",
+                "description": ""
+              },
+              "comparison_start_date": {
+                "type": "string",
+                "description": ""
+              },
+              "comparison_end_date": {
+                "type": "string",
+                "description": ""
+              },
+              "metric_for_comparison": {
+                "type": "string",
+                "description": ""
+              },
+              "group_by": {
+                "type": "string",
+                "description": ""
+              },
+              "filter": {
+                "type": "string",
+                "description": ""
+              },
+              "max_results": {
+                "type": "string",
+                "description": ""
+              },
+              "billing_view_arn": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "operation",
+              "baseline_start_date",
+              "baseline_end_date",
+              "comparison_start_date",
+              "comparison_end_date",
+              "metric_for_comparison"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "free-tier-usage",
+        "description": "Retrieves AWS Free Tier usage information using the Free Tier Usage API.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "operation": {
+                "type": "string",
+                "description": ""
+              },
+              "filter": {
+                "type": "string",
+                "description": ""
+              },
+              "max_results": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "rec-details",
+        "description": "Get detailed cost optimization recommendation with integrated data from multiple AWS services.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "recommendation_id": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "recommendation_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "ri-performance",
+        "description": "Retrieves AWS Reserved Instance (RI) coverage and utilization data using the Cost Explorer API.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "operation": {
+                "type": "string",
+                "description": ""
+              },
+              "start_date": {
+                "type": "string",
+                "description": ""
+              },
+              "end_date": {
+                "type": "string",
+                "description": ""
+              },
+              "granularity": {
+                "type": "string",
+                "description": ""
+              },
+              "metrics": {
+                "type": "string",
+                "description": ""
+              },
+              "group_by": {
+                "type": "string",
+                "description": ""
+              },
+              "filter": {
+                "type": "string",
+                "description": ""
+              },
+              "sort_by": {
+                "type": "string",
+                "description": ""
+              },
+              "max_results": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "sp-performance",
+        "description": "Tool that retrieves AWS Savings Plans coverage and utilization data using the Cost Explorer API.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "operation": {
+                "type": "string",
+                "description": ""
+              },
+              "start_date": {
+                "type": "string",
+                "description": ""
+              },
+              "end_date": {
+                "type": "string",
+                "description": ""
+              },
+              "granularity": {
+                "type": "string",
+                "description": ""
+              },
+              "metrics": {
+                "type": "string",
+                "description": ""
+              },
+              "group_by": {
+                "type": "string",
+                "description": ""
+              },
+              "filter": {
+                "type": "string",
+                "description": ""
+              },
+              "max_results": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "session-sql",
+        "description": "Execute SQL queries on the persistent session database.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": ""
+              },
+              "schema": {
+                "type": "string",
+                "description": ""
+              },
+              "data": {
+                "type": "string",
+                "description": ""
+              },
+              "table_name": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "query"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list-billing-groups",
+        "description": "Retrieves a list of billing groups from AWS Billing Conductor.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "billing_period": {
+                "type": "string",
+                "description": ""
+              },
+              "filters": {
+                "type": "string",
+                "description": ""
+              },
+              "max_pages": {
+                "type": "integer",
+                "description": ""
+              },
+              "next_token": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list-account-associations",
+        "description": "Lists linked accounts associated with the payer account from AWS Billing Conductor.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "billing_period": {
+                "type": "string",
+                "description": ""
+              },
+              "filters": {
+                "type": "string",
+                "description": ""
+              },
+              "max_pages": {
+                "type": "integer",
+                "description": ""
+              },
+              "next_token": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list-billing-group-cost-reports",
+        "description": "Retrieves a summary report of actual AWS charges and calculated AWS charges",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "billing_period": {
+                "type": "string",
+                "description": ""
+              },
+              "filters": {
+                "type": "string",
+                "description": ""
+              },
+              "max_pages": {
+                "type": "integer",
+                "description": ""
+              },
+              "next_token": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get-billing-group-cost-report",
+        "description": "Retrieves the margin summary report for a specific billing group, which includes",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "arn": {
+                "type": "string",
+                "description": ""
+              },
+              "billing_period_range": {
+                "type": "string",
+                "description": ""
+              },
+              "group_by": {
+                "type": "string",
+                "description": ""
+              },
+              "max_pages": {
+                "type": "integer",
+                "description": ""
+              },
+              "next_token": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "arn"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list-custom-line-items",
+        "description": "Retrieves a list of custom line items (FFLIs) from AWS Billing Conductor.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "billing_period": {
+                "type": "string",
+                "description": ""
+              },
+              "filters": {
+                "type": "string",
+                "description": ""
+              },
+              "max_pages": {
+                "type": "integer",
+                "description": ""
+              },
+              "next_token": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list-custom-line-item-versions",
+        "description": "Retrieves a list of versions for a specific custom line item from AWS Billing Conductor.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "arn": {
+                "type": "string",
+                "description": ""
+              },
+              "filters": {
+                "type": "string",
+                "description": ""
+              },
+              "max_pages": {
+                "type": "integer",
+                "description": ""
+              },
+              "next_token": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "arn"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list-resources-associated-to-custom-line-item",
+        "description": "Lists the resources associated to a custom line item from AWS Billing Conductor.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "arn": {
+                "type": "string",
+                "description": ""
+              },
+              "billing_period": {
+                "type": "string",
+                "description": ""
+              },
+              "filters": {
+                "type": "string",
+                "description": ""
+              },
+              "max_pages": {
+                "type": "integer",
+                "description": ""
+              },
+              "next_token": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "arn"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list-pricing-rules",
+        "description": "Retrieves a list of pricing rules from AWS Billing Conductor.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "billing_period": {
+                "type": "string",
+                "description": ""
+              },
+              "filters": {
+                "type": "string",
+                "description": ""
+              },
+              "max_pages": {
+                "type": "integer",
+                "description": ""
+              },
+              "next_token": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list-pricing-plans",
+        "description": "Retrieves a list of pricing plans from AWS Billing Conductor.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "billing_period": {
+                "type": "string",
+                "description": ""
+              },
+              "filters": {
+                "type": "string",
+                "description": ""
+              },
+              "max_pages": {
+                "type": "integer",
+                "description": ""
+              },
+              "next_token": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list-pricing-rules-for-plan",
+        "description": "Lists the pricing rules associated with a specific pricing plan.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "pricing_plan_arn": {
+                "type": "string",
+                "description": ""
+              },
+              "billing_period": {
+                "type": "string",
+                "description": ""
+              },
+              "max_results": {
+                "type": "string",
+                "description": ""
+              },
+              "max_pages": {
+                "type": "integer",
+                "description": ""
+              },
+              "next_token": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "pricing_plan_arn"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list-pricing-plans-for-rule",
+        "description": "Lists the pricing plans associated with a specific pricing rule.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "pricing_rule_arn": {
+                "type": "string",
+                "description": ""
+              },
+              "billing_period": {
+                "type": "string",
+                "description": ""
+              },
+              "max_results": {
+                "type": "string",
+                "description": ""
+              },
+              "max_pages": {
+                "type": "integer",
+                "description": ""
+              },
+              "next_token": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "pricing_rule_arn"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,505 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "create_api",
+        "description": "Creates a new AppSync API.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The name of the API"
+              },
+              "owner_contact": {
+                "type": "string",
+                "description": "The owner contact information for the API"
+              },
+              "tags": {
+                "type": "string",
+                "description": "A map of tags to assign to the resource"
+              },
+              "event_config": {
+                "type": "string",
+                "description": "The event configuration for the API"
+              }
+            },
+            "required": [
+              "name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create_graphql_api",
+        "description": "Creates a GraphQL API.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "A user-supplied name for the GraphQL API"
+              },
+              "authentication_type": {
+                "type": "string",
+                "description": "The authentication type: API_KEY, AWS_IAM, AMAZON_COGNITO_USER_POOLS, OPENID_CONNECT, AWS_LAMBDA"
+              },
+              "log_config": {
+                "type": "string",
+                "description": "The Amazon CloudWatch Logs configuration"
+              },
+              "user_pool_config": {
+                "type": "string",
+                "description": "The Amazon Cognito user pool configuration"
+              },
+              "open_id_connect_config": {
+                "type": "string",
+                "description": "The OpenID Connect configuration"
+              },
+              "tags": {
+                "type": "string",
+                "description": "A TagMap object"
+              },
+              "additional_authentication_providers": {
+                "type": "string",
+                "description": "A list of additional authentication providers"
+              },
+              "xray_enabled": {
+                "type": "string",
+                "description": "A flag indicating whether to enable X-Ray tracing"
+              },
+              "lambda_authorizer_config": {
+                "type": "string",
+                "description": "Configuration for AWS Lambda function authorization"
+              },
+              "visibility": {
+                "type": "string",
+                "description": "Sets the value of the GraphQL API to public (GLOBAL) or private (PRIVATE)"
+              },
+              "api_type": {
+                "type": "string",
+                "description": "The value that indicates whether the GraphQL API is a standard API (GRAPHQL) or merged API (MERGED)"
+              },
+              "merged_api_execution_role_arn": {
+                "type": "string",
+                "description": "The Identity and Access Management service role ARN for a merged API"
+              },
+              "owner_contact": {
+                "type": "string",
+                "description": "The owner contact information for an API resource"
+              },
+              "introspection_config": {
+                "type": "string",
+                "description": "Sets the value of the GraphQL API to enable (ENABLED) or disable (DISABLED) introspection"
+              },
+              "query_depth_limit": {
+                "type": "string",
+                "description": "The maximum depth a query can have in a single request"
+              },
+              "resolver_count_limit": {
+                "type": "string",
+                "description": "The maximum number of resolvers that can be invoked in a single request"
+              },
+              "enhanced_metrics_config": {
+                "type": "string",
+                "description": "The enhancedMetricsConfig object"
+              }
+            },
+            "required": [
+              "name",
+              "authentication_type"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create_api_key",
+        "description": "Creates a unique key that you can distribute to clients who invoke your API.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "api_id": {
+                "type": "string",
+                "description": "The ID for the GraphQL API"
+              },
+              "description": {
+                "type": "string",
+                "description": "A description of the purpose of the API key"
+              },
+              "expires": {
+                "type": "string",
+                "description": "From the creation time, the time after which the API key expires (Unix timestamp)"
+              }
+            },
+            "required": [
+              "api_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create_api_cache",
+        "description": "Creates a cache for the GraphQL API.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "api_id": {
+                "type": "string",
+                "description": "The GraphQL API ID"
+              },
+              "ttl": {
+                "type": "integer",
+                "description": "TTL in seconds for entries in the API cache. Valid values are 1-3600 seconds"
+              },
+              "api_caching_behavior": {
+                "type": "string",
+                "description": "Caching behavior. Valid values: FULL_REQUEST_CACHING, PER_RESOLVER_CACHING"
+              },
+              "type": {
+                "type": "string",
+                "description": "The cache instance type. Valid values: SMALL, MEDIUM, LARGE, XLARGE, LARGE_2X, LARGE_4X, LARGE_8X, LARGE_12X"
+              },
+              "transit_encryption_enabled": {
+                "type": "string",
+                "description": "Transit encryption flag when connecting to cache"
+              },
+              "at_rest_encryption_enabled": {
+                "type": "string",
+                "description": "At-rest encryption flag for cache"
+              },
+              "health_metrics_config": {
+                "type": "string",
+                "description": "The health metrics configuration. Valid values: ENABLED, DISABLED"
+              }
+            },
+            "required": [
+              "api_id",
+              "ttl",
+              "api_caching_behavior",
+              "type"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create_datasource",
+        "description": "Creates a DataSource object for a GraphQL API.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "api_id": {
+                "type": "string",
+                "description": "The API ID for the GraphQL API for the DataSource"
+              },
+              "name": {
+                "type": "string",
+                "description": "A user-supplied name for the DataSource"
+              },
+              "type": {
+                "type": "string",
+                "description": "The type of the DataSource. Valid values: AWS_LAMBDA, AMAZON_DYNAMODB, AMAZON_ELASTICSEARCH, HTTP, NONE, RELATIONAL_DATABASE, AMAZON_EVENTBRIDGE, AMAZON_OPENSEARCH_SERVICE"
+              },
+              "description": {
+                "type": "string",
+                "description": "A description of the DataSource"
+              },
+              "service_role_arn": {
+                "type": "string",
+                "description": "The AWS IAM service role ARN for the data source. Format: arn:aws:iam::ACCOUNT-ID:role/ROLE-NAME"
+              },
+              "dynamodb_config": {
+                "type": "string",
+                "description": "Amazon DynamoDB settings"
+              },
+              "lambda_config": {
+                "type": "string",
+                "description": "AWS Lambda settings"
+              },
+              "elasticsearch_config": {
+                "type": "string",
+                "description": "Amazon OpenSearch Service settings"
+              },
+              "open_search_service_config": {
+                "type": "string",
+                "description": "Amazon OpenSearch Service settings"
+              },
+              "http_config": {
+                "type": "string",
+                "description": "HTTP endpoint settings"
+              },
+              "relational_database_config": {
+                "type": "string",
+                "description": "Relational database settings"
+              },
+              "event_bridge_config": {
+                "type": "string",
+                "description": "Amazon EventBridge settings"
+              },
+              "metrics_config": {
+                "type": "string",
+                "description": "Enables or disables enhanced DataSource metrics. Valid values: ENABLED, DISABLED"
+              }
+            },
+            "required": [
+              "api_id",
+              "name",
+              "type"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create_function",
+        "description": "Creates a Function object for a GraphQL API.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "api_id": {
+                "type": "string",
+                "description": "The GraphQL API ID"
+              },
+              "name": {
+                "type": "string",
+                "description": "The Function name"
+              },
+              "data_source_name": {
+                "type": "string",
+                "description": "The Function DataSource name"
+              },
+              "description": {
+                "type": "string",
+                "description": "The Function description"
+              },
+              "request_mapping_template": {
+                "type": "string",
+                "description": "The Function request mapping template"
+              },
+              "response_mapping_template": {
+                "type": "string",
+                "description": "The Function response mapping template"
+              },
+              "function_version": {
+                "type": "string",
+                "description": "The version of the request mapping template. Currently, the supported value is 2018-05-29"
+              },
+              "sync_config": {
+                "type": "string",
+                "description": "Describes a Sync configuration for a resolver"
+              },
+              "max_batch_size": {
+                "type": "string",
+                "description": "The maximum batching size for a resolver"
+              },
+              "runtime": {
+                "type": "string",
+                "description": "Describes a runtime used by an AWS AppSync pipeline resolver or AWS AppSync function"
+              },
+              "code": {
+                "type": "string",
+                "description": "The function code that contains the request and response functions"
+              }
+            },
+            "required": [
+              "api_id",
+              "name",
+              "data_source_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create_channel_namespace",
+        "description": "Creates a ChannelNamespace for an Api.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "api_id": {
+                "type": "string",
+                "description": "The ID of the Api associated with the ChannelNamespace"
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the ChannelNamespace"
+              },
+              "subscribe_auth_modes": {
+                "type": "string",
+                "description": "The authorization mode to use for subscribing to messages on the channel namespace"
+              },
+              "publish_auth_modes": {
+                "type": "string",
+                "description": "The authorization mode to use for publishing messages on the channel namespace"
+              },
+              "code_handlers": {
+                "type": "string",
+                "description": "The event handler functions that run custom business logic to process published events and subscribe requests"
+              },
+              "handler_configs": {
+                "type": "string",
+                "description": "Configuration for event handlers that process published events and subscribe requests"
+              },
+              "tags": {
+                "type": "string",
+                "description": "A map of tags to assign to the resource"
+              }
+            },
+            "required": [
+              "api_id",
+              "name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create_domain_name",
+        "description": "Creates a custom domain name for use with AppSync APIs.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "domain_name": {
+                "type": "string",
+                "description": "The domain name to create (e.g., api.example.com)"
+              },
+              "certificate_arn": {
+                "type": "string",
+                "description": "The ARN of the certificate from AWS Certificate Manager"
+              },
+              "description": {
+                "type": "string",
+                "description": "A description of the domain name"
+              },
+              "tags": {
+                "type": "string",
+                "description": "A map of tags to assign to the resource"
+              }
+            },
+            "required": [
+              "domain_name",
+              "certificate_arn"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create_resolver",
+        "description": "Creates a resolver for a GraphQL field in an AppSync API.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "api_id": {
+                "type": "string",
+                "description": "The API ID for the GraphQL API"
+              },
+              "type_name": {
+                "type": "string",
+                "description": "The name of the type (e.g., Query, Mutation, Subscription)"
+              },
+              "field_name": {
+                "type": "string",
+                "description": "The name of the field to attach the resolver to"
+              },
+              "data_source_name": {
+                "type": "string",
+                "description": "The name of the data source (required for unit resolvers)"
+              },
+              "request_mapping_template": {
+                "type": "string",
+                "description": "The request mapping template in VTL (Velocity Template Language)"
+              },
+              "response_mapping_template": {
+                "type": "string",
+                "description": "The response mapping template in VTL (Velocity Template Language)"
+              },
+              "kind": {
+                "type": "string",
+                "description": "The resolver kind: UNIT or PIPELINE"
+              },
+              "pipeline_config": {
+                "type": "string",
+                "description": "Pipeline configuration for PIPELINE resolvers with functions list"
+              },
+              "sync_config": {
+                "type": "string",
+                "description": "Sync configuration for conflict resolution"
+              },
+              "caching_config": {
+                "type": "string",
+                "description": "Caching configuration for the resolver"
+              },
+              "max_batch_size": {
+                "type": "string",
+                "description": "Maximum batch size for batch operations"
+              },
+              "runtime": {
+                "type": "string",
+                "description": "Runtime configuration (name and runtimeVersion)"
+              },
+              "code": {
+                "type": "string",
+                "description": "The resolver code for JavaScript/TypeScript resolvers"
+              },
+              "metrics_config": {
+                "type": "string",
+                "description": "Metrics configuration: ENABLED or DISABLED"
+              }
+            },
+            "required": [
+              "api_id",
+              "type_name",
+              "field_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create_schema",
+        "description": "Creates a GraphQL schema for an AppSync API and polls until completion.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "api_id": {
+                "type": "string",
+                "description": "The API ID for the GraphQL API"
+              },
+              "definition": {
+                "type": "string",
+                "description": "The schema definition in GraphQL Schema Definition Language (SDL)"
+              }
+            },
+            "required": [
+              "api_id",
+              "definition"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

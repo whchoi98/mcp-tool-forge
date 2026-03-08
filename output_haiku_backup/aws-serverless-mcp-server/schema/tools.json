@@ -1,0 +1,935 @@
+{
+  "server": "aws-serverless-mcp-server",
+  "tools": [
+    {
+      "name": "webapp_deployment_help",
+      "description": "Get help information about using the deploy_webapp_tool to perform web application deployments.\n\n        If deployment_type is provided, returns help information for that deployment type.\n        Otherwise, returns general help information.\n\n        Returns:\n            Dict: Deployment help information\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "deployment_type": {
+            "type": "string",
+            "description": "Type of deployment to get help information for"
+          }
+        },
+        "required": [
+          "deployment_type"
+        ]
+      }
+    },
+    {
+      "name": "deploy_serverless_app_help",
+      "description": "Provides instructions on how to deploy a serverless application to AWS Lambda.\n\n        Deploying a Lambda application requires generating IaC templates, building the code, packaging\n        the code, selecting a deployment tool, and executing the deployment commands. This tool walks through\n        each step and links to tools in this MCP server. For deploying web applications specifically, use the deploy_webapp_tool.\n\n        Returns:\n            Dict[str, Any]: A dictionary containing the deployment help information.\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "application_type": {
+            "type": "string",
+            "description": "Type of application to deploy"
+          }
+        },
+        "required": [
+          "application_type"
+        ]
+      }
+    },
+    {
+      "name": "get_iac_guidance",
+      "description": "Returns guidance on selecting an infrastructure as code (IaC) platform to deploy Serverless applications to AWS.\n\n        Using IaC is a best practice when managing AWS resources. IaC platform choices include AWS SAM, CDK, and CloudFormation.\n        Use this tool to decide which IaC tool to use for your Serverless deployments based on your specific use case and requirements.\n        By default, SAM is the recomended framework.\n\n        Returns:\n            Dict: IaC guidance information\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "iac_tool": {
+            "type": "string",
+            "description": "IaC tool to use"
+          },
+          "include_examples": {
+            "type": "string",
+            "description": "Whether to include examples"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "get_lambda_event_schemas",
+      "description": "Returns AWS Lambda event schemas for different event sources (e.g. s3, sns, apigw) and programming languages.\n\n        When a event source triggers a Lambda function, the request payload comes in a specific format.\n        Each Lambda event source defines its own schema and language-specific types, which should be used in\n        the Lambda function handler to correctly parse the event data. If you cannot find a schema for your event source, you can directly parse\n        the event data as a JSON object. For EventBridge events, you must use the list_registries, search_schema, and describe_schema\n        tools to access the schema registry directly, get schema definitions, and generate code processing logic.\n\n        Returns:\n            Dict: Lambda event schema source code file for the request runtime and event source\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "event_source": {
+            "type": "string",
+            "description": "Event source (e.g., api-gw, s3, sqs, sns, kinesis, eventbridge, dynamodb)"
+          },
+          "runtime": {
+            "type": "string",
+            "description": "Programming language for the schema references (e.g., go, nodejs, python, java)"
+          }
+        },
+        "required": [
+          "event_source",
+          "runtime"
+        ]
+      }
+    },
+    {
+      "name": "get_lambda_guidance",
+      "description": "Use this tool to determine if AWS Lambda is suitable platform to deploy an application.\n\n        Returns a comprehensive guide on when to choose AWS Lambda as a deployment platform.\n        It includes scenarios when to use and not use Lambda, advantages and disadvantages,\n        decision criteria, and specific guidance for various use cases (e.g. scheduled tasks, event-driven application).\n\n        Returns:\n            Dict: Lambda guidance information\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "use_case": {
+            "type": "string",
+            "description": "Description of the use case. (e.g. scheduled tasks, event-driven application)"
+          },
+          "include_examples": {
+            "type": "string",
+            "description": "Whether to include examples"
+          }
+        },
+        "required": [
+          "use_case"
+        ]
+      }
+    },
+    {
+      "name": "get_serverless_templates",
+      "description": "Returns example SAM templates from the Serverless Land GitHub repo.\n\n        Use this tool to get examples for building serverless applications with AWS Lambda and best practices of serverless architecture.\n        The examples are centered on event-driven architecture that can help you boost agility and build reliable, scalable applications.\n        Services like Lambda, EventBridge, Step Functions, SQS, SNS, and API Gateway are featured here. Examples can be deployed\n        out of the box using the SAM CLI, or you can modify examples to fit your needs.\n\n        Usage tips:\n        - Each template includes a template.yml, example-pattern.json file, and src directory containing the Lambda function code. The example-pattern.json file\n        contains metadata about the template, links to AWS documentation, SAM commands, and a description of the application.\n        - Download the YAML template with the gitHubLink in the tool response using the GitHub API\n        - Use the sam_build and sam_deploy tools to build and deploy the application to AWS Cloud\n\n        Returns:\n            Dict: List of matching Serverless templates with README content and GitHub link\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "template_type": {
+            "type": "string",
+            "description": "Template type (e.g., API, ETL, Web)"
+          },
+          "runtime": {
+            "type": "string",
+            "description": "Lambda runtime (e.g., nodejs22.x, python3.13)"
+          }
+        },
+        "required": [
+          "template_type"
+        ]
+      }
+    },
+    {
+      "name": "sam_build",
+      "description": "Builds a serverless application using AWS SAM (Serverless Application Model) CLI.\n\n        Requirements:\n        - AWS SAM CLI MUST be installed and configured in your environment\n        - An application MUST already be initialized with 'sam_init' tool to create sam project structure.\n\n        This command compiles your Lambda function and layer code, creates deployment artifacts, and prepares your application for deployment and local testing.\n        It creates a .aws-sam directory that structures your application in a format and location that sam local and sam deploy require. For Zip\n        functions, a .zip file archive is created, which contains your application code and its dependencies. For Image functions, a container image is created,\n        which includes the base operating system, runtime, and extensions, in addition to your application code and its dependencies.\n\n        By default, the functions and layers are built in parallel for faster builds.\n\n        Usage tips:\n        - Don't edit any code under the .aws-sam/build directory. Instead, update your original source code in\n        your project folder and run sam build to update the .aws-sam/build directory.\n        - When you modify your original files, run sam build to update the .aws-sam/build directory.\n        - You may want the AWS SAM CLI to reference your project's original root directory\n        instead of the .aws-sam directory, such as when developing and testing with sam local. Delete the .aws-sam directory\n        or the AWS SAM template in the .aws-sam directory to have the AWS SAM CLI recognize your original project directory as\n        the root project directory. When ready, run sam build again to create the .aws-sam directory.\n        - When you run sam build, the .aws-sam/build directory gets overwritten each time.\n        The .aws-sam directory does not. If you want to store files, such as logs, store them in .aws-sam to\n        prevent them from being overwritten.\n\n        Returns:\n            Dict: SAM init command output\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "project_directory": {
+            "type": "string",
+            "description": "Absolute path to directory containing the SAM project"
+          },
+          "template_file": {
+            "type": "string",
+            "description": "Absolute path to the template file (defaults to template.yaml)"
+          },
+          "base_dir": {
+            "type": "string",
+            "description": "Resolve relative paths to function's source code with respect to this folder.\n             Use this option if you want to change how relative paths to source code folders are resolved.\n             By default, relative paths are resolved with respect to the AWS SAM template's location."
+          },
+          "build_dir": {
+            "type": "string",
+            "description": "The absolute path to a directory where the built artifacts are stored\n                This directory and all of its content are removed with this option"
+          },
+          "use_container": {
+            "type": "boolean",
+            "description": "Use a Lambda-like container to build the function. Use this option if your function requires a specific\n                runtime environment or dependencies that are not available on the local machine. Docker must be installed"
+          },
+          "no_use_container": {
+            "type": "boolean",
+            "description": "Run build in local machine instead of Docker container."
+          },
+          "parallel": {
+            "type": "boolean",
+            "description": "Build your AWS SAM application in parallel."
+          },
+          "container_env_vars": {
+            "type": "string",
+            "description": "Environment variables to pass to the build container.\n                Each instance takes a key-value pair, where the key is the resource and environment variable, and the\n                value is the environment variable's value.\n                For example: --container-env-var Function1.GITHUB_TOKEN=TOKEN1 --container-env-var Function2.GITHUB_TOKEN=TOKEN2."
+          },
+          "container_env_var_file": {
+            "type": "string",
+            "description": "Absolute path to a JSON file containing container environment variables. You can provide a single environment variable that applies to all serverless resources,\n                or different environment variables for each resource.\n                For example, for all resources:\n                {\n                    \"Parameters\": {\n                        \"GITHUB_TOKEN\": \"TOKEN_GLOBAL\"\n                    }\n                }\n                For individual resources:\n                {\n                    \"MyFunction1\": {\n                        \"GITHUB_TOKEN\": \"TOKEN1\"\n                    },\n                    \"MyFunction2\": {\n                        \"GITHUB_TOKEN\": \"TOKEN2\"\n                    }\n                }\n                "
+          },
+          "build_image": {
+            "type": "string",
+            "description": "The URI of the container image that you want to pull for the build. By default, AWS SAM pulls the\n             container image from Amazon ECR Public. Use this option to pull the image from another location"
+          },
+          "debug": {
+            "type": "boolean",
+            "description": "Turn on debug logging"
+          },
+          "manifest": {
+            "type": "string",
+            "description": "Absolute path to a custom dependency manifest file (e.g., package.json) instead of the default.\n             For example: 'ParameterKey=KeyPairName, ParameterValue=MyKey ParameterKey=InstanceType, ParameterValue=t1.micro."
+          },
+          "parameter_overrides": {
+            "type": "string",
+            "description": "CloudFormation parameter overrides encoded as key-value pairs.\n                For example: 'ParameterKey=KeyPairName, ParameterValue=MyKey ParameterKey=InstanceType, ParameterValue=t1.micro"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS Region to deploy to (e.g., us-east-1)"
+          },
+          "save_params": {
+            "type": "boolean",
+            "description": "Save parameters to the SAM configuration file"
+          },
+          "profile": {
+            "type": "string",
+            "description": "AWS profile to use"
+          }
+        },
+        "required": [
+          "project_directory"
+        ]
+      }
+    },
+    {
+      "name": "sam_deploy",
+      "description": "Deploys a serverless application onto AWS Cloud using AWS SAM (Serverless Application Model) CLI and CloudFormation.\n\n        Requirements:\n        - AWS SAM CLI MUST be installed and configured in your environment\n        - SAM project MUST be initialized using sam_init tool and built with sam_build.\n\n        This command deploys your SAM application's build artifacts located in the .aws-sam directory\n        to AWS Cloud using AWS CloudFormation. The only required parameter is project_directory. SAM will automatically\n        create a S3 bucket where build artifacts are uploaded and referenced by the SAM template.\n\n        Usage tips:\n        - When you make changes to your application's original files, run sam build to update the .aws-sam directory before deploying.\n\n        Returns:\n            Dict: SAM deploy command output\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "application_name": {
+            "type": "string",
+            "description": "Name of the application to be deployed"
+          },
+          "project_directory": {
+            "type": "string",
+            "description": "Absolute path to directory containing the SAM project (defaults to current directory)"
+          },
+          "template_file": {
+            "type": "string",
+            "description": "Absolute path to the template file (defaults to template.yaml)"
+          },
+          "s3_bucket": {
+            "type": "string",
+            "description": "S3 bucket to deploy artifacts to. You cannot set both s3_bucket and resolve_s3 parameters"
+          },
+          "s3_prefix": {
+            "type": "string",
+            "description": "S3 prefix for the artifacts"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region to deploy to"
+          },
+          "profile": {
+            "type": "string",
+            "description": "AWS profile to use"
+          },
+          "parameter_overrides": {
+            "type": "string",
+            "description": "CloudFormation parameter overrides encoded as key-value pairs"
+          },
+          "capabilities": {
+            "type": "string",
+            "description": "IAM capabilities required for the deployment"
+          },
+          "config_file": {
+            "type": "string",
+            "description": "Absolute path to the SAM configuration file"
+          },
+          "config_env": {
+            "type": "string",
+            "description": "Environment name specifying default parameter values in the configuration file"
+          },
+          "metadata": {
+            "type": "string",
+            "description": "Metadata to include with the stack"
+          },
+          "tags": {
+            "type": "string",
+            "description": "Tags to apply to the stack"
+          },
+          "resolve_s3": {
+            "type": "boolean",
+            "description": "Automatically create an S3 bucket for deployment artifacts.  You cannot set both s3_bucket and resolve_s3 parameters"
+          },
+          "debug": {
+            "type": "boolean",
+            "description": "Turn on debug logging"
+          }
+        },
+        "required": [
+          "application_name",
+          "project_directory"
+        ]
+      }
+    },
+    {
+      "name": "sam_init",
+      "description": "Initializes a serverless application using AWS SAM (Serverless Application Model) CLI.\n\n        Requirements:\n        - AWS SAM CLI MUST be installed and configured in your environment\n\n        This tool creates a new SAM project that consists of:\n        - An AWS SAM template to define your infrastructure code\n        - A folder structure that organizes your application\n        - Configuration for your AWS Lambda functions\n\n        Use this tool to initialize a new project when building a serverless application.\n        This tool generates a project based on a pre-defined template. After calling this tool,\n        modify the code and infrastructure templates to fit the requirements of your application.\n\n        Usage tips:\n        - Do not use this tool on existing projects as it creates brand new directory. Instead manually create SAM templates in the existing application's directory.\n        - Either select from one of predefined templates, or from the SAM GitHub repo (https://github.com/aws/aws-sam-cli-app-templates)\n\n        Returns:\n            Dict[str, Any]: Result of the initialization\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "project_name": {
+            "type": "string",
+            "description": "Name of the SAM project to create"
+          },
+          "runtime": {
+            "type": "string",
+            "description": "Runtime environment for the Lambda function.\n                             This option applies only when the package type is Zip."
+          },
+          "project_directory": {
+            "type": "string",
+            "description": "Absolute path to directory where the SAM application will be initialized"
+          },
+          "dependency_manager": {
+            "type": "string",
+            "description": "Dependency manager for the Lambda function (e.g. npm, pip)"
+          },
+          "architecture": {
+            "type": "string",
+            "description": "Architecture for the Lambda function."
+          },
+          "package_type": {
+            "type": "string",
+            "description": "Package type for the Lambda function. Zip creates a .zip file archive, and Image creates a container image."
+          },
+          "application_template": {
+            "type": "string",
+            "description": "Template for the SAM application, e.g., hello-world, quick-start, etc.\n             This parameter is required if location is not specified."
+          },
+          "application_insights": {
+            "type": "string",
+            "description": "Activate Amazon CloudWatch Application Insights monitoring.\n                Helps you monitor the AWS resources in your applications to help identify potential issues.\n                It can analyze AWS resource data for signs of problems and build automated CloudWatch dashboards to visualize them.\n                "
+          },
+          "no_application_insights": {
+            "type": "string",
+            "description": "Deactivate Amazon CloudWatch Application Insights monitoring"
+          },
+          "base_image": {
+            "type": "string",
+            "description": "Base image for the application when package type is Image.\n                The AWS base images are preloaded with a language runtime, a runtime interface client to manage the\n                interaction between Lambda and your function code, and a runtime interface emulator for local testing."
+          },
+          "config_env": {
+            "type": "string",
+            "description": "Environment name specifying default parameter values in the configuration file"
+          },
+          "config_file": {
+            "type": "string",
+            "description": "Absolute path to configuration file containing default parameter values"
+          },
+          "debug": {
+            "type": "string",
+            "description": "Turn on debug logging"
+          },
+          "extra_content": {
+            "type": "string",
+            "description": "Override custom parameters in the template's cookiecutter.json"
+          },
+          "location": {
+            "type": "string",
+            "description": "Template or application location (Git, HTTP/HTTPS, zip file path).\n                This GitHub repo https://github.com/aws/aws-sam-cli-app-templates contains a collection of templates.\n                This parameter is required if app_template is not specified."
+          },
+          "save_params": {
+            "type": "string",
+            "description": "Save parameters to the SAM configuration file"
+          },
+          "tracing": {
+            "type": "string",
+            "description": "Activate AWS X-Ray tracing for Lambda functions. X-ray collects data about requests\n            that your application serves and provides tools that you can use to view, filter, and gain insights into that data to identify issues\n            and opportunities for optimization."
+          },
+          "no_tracing": {
+            "type": "string",
+            "description": "Deactivate AWS X-Ray tracing for Lambda functions"
+          }
+        },
+        "required": [
+          "project_name",
+          "runtime",
+          "project_directory",
+          "dependency_manager"
+        ]
+      }
+    },
+    {
+      "name": "sam_local_invoke",
+      "description": "Locally invokes a Lambda function using AWS SAM CLI.\n\n        Requirements:\n        - AWS SAM CLI MUST be installed and configured in your environment\n        - Docker must be installed and running in your environment.\n\n        This command runs your Lambda function locally in a Docker container that simulates the AWS Lambda environment.\n        Use this tool to test your Lambda functions before deploying them to AWS. It allows you to test the logic of your function faster.\n        Testing locally first reduces the likelihood of identifying issues when testing in the cloud or during deployment,\n        which can help you avoid unnecessary costs. Additionally, local testing makes debugging easier to do.\n\n        Returns:\n            Dict: Local invoke result and the execution logs\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "project_directory": {
+            "type": "string",
+            "description": "Absolute path to directory containing the SAM project"
+          },
+          "resource_name": {
+            "type": "string",
+            "description": "Name of the Lambda function to invoke locally"
+          },
+          "template_file": {
+            "type": "string",
+            "description": "Absolute path to the SAM template file (defaults to template.yaml)"
+          },
+          "event_file": {
+            "type": "string",
+            "description": "Absolute path to a JSON file containing event data"
+          },
+          "event_data": {
+            "type": "string",
+            "description": "JSON string containing event data (alternative to event_file)"
+          },
+          "environment_variables_file": {
+            "type": "string",
+            "description": "Absolute path to a JSON file containing environment variables to pass to the function"
+          },
+          "docker_network": {
+            "type": "string",
+            "description": "Docker network to run the Lambda function in"
+          },
+          "container_env_vars": {
+            "type": "string",
+            "description": "Environment variables to pass to the container"
+          },
+          "parameter": {
+            "type": "string",
+            "description": "Override parameters from the template file"
+          },
+          "log_file": {
+            "type": "string",
+            "description": "Absolute path to a file where the function logs will be written"
+          },
+          "layer_cache_basedir": {
+            "type": "string",
+            "description": "Directory where the layers will be cached"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region to use (e.g., us-east-1)"
+          },
+          "profile": {
+            "type": "string",
+            "description": "AWS profile to use"
+          }
+        },
+        "required": [
+          "project_directory",
+          "resource_name"
+        ]
+      }
+    },
+    {
+      "name": "sam_logs",
+      "description": "Fetches CloudWatch logs that are generated by Lambda function and API GW resources in a SAM application.\n\n        Requirements:\n        - AWS SAM CLI MUST be installed and configured in your environment\n        - Your SAM application MUST be deployed and receiving traffic\n\n        After deploying your serverless application, you can use this tool to monitor it to provide insights on\n        its operations and detect anomalies. Use this tool to help troubleshoot invocation failures, and function code errors\n        and find root causes. Lambda function logs contain application logs emitted by your code and platform level logs emitted by the Lambda service.\n\n        Usage tips:\n        - Use logs to debug out-of-memory errors. Platform logs indicate memory usage in the REPORT line. If memory usage is high compared to\n        configured memory, out-of-memory could be causing invocation failures.\n        - Use logs to debug timeouts errors. Functions that have timed-out contain a log line like ' Task timed out after 3.00 seconds'.\n\n        Note: You MUST explicitly enable logging on API GW resources\n\n        Returns:\n            Dict: Log retrieval result\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "resource_name": {
+            "type": "string",
+            "description": "Name of the resource to fetch logs for. This is be the logical ID of the function resource in the AWS CloudFormation/AWS SAM template.\n                Multiple names can be provided by repeating the parameter again. If you don't specify this option,\n                AWS SAM fetches logs for all resources in the stack that you specify. You must specify stack_name whe\u307f specifying resource_name."
+          },
+          "stack_name": {
+            "type": "string",
+            "description": "Name of the CloudFormation stack"
+          },
+          "start_time": {
+            "type": "string",
+            "description": "Fetch logs starting from this time (format: 5mins ago, tomorrow, or YYYY-MM-DD HH:MM:SS)"
+          },
+          "end_time": {
+            "type": "string",
+            "description": "Fetch logs up until this time (format: 5mins ago, tomorrow, or YYYY-MM-DD HH:MM:SS)"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region to use (e.g., us-east-1)"
+          },
+          "profile": {
+            "type": "string",
+            "description": "AWS profile to use"
+          },
+          "cw_log_group": {
+            "type": "string",
+            "description": "Use AWS CloudWatch to fetch logs. Includes logs from the CloudWatch Logs log groups that you specify.\n                If you specify this option along with name, AWS SAM includes logs from the specified log groups in addition to logs from the named resources."
+          },
+          "config_env": {
+            "type": "string",
+            "description": "Environment name specifying default parameter values in the configuration file"
+          },
+          "config_file": {
+            "type": "string",
+            "description": "Absolute path to configuration file containing default parameter values"
+          },
+          "save_params": {
+            "type": "boolean",
+            "description": "Save parameters to the SAM configuration file"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list_registries",
+      "description": "Lists the registries in your account.\n\n        REQUIREMENTS:\n        - For AWS service events, you MUST use the aws.events registry directly\n        - For custom schemas, you MAY use LOCAL scope to manage your own registries\n        - When searching AWS service events, you SHOULD use the AWS scope\n\n        USAGE PATTERNS:\n        1. Finding AWS Service Event Schemas:\n        - Use aws.events registry directly instead of searching\n        - Filter by AWS scope to see only AWS-provided schemas\n\n        2. Managing Custom Schemas:\n        - Use LOCAL scope to view your custom registries\n        - Apply registry_name_prefix to find specific registry groups\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "registry_name_prefix": {
+            "type": "string",
+            "description": "Specifying this limits the results to only those registry names that start with the specified prefix. For EventBridge events, use aws.events registry directly instead of searching."
+          },
+          "scope": {
+            "type": "string",
+            "description": "Can be set to Local or AWS to limit responses to your custom registries, or the ones provided by AWS.\n            LOCAL: The registry is created in your account.\n            AWS: The registry is created by AWS.\n\n            For EventBridge events, use aws.events registry which is an AWS-managed registry containing all AWS service event schemas."
+          },
+          "limit": {
+            "type": "string",
+            "description": "Maximum number of results to return. If you specify 0, the operation returns up to 10 results."
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Next token returned by the previous operation."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "search_schema",
+      "description": "Search for schemas in a registry using keywords.\n\n        REQUIREMENTS:\n        - You MUST use this tool to find schemas for AWS service events\n        - You MUST search in the \"aws.events\" registry for AWS service events\n        - You MUST use this tool when implementing Lambda functions that consume events from EventBridge\n        - You SHOULD prefix search keywords with \"aws.\" for optimal results (e.g., \"aws.s3\", \"aws.ec2\")\n        - You MAY filter results using additional keywords for specific event types\n\n        USE CASES:\n\n        1. Lambda Function Development with EventBridge:\n        - CRITICAL: Required for Lambda functions consuming events from EventBridge\n        - Search for event schemas your function needs to process\n        - Example: \"aws.s3\" for S3 events, \"aws.dynamodb\" for DynamoDB streams\n        - Use results with describe_schema to get complete event structure\n\n        2. EventBridge Rule Creation:\n        - Find schemas to create properly structured event patterns\n        - Example: \"aws.ec2\" for EC2 instance state changes\n        - Ensure exact field names and types in rule patterns\n\n        IMPLEMENTATION FLOW:\n        1. Search aws.events registry for service schemas\n        2. Note relevant schema names from results\n        3. Use describe_schema to get complete definitions\n        4. Implement handlers using exact schema structure\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "keywords": {
+            "type": "string",
+            "description": "Keywords to search for. Prefix service names with \"aws.\" for better results (e.g., \"aws.s3\" for S3 events, \"aws.ec2\" for EC2 events)."
+          },
+          "registry_name": {
+            "type": "string",
+            "description": "For AWS service events, use \"aws.events\" to search the EventBridge schema registry."
+          },
+          "limit": {
+            "type": "string",
+            "description": "Maximum number of results to return. If you specify 0, the operation returns up to 10 results."
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Next token returned by the previous operation."
+          }
+        },
+        "required": [
+          "keywords",
+          "registry_name"
+        ]
+      }
+    },
+    {
+      "name": "describe_schema",
+      "description": "Retrieve the schema definition for the specified schema version.\n\n        REQUIREMENTS:\n        - You MUST use this tool to get complete schema definitions before implementing handlers\n        - You MUST use this tool when implementing Lambda functions that consume events from EventBridge\n        - You MUST use the returned schema structure for type-safe event handling\n        - You SHOULD use the latest schema version unless specifically required otherwise\n        - You MUST validate all required fields defined in the schema\n\n        USE CASES:\n\n        1. Lambda Function Handlers with EventBridge:\n        You MUST:\n        - CRITICAL: Required for Lambda functions consuming events from EventBridge\n        - Implement handlers using the exact event structure\n        - Validate all required fields defined in schema\n        - Handle optional fields appropriately\n        - Ensure type safety for EventBridge-sourced events\n\n        You SHOULD:\n        - Generate strongly typed code based on schema\n        - Implement error handling for missing fields\n        - Document any assumptions about structure\n\n        2. EventBridge Rules:\n        You MUST:\n        - Create patterns that exactly match schema\n        - Use correct field names and value types\n        - Include all required fields in patterns\n\n        You SHOULD:\n        - Test patterns against sample events\n        - Document pattern matching logic\n        - Consider schema versions in design\n\n        The schema content provides complete event structure with all fields and types, ensuring correct event handling.\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "registry_name": {
+            "type": "string",
+            "description": "For AWS service events, use \"aws.events\" to access the EventBridge schema registry."
+          },
+          "schema_name": {
+            "type": "string",
+            "description": "The name of the schema to retrieve (e.g., \"aws.s3@ObjectCreated\" for S3 events)."
+          },
+          "schema_version": {
+            "type": "string",
+            "description": "Version number of the schema. For AWS service events, use latest version (default) to ensure up-to-date event handling."
+          }
+        },
+        "required": [
+          "registry_name",
+          "schema_name"
+        ]
+      }
+    },
+    {
+      "name": "get_metrics",
+      "description": "Retrieves CloudWatch metrics from a deployed web application.\n\n        Use this tool get metrics on error rates, latency, throttles, etc. of Lambda functions, API Gateways, or CloudFront distributions.\n        This tool can help provide insights into anomalies and monitor operations, which can help with troubleshooting.\n\n        Returns:\n            Dict: Metrics retrieval result\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "project_name": {
+            "type": "string",
+            "description": "Project name"
+          },
+          "start_time": {
+            "type": "string",
+            "description": "Start time for metrics (ISO 8601 format). Example: 2025-05-30T20:00:00Z"
+          },
+          "end_time": {
+            "type": "string",
+            "description": "End time for metrics (ISO 8601 format). Example: 2025-05-30T21:00:00Z"
+          },
+          "period": {
+            "type": "string",
+            "description": "Period for metrics in seconds"
+          },
+          "resources": {
+            "type": "string",
+            "description": "Resources to get metrics for"
+          },
+          "function_name": {
+            "type": "string",
+            "description": "Lambda function to get metrics for. Set this\n                        parameter if resources parameter contains 'lambda' and the function name is not same as the project_name. Typically, SAM appends a random id suffix to function names.\n                        Find the name from CFN stack output. If function_name is not specified, project_name is used as function name."
+          },
+          "distribution_id": {
+            "type": "string",
+            "description": "CloudFront distribution ID to get metrics for. Find the id from the CFN stack output.\n                distribution_id required if the resources parameter list contains cloudfront."
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region to use (e.g., us-east-1)"
+          },
+          "stage": {
+            "type": "string",
+            "description": "API Gateway stage"
+          }
+        },
+        "required": [
+          "project_name"
+        ]
+      }
+    },
+    {
+      "name": "configure_domain",
+      "description": "Configures a custom domain for a deployed web application on AWS Serverless.\n\n        Before using this tool, you must already own the domain name and have a Route53 hosted zone in your account.\n        This tool does not register domain names.\n        This tool sets up Route 53 DNS records, ACM certificates, and CloudFront custom domain mappings as needed.\n        Use this tool after deploying your web application to associate it with your own domain name.\n\n        Returns:\n            Dict: Domain configuration result\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "project_name": {
+            "type": "string",
+            "description": "Project name"
+          },
+          "domain_name": {
+            "type": "string",
+            "description": "Custom domain name to use for the CloudFront distribution . You must already own the domain name\n            and have a Route 53 hosted zone in your account. This tool does not register domain names."
+          },
+          "create_certificate": {
+            "type": "string",
+            "description": "Whether to create a ACM certificate"
+          },
+          "create_route53_record": {
+            "type": "string",
+            "description": "Whether to create a Route 53 record. When set to True, this tool creates a DNS A record\n                that points to the CloudFront distribution associated with this project"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region to use (e.g., us-east-1)"
+          }
+        },
+        "required": [
+          "project_name",
+          "domain_name"
+        ]
+      }
+    },
+    {
+      "name": "deploy_webapp",
+      "description": "Deploy web applications to AWS Serverless, including Lambda as compute, DynamoDB as databases, API GW, ACM Certificates, and Route 53 DNS records.\n\n        This tool uses the Lambda Web Adapter framework so that applications can be written in a standard web framework like Express or Next.js can be easily\n        deployed to Lambda. You do not need to use integrate the code with any adapter framework before using this tool.\n\n        Returns:\n            Dict: Deployment result and link to pending deployment resource\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "deployment_type": {
+            "type": "string",
+            "description": "Type of deployment"
+          },
+          "project_name": {
+            "type": "string",
+            "description": "Project name"
+          },
+          "project_root": {
+            "type": "string",
+            "description": "Absolute path to the project root directory"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS Region to deploy to (e.g., us-east-1)"
+          },
+          "backend_configuration": {
+            "type": "string",
+            "description": "Backend configuration"
+          },
+          "frontend_configuration": {
+            "type": "string",
+            "description": "Frontend configuration"
+          }
+        },
+        "required": [
+          "deployment_type",
+          "project_name",
+          "project_root"
+        ]
+      }
+    },
+    {
+      "name": "update_webapp_frontend",
+      "description": "Update the frontend assets of a deployed web application.\n\n        This tool uploads new frontend assets to S3 and optionally invalidates the CloudFront cache.\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "project_name": {
+            "type": "string",
+            "description": "Project name"
+          },
+          "project_root": {
+            "type": "string",
+            "description": "Project root"
+          },
+          "built_assets_path": {
+            "type": "string",
+            "description": "Absolute path to pre-built frontend assets"
+          },
+          "invalidate_cache": {
+            "type": "string",
+            "description": "Whether to invalidate the CloudFront cache"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region to use (e.g., us-east-1)"
+          }
+        },
+        "required": [
+          "project_name",
+          "project_root",
+          "built_assets_path"
+        ]
+      }
+    },
+    {
+      "name": "esm_guidance",
+      "description": "Create and configure AWS infrastructure for streaming data processing. Handles Kafka clusters (MSK), Kinesis streams, DynamoDB streams, SQS queues with Lambda functions. Sets up VPCs, security groups, IAM roles, and Event Source Mappings. Generates complete SAM templates for deployment.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "event_source": {
+            "type": "string",
+            "description": "Type of event source for which to get guidance"
+          },
+          "guidance_type": {
+            "type": "string",
+            "description": "Type of guidance: \"setup\" for initial configuration, \"networking\" for VPC/connectivity, \"troubleshooting\" for issues"
+          },
+          "networking_question": {
+            "type": "string",
+            "description": "Specific networking question (used with guidance_type=\"networking\")"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "esm_kafka_troubleshoot",
+      "description": "Troubleshoot Kafka streaming issues and connectivity problems. Diagnoses MSK cluster connectivity, Lambda function timeouts, authentication failures, and network configuration issues. Provides step-by-step resolution guidance for Kafka and Lambda integration problems.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "kafka_type": {
+            "type": "string",
+            "description": "Type of Kafka cluster: \"msk\" for Amazon MSK, \"self-managed\" for self-managed Apache Kafka, \"auto-detect\" to determine automatically"
+          },
+          "issue_type": {
+            "type": "string",
+            "description": "Type of troubleshooting: \"diagnosis\" for identifying issues, or specific issue type for resolution steps"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "esm_optimize",
+      "description": "Optimize streaming data processing performance and costs. Analyzes Lambda function configurations for Kafka, Kinesis, DynamoDB, and SQS event sources. Provides recommendations for batch sizes, concurrency, throughput, and cost optimization. Validates configurations and generates deployment templates.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "description": "Optimization action: \"analyze\" for tradeoff analysis, \"validate\" for config validation, \"generate_template\" for SAM template generation"
+          },
+          "optimization_targets": {
+            "type": "string",
+            "description": "Optimization goals for analysis (required for analyze action)"
+          },
+          "event_source": {
+            "type": "string",
+            "description": "Event source type for validation (required for validate action)"
+          },
+          "configs": {
+            "type": "string",
+            "description": "ESM configuration to validate (required for validate action)"
+          },
+          "esm_uuid": {
+            "type": "string",
+            "description": "ESM UUID for template generation (required for generate_template action)"
+          },
+          "optimized_configs": {
+            "type": "string",
+            "description": "Optimized configuration for template generation (required for generate_template action)"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          },
+          "project_name": {
+            "type": "string",
+            "description": "Project name for template generation"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "secure_esm_msk_policy",
+      "description": "Generate security-approved IAM policy for MSK Kafka ESM with scoped permissions. Uses pre-approved templates, not LLM generation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region (e.g., us-east-1)"
+          },
+          "account": {
+            "type": "string",
+            "description": "AWS account ID (12 digits)"
+          },
+          "cluster_name": {
+            "type": "string",
+            "description": "MSK cluster name"
+          },
+          "cluster_uuid": {
+            "type": "string",
+            "description": "MSK cluster UUID"
+          },
+          "function_name": {
+            "type": "string",
+            "description": "Lambda function name that will process Kafka events"
+          },
+          "topic_pattern": {
+            "type": "string",
+            "description": "Kafka topic pattern (default: *)"
+          },
+          "consumer_group_pattern": {
+            "type": "string",
+            "description": "Consumer group pattern (default: *)"
+          },
+          "partition": {
+            "type": "string",
+            "description": "AWS partition (aws, aws-cn, aws-us-gov)"
+          }
+        },
+        "required": [
+          "region",
+          "account",
+          "cluster_name",
+          "cluster_uuid",
+          "function_name"
+        ]
+      }
+    },
+    {
+      "name": "secure_esm_sqs_policy",
+      "description": "Generate security-approved IAM policy for SQS ESM with scoped permissions. Uses pre-approved templates, not LLM generation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region (e.g., us-east-1)"
+          },
+          "account": {
+            "type": "string",
+            "description": "AWS account ID (12 digits)"
+          },
+          "queue_name": {
+            "type": "string",
+            "description": "SQS queue name"
+          },
+          "function_name": {
+            "type": "string",
+            "description": "Lambda function name that will process SQS messages"
+          },
+          "partition": {
+            "type": "string",
+            "description": "AWS partition (aws, aws-cn, aws-us-gov)"
+          }
+        },
+        "required": [
+          "region",
+          "account",
+          "queue_name",
+          "function_name"
+        ]
+      }
+    },
+    {
+      "name": "secure_esm_kinesis_policy",
+      "description": "Generate security-approved IAM policy for Kinesis ESM with scoped permissions. Uses pre-approved templates, not LLM generation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region (e.g., us-east-1)"
+          },
+          "account": {
+            "type": "string",
+            "description": "AWS account ID (12 digits)"
+          },
+          "stream_name": {
+            "type": "string",
+            "description": "Kinesis stream name"
+          },
+          "function_name": {
+            "type": "string",
+            "description": "Lambda function name that will process Kinesis records"
+          },
+          "partition": {
+            "type": "string",
+            "description": "AWS partition (aws, aws-cn, aws-us-gov)"
+          }
+        },
+        "required": [
+          "region",
+          "account",
+          "stream_name",
+          "function_name"
+        ]
+      }
+    },
+    {
+      "name": "secure_esm_dynamodb_policy",
+      "description": "Generate security-approved IAM policy for DynamoDB Streams ESM with scoped permissions. Uses pre-approved templates, not LLM generation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region (e.g., us-east-1)"
+          },
+          "account": {
+            "type": "string",
+            "description": "AWS account ID (12 digits)"
+          },
+          "table_name": {
+            "type": "string",
+            "description": "DynamoDB table name"
+          },
+          "function_name": {
+            "type": "string",
+            "description": "Lambda function name that will process DynamoDB stream records"
+          },
+          "partition": {
+            "type": "string",
+            "description": "AWS partition (aws, aws-cn, aws-us-gov)"
+          }
+        },
+        "required": [
+          "region",
+          "account",
+          "table_name",
+          "function_name"
+        ]
+      }
+    }
+  ]
+}

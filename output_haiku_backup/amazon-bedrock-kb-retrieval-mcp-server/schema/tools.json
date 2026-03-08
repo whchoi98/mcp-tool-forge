@@ -1,0 +1,51 @@
+{
+  "server": "amazon-bedrock-kb-retrieval-mcp-server",
+  "tools": [
+    {
+      "name": "ListKnowledgeBases",
+      "description": "List all available Amazon Bedrock Knowledge Bases and their data sources.\n\n    This tool returns a mapping of knowledge base IDs to their details, including:\n    - name: The human-readable name of the knowledge base\n    - description: The description of the knowledge base\n    - data_sources: A list of data sources within the knowledge base, each with:\n      - id: The unique identifier of the data source\n      - name: The human-readable name of the data source\n\n    ## Example response structure:\n    ```json\n    {\n        \"kb-12345\": {\n            \"name\": \"Customer Support KB\",\n            \"description\": \"Knowledge base containing customer support documentation and FAQs\",\n            \"data_sources\": [\n                {\"id\": \"ds-abc123\", \"name\": \"Technical Documentation\"},\n                {\"id\": \"ds-def456\", \"name\": \"FAQs\"}\n            ]\n        },\n        \"kb-67890\": {\n            \"name\": \"Product Information KB\",\n            \"description\": \"Comprehensive product specifications and details\",\n            \"data_sources\": [\n                {\"id\": \"ds-ghi789\", \"name\": \"Product Specifications\"}\n            ]\n        }\n    }\n    ```\n\n    ## How to use this information:\n    1. Extract the knowledge base IDs (like \"kb-12345\") for use with the QueryKnowledgeBases tool\n    2. Note the data source IDs if you want to filter queries to specific data sources\n    3. Use the names to determine which knowledge base and data source(s) are most relevant to the user's query\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "QueryKnowledgeBases",
+      "description": "Query an Amazon Bedrock Knowledge Base using natural language.\n\n    ## Usage Requirements\n    - You MUST first use the ListKnowledgeBases tool to get valid knowledge base IDs\n    - You can query different knowledge bases or make multiple queries to the same knowledge base\n\n    ## Query Tips\n    - Use clear, specific natural language queries for best results\n    - You can use this tool MULTIPLE TIMES with different queries to gather comprehensive information\n    - Break complex questions into multiple focused queries\n    - Consider querying for factual information and explanations separately\n\n    ## Tool output format\n    The response contains multiple JSON objects (one per line), each representing a retrieved document with:\n    - content: The text content of the document\n    - location: The source location of the document\n    - score: The relevance score of the document\n\n\n    ## Interpretation Best Practices\n    1. Extract and combine key information from multiple results\n    2. Consider the source and relevance score when evaluating information\n    3. Use follow-up queries to clarify ambiguous or incomplete information\n    4. If the response is not relevant, try a different query, knowledge base, and/or data source\n    5. After a few attempts, ask the user for clarification or a different query.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "A natural language query to search the knowledge base with"
+          },
+          "knowledge_base_id": {
+            "type": "string",
+            "description": "The knowledge base ID to query. It must be a valid ID from the ListKnowledgeBases tool"
+          },
+          "number_of_results": {
+            "type": "integer",
+            "description": "The number of results to return. Use smaller values for focused results and larger values for broader coverage."
+          },
+          "reranking": {
+            "type": "boolean",
+            "description": "Whether to rerank the results. Useful for improving relevance and sorting. Can be globally configured with BEDROCK_KB_RERANKING_ENABLED environment variable."
+          },
+          "reranking_model_name": {
+            "type": "string",
+            "description": "The name of the reranking model to use. Options: 'COHERE', 'AMAZON'"
+          },
+          "data_source_ids": {
+            "type": "string",
+            "description": "The data source IDs to filter the knowledge base by. It must be a list of valid data source IDs from the ListKnowledgeBases tool"
+          }
+        },
+        "required": [
+          "query",
+          "knowledge_base_id"
+        ]
+      }
+    }
+  ]
+}

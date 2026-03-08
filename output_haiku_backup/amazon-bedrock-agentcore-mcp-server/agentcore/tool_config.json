@@ -1,0 +1,87 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "search_agentcore_docs",
+        "description": "Search curated AgentCore documentation and return ranked results with snippets.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": ""
+              },
+              "k": {
+                "type": "integer",
+                "description": ""
+              }
+            },
+            "required": [
+              "query"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "fetch_agentcore_doc",
+        "description": "Fetch full document content by URL.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "uri": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "uri"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "manage_agentcore_runtime",
+        "description": "Provides comprehensive information on how to deploy and manage agents in AgentCore Runtime.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {},
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "manage_agentcore_memory",
+        "description": "Provides comprehensive information on how to manage AgentCore Memory resources.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {},
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "manage_agentcore_gateway",
+        "description": "Provides comprehensive information on how to deploy and manage MCP Gateways in AgentCore.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {},
+            "required": []
+          }
+        }
+      }
+    }
+  ]
+}

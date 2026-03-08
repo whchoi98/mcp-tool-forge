@@ -1,0 +1,24 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "GetReactDocsByTopic",
+        "description": "Get specific AWS web application UI setup documentation by topic.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "topic": {
+                "type": "string",
+                "description": "The topic of React documentation to retrieve. Topics include: essential-knowledge, troubleshooting."
+              }
+            },
+            "required": [
+              "topic"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

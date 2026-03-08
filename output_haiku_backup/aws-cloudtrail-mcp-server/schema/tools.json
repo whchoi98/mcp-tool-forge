@@ -1,0 +1,133 @@
+{
+  "server": "aws-cloudtrail-mcp-server",
+  "tools": [
+    {
+      "name": "lookup_events",
+      "description": "Look up CloudTrail events based on various criteria.\n\n        This tool searches CloudTrail events using the LookupEvents API, which provides access to the\n        last 90 days of management events. You can filter by time range and search for specific\n        attribute values.\n\n        Usage: Use this tool to find CloudTrail events by various attributes like username, event name,\n        resource name, etc. This is useful for security investigations, troubleshooting, and audit trails.\n\n        IMPORTANT PAGINATION REQUIREMENTS:\n        - AWS CloudTrail requires pagination tokens to be used with exactly the same parameters as the original request\n        - When using next_token, you must provide the exact same start_time, end_time, attribute_key, and attribute_value\n        - Use the 'query_params' returned in the response for subsequent paginated requests\n\n        Returns:\n        --------\n        Dictionary containing:\n            - events: List of CloudTrail events matching the criteria with exact CloudTrail schema\n            - next_token: Token for pagination if more results available\n            - query_params: Parameters used for the query (includes pagination parameters when next_token is present)\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "start_time": {
+            "type": "string",
+            "description": "Start time for event lookup (ISO format or relative like \"1 day ago\"). IMPORTANT: When using pagination (next_token), you must provide the exact same start_time as the original request."
+          },
+          "end_time": {
+            "type": "string",
+            "description": "End time for event lookup (ISO format or relative like \"1 hour ago\"). IMPORTANT: When using pagination (next_token), you must provide the exact same end_time as the original request."
+          },
+          "attribute_key": {
+            "type": "string",
+            "description": "Attribute to search by"
+          },
+          "attribute_value": {
+            "type": "string",
+            "description": "Value to search for in the specified attribute"
+          },
+          "max_results": {
+            "type": "string",
+            "description": "Maximum number of events to return (1-50, default: 10)"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination to fetch the next page of events. IMPORTANT: When using this token, all other parameters (start_time, end_time, attribute_key, attribute_value) must match exactly the original request that generated this token."
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region to query. Defaults to us-east-1."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "lake_query",
+      "description": "Execute a SQL query against CloudTrail Lake for complex analytics and filtering.\n\n        CloudTrail Lake allows you to run SQL queries against your CloudTrail events for advanced\n        analysis. This is more powerful than the basic lookup functions and allows for complex\n        filtering, aggregation, and analysis.\n\n        PAGINATION WORKFLOW:\n        For large result sets, you have two options:\n        1. Use wait_for_completion=False to get the query_id immediately, then use get_query_results with pagination\n        2. Use wait_for_completion=True (default) to get first page of results, then use get_query_results with next_token for additional pages\n\n        IMPORTANT LIMITATIONS:\n        - CloudTrail Lake only supports SELECT statements using Trino-compatible SQL syntax\n        - INSERT, UPDATE, DELETE, CREATE, DROP, and other DDL/DML operations are not supported\n        - Do not use Common Table Expression (CTE)\n        - Your SQL query MUST include a valid Event Data Store (EDS) ID in the FROM clause\n        - Use the list_event_data_stores tool first to get available EDS IDs, then reference the EDS ID\n          directly in your FROM clause\n        - Always use a start and end time using eventtime or have a limit on total output by default\n\n        CLOUDTRAIL EVENT SCHEMA:\n        All CloudTrail events contain these key fields that you can query:\n\n        Core Fields (Always Present):\n        - eventTime: UTC timestamp when request completed\n        - eventVersion: Log format version (current: 1.11)\n        - eventSource: AWS service name (e.g., \"s3.amazonaws.com\")\n        - eventName: API action name\n        - awsRegion: AWS region where request was made\n        - sourceIPAddress: IP address of requester\n        - eventID: Unique GUID for this event\n        - eventType: AwsApiCall, AwsServiceEvent, AwsConsoleAction, AwsConsoleSignIn, AwsVpceEvent\n        - eventCategory: Management, Data, NetworkActivity, Insight\n\n        UserIdentity Object (Always Present):\n        - userIdentity.type: Root, IAMUser, AssumedRole, Role, FederatedUser, Directory, AWSAccount, AWSService, IdentityCenterUser, SAMLUser, WebIdentityUser, Unknown\n        - userIdentity.principalId: Unique identifier for the entity\n        - userIdentity.arn: ARN of the principal\n        - userIdentity.accountId: Account that owns the entity\n        - userIdentity.accessKeyId: Access key used (may be empty for security)\n        - userIdentity.userName: Friendly name (when available)\n        - userIdentity.invokedBy: AWS service that made the request\n        - userIdentity.identityProvider: External identity provider (SAML/Web)\n        - userIdentity.credentialId: Bearer token credential ID\n        - userIdentity.sessionContext: For temporary credentials (AssumedRole, FederatedUser)\n          - sessionIssuer.type: Source type (Root, IAMUser, Role)\n          - sessionIssuer.principalId: Internal ID of issuer\n          - sessionIssuer.arn: ARN of issuer\n          - sessionIssuer.accountId: Account of issuer\n          - sessionIssuer.userName: Name of credential issuer\n          - attributes.mfaAuthenticated: \"true\"/\"false\" if MFA was used\n          - attributes.creationDate: When credentials were issued (ISO 8601)\n          - webIdFederationData.federatedProvider: Identity provider name\n          - webIdFederationData.attributes: Provider-specific attributes\n          - sourceIdentity: Original user identity for role chaining\n          - ec2RoleDelivery: \"1.0\" or \"2.0\" for IMDS version\n          - assumedRoot: True for AssumeRoot sessions\n        - userIdentity.onBehalfOf: IAM Identity Center user info\n          - userId: Identity Center user ID\n          - identityStoreArn: Identity store ARN\n        - userIdentity.inScopeOf: Service scope information\n          - sourceArn: Invoking resource ARN\n          - sourceAccount: Source account ID\n          - issuerType: Credential issuer type\n          - credentialsIssuedTo: Credential target resource\n\n        Optional Fields (Conditionally Present):\n        - userAgent: Client that made the request (max 1KB)\n        - errorCode: AWS service error code if request failed (max 1KB)\n        - errorMessage: Error description if request failed (max 1KB)\n        - requestParameters: Request parameters (object, max 100KB)\n        - responseElements: Response elements for write operations (object, max 100KB)\n        - additionalEventData: Additional event data (object, max 28KB)\n        - requestID: Service-generated request identifier (max 1KB)\n        - apiVersion: API version for AwsApiCall events\n        - managementEvent: True if management event\n        - readOnly: true/false if read-only operation\n        - resources: Array of resources accessed\n          - resources[].type: Resource type (e.g., \"AWS::S3::Object\", \"AWS::DynamoDB::Table\")\n          - resources[].ARN: Resource ARN\n          - resources[].accountId: Resource owner account\n        - recipientAccountId: Account that received the event\n        - serviceEventDetails: Service event details (object, max 100KB)\n        - sharedEventID: Shared GUID for cross-account events\n        - vpcEndpointId: VPC endpoint identifier (for network events)\n        - vpcEndpointAccountId: VPC endpoint owner account\n        - addendum: Information about delayed/updated events\n          - reason: Why event was delayed (DELIVERY_DELAY, UPDATED_DATA, SERVICE_OUTAGE)\n          - updatedFields: Event record fields updated by addendum\n          - originalRequestID: Original unique ID of request\n          - originalEventID: Original event ID\n        - sessionCredentialFromConsole: \"true\" if from console session\n        - eventContext: Enriched event context (tags, IAM conditions)\n          - requestContext: IAM condition keys evaluated during authorization\n          - tagContext: Tags associated with resources and IAM principals\n            - resourceTags: Array of resource tag information\n              - resourceTags[].arn: ARN of the tagged resource\n              - resourceTags[].tags: Object containing tag key-value pairs\n            - principalTags: Tags associated with the IAM principal making the request\n        - edgeDeviceDetails: Edge device information (object, max 28KB)\n        - tlsDetails: TLS connection information\n          - tlsVersion: TLS version used\n          - cipherSuite: Cipher suite used\n          - clientProvidedHostHeader: Client-provided hostname\n\n        Example SQL queries:\n        - SELECT eventname, count(*) FROM eds-id WHERE eventtime > '2025-01-01 00:00:00' GROUP BY eventname\n        - SELECT errorcode, errormessage, eventname FROM eds-id WHERE errorcode IS NOT NULL OR errormessage IS NOT NULL LIMIT 10\n        - SELECT eventname, resources FROM eds-id WHERE any_match(resources, x -> x.type = 'AWS::S3::Object') LIMIT 10\n        - SELECT useridentity.sessioncontext.sessionissuer.username FROM eds-id WHERE useridentity.type = 'AssumedRole' LIMIT 10\n        - SELECT sourceipaddress, count(*) FROM eds-id WHERE eventname = 'ConsoleLogin' GROUP BY sourceipaddress LIMIT 10\n        - SELECT eventname, filter(resources, x -> x.type = 'AWS::Lambda::Function') as lambda_resources FROM eds-id WHERE cardinality(filter(resources, x -> x.type = 'AWS::Lambda::Function')) > 0 LIMIT 5\n\n        Returns:\n        --------\n        QueryResult containing:\n            - query_id: Unique identifier for the query\n            - query_status: Current status of the query\n            - query_result_rows: Results if query completed successfully (only when wait_for_completion=True)\n            - next_token: Token for pagination (only when wait_for_completion=True and results are paginated)\n            - query_statistics: Performance statistics for the query\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "sql": {
+            "type": "string",
+            "description": "SQL query to execute against CloudTrail Lake. IMPORTANT: You must include a valid Event Data Store (EDS) ID in the FROM clause of your SQL query. Use list_event_data_stores tool to get available EDS IDs first. CloudTrail Lake only supports SELECT statements using Trino-compatible SQL syntax. Example: SELECT * FROM 0233062b-51c6-4d18-8dec-a8c90da840d9 WHERE eventname = 'ConsoleLogin'"
+          },
+          "wait_for_completion": {
+            "type": "boolean",
+            "description": "Whether to wait for query completion and return results. If False, returns immediately with query_id for manual result fetching using get_query_results. Default: True"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region to query. Defaults to us-east-1."
+          }
+        },
+        "required": [
+          "sql"
+        ]
+      }
+    },
+    {
+      "name": "get_query_status",
+      "description": "Get the status of a CloudTrail Lake query.\n\n        This tool checks the status of a previously started CloudTrail Lake query. Use this\n        when you need to check if a long-running query has completed or if you want to get\n        details about query execution.\n\n        Usage: Use this tool to monitor the progress of CloudTrail Lake queries, especially\n        long-running ones that may take time to complete.\n\n        Returns:\n        --------\n        QueryStatus containing:\n            - query_id: The query identifier\n            - query_status: Current status (QUEUED, RUNNING, FINISHED, FAILED, CANCELLED, TIMED_OUT)\n            - query_statistics: Performance and execution statistics\n            - error_message: Error details if the query failed\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query_id": {
+            "type": "string",
+            "description": "The ID of the query to check status for"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region to query. Defaults to us-east-1."
+          }
+        },
+        "required": [
+          "query_id"
+        ]
+      }
+    },
+    {
+      "name": "get_query_results",
+      "description": "Get the results of a completed CloudTrail Lake query with pagination support.\n\n        This tool retrieves the results of a previously executed CloudTrail Lake query. It supports\n        pagination for large result sets, allowing you to fetch results in chunks.\n\n        Usage: Use this tool to get the results of a query that has completed (status = 'FINISHED').\n        For large result sets, use the next_token to fetch subsequent pages of results.\n\n        Pagination workflow:\n        1. Call get_query_results with just the query_id to get the first page\n        2. If next_token is returned, call again with the same query_id and the next_token\n        3. Repeat until next_token is null/empty\n\n        Returns:\n        --------\n        QueryResult containing:\n            - query_id: The query identifier\n            - query_status: Current status of the query\n            - query_result_rows: Results for this page\n            - next_token: Token for next page (null if no more pages)\n            - query_statistics: Performance statistics for the query\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query_id": {
+            "type": "string",
+            "description": "The ID of the query to get results for"
+          },
+          "max_results": {
+            "type": "string",
+            "description": "Maximum number of results to return per page (1-50, default: 50)"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination to fetch the next page of results. Use the next_token returned from a previous call to get successive pages."
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region to query. Defaults to us-east-1."
+          }
+        },
+        "required": [
+          "query_id"
+        ]
+      }
+    },
+    {
+      "name": "list_event_data_stores",
+      "description": "List available CloudTrail Lake Event Data Stores with their capabilities and event selectors.\n\n        Event Data Stores are the storage and query engines for CloudTrail Lake. This tool helps you\n        understand which Event Data Stores are available and their configurations.\n\n        Usage: Use this tool to understand which Event Data Stores are available and their\n        configurations. This information is needed when executing CloudTrail Lake queries.\n\n        Returns:\n        --------\n        List of available Event Data Stores with their configurations\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "include_details": {
+            "type": "boolean",
+            "description": "Whether to include detailed event selector information (default: true)"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region to query. Defaults to us-east-1."
+          }
+        },
+        "required": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,692 @@
+{
+  "server": "amazon-mq-mcp-server",
+  "tools": [
+    {
+      "name": "delete_broker",
+      "description": "Execute the AWS AmazonMQ `delete_broker` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region on which the broker is in"
+          },
+          "BrokerId": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "region",
+          "BrokerId"
+        ]
+      }
+    },
+    {
+      "name": "delete_configuration",
+      "description": "Execute the AWS AmazonMQ `delete_configuration` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region on which the broker is in"
+          },
+          "ConfigurationId": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "region",
+          "ConfigurationId"
+        ]
+      }
+    },
+    {
+      "name": "describe_broker",
+      "description": "Execute the AWS AmazonMQ `describe_broker` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region on which the broker is in"
+          },
+          "BrokerId": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "region",
+          "BrokerId"
+        ]
+      }
+    },
+    {
+      "name": "describe_broker_engine_types",
+      "description": "Execute the AWS AmazonMQ `describe_broker_engine_types` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region on which the broker is in"
+          },
+          "EngineType": {
+            "type": "string",
+            "description": "<p>Filter response by engine type.</p>"
+          },
+          "MaxResults": {
+            "type": "integer",
+            "description": "<p>The maximum number of brokers that Amazon MQ can return per page (20 by default). This value must be an integer from 5 to 100.</p>"
+          },
+          "NextToken": {
+            "type": "string",
+            "description": "<p>The token that specifies the next page of results Amazon MQ should return. To request the first page, leave nextToken empty.</p>"
+          }
+        },
+        "required": [
+          "region"
+        ]
+      }
+    },
+    {
+      "name": "describe_broker_instance_options",
+      "description": "Execute the AWS AmazonMQ `describe_broker_instance_options` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region on which the broker is in"
+          },
+          "EngineType": {
+            "type": "string",
+            "description": "<p>Filter response by engine type.</p>"
+          },
+          "HostInstanceType": {
+            "type": "string",
+            "description": "<p>Filter response by host instance type.</p>"
+          },
+          "MaxResults": {
+            "type": "integer",
+            "description": "<p>The maximum number of brokers that Amazon MQ can return per page (20 by default). This value must be an integer from 5 to 100.</p>"
+          },
+          "NextToken": {
+            "type": "string",
+            "description": "<p>The token that specifies the next page of results Amazon MQ should return. To request the first page, leave nextToken empty.</p>"
+          },
+          "StorageType": {
+            "type": "string",
+            "description": "<p>Filter response by storage type.</p>"
+          }
+        },
+        "required": [
+          "region"
+        ]
+      }
+    },
+    {
+      "name": "describe_configuration",
+      "description": "Execute the AWS AmazonMQ `describe_configuration` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region on which the broker is in"
+          },
+          "ConfigurationId": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "region",
+          "ConfigurationId"
+        ]
+      }
+    },
+    {
+      "name": "describe_configuration_revision",
+      "description": "Execute the AWS AmazonMQ `describe_configuration_revision` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region on which the broker is in"
+          },
+          "ConfigurationRevision": {
+            "type": "string",
+            "description": ""
+          },
+          "ConfigurationId": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "region",
+          "ConfigurationRevision",
+          "ConfigurationId"
+        ]
+      }
+    },
+    {
+      "name": "describe_user",
+      "description": "Execute the AWS AmazonMQ `describe_user` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region on which the broker is in"
+          },
+          "Username": {
+            "type": "string",
+            "description": ""
+          },
+          "BrokerId": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "region",
+          "Username",
+          "BrokerId"
+        ]
+      }
+    },
+    {
+      "name": "list_brokers",
+      "description": "Execute the AWS AmazonMQ `list_brokers` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region on which the broker is in"
+          },
+          "MaxResults": {
+            "type": "integer",
+            "description": "<p>The maximum number of brokers that Amazon MQ can return per page (20 by default). This value must be an integer from 5 to 100.</p>"
+          },
+          "NextToken": {
+            "type": "string",
+            "description": "<p>The token that specifies the next page of results Amazon MQ should return. To request the first page, leave nextToken empty.</p>"
+          }
+        },
+        "required": [
+          "region"
+        ]
+      }
+    },
+    {
+      "name": "list_configuration_revisions",
+      "description": "Execute the AWS AmazonMQ `list_configuration_revisions` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region on which the broker is in"
+          },
+          "ConfigurationId": {
+            "type": "string",
+            "description": ""
+          },
+          "MaxResults": {
+            "type": "integer",
+            "description": "<p>The maximum number of brokers that Amazon MQ can return per page (20 by default). This value must be an integer from 5 to 100.</p>"
+          },
+          "NextToken": {
+            "type": "string",
+            "description": "<p>The token that specifies the next page of results Amazon MQ should return. To request the first page, leave nextToken empty.</p>"
+          }
+        },
+        "required": [
+          "region",
+          "ConfigurationId"
+        ]
+      }
+    },
+    {
+      "name": "list_configurations",
+      "description": "Execute the AWS AmazonMQ `list_configurations` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region on which the broker is in"
+          },
+          "MaxResults": {
+            "type": "integer",
+            "description": "<p>The maximum number of brokers that Amazon MQ can return per page (20 by default). This value must be an integer from 5 to 100.</p>"
+          },
+          "NextToken": {
+            "type": "string",
+            "description": "<p>The token that specifies the next page of results Amazon MQ should return. To request the first page, leave nextToken empty.</p>"
+          }
+        },
+        "required": [
+          "region"
+        ]
+      }
+    },
+    {
+      "name": "list_tags",
+      "description": "Execute the AWS AmazonMQ `list_tags` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region on which the broker is in"
+          },
+          "ResourceArn": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "region",
+          "ResourceArn"
+        ]
+      }
+    },
+    {
+      "name": "list_users",
+      "description": "Execute the AWS AmazonMQ `list_users` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region on which the broker is in"
+          },
+          "BrokerId": {
+            "type": "string",
+            "description": ""
+          },
+          "MaxResults": {
+            "type": "integer",
+            "description": "<p>The maximum number of brokers that Amazon MQ can return per page (20 by default). This value must be an integer from 5 to 100.</p>"
+          },
+          "NextToken": {
+            "type": "string",
+            "description": "<p>The token that specifies the next page of results Amazon MQ should return. To request the first page, leave nextToken empty.</p>"
+          }
+        },
+        "required": [
+          "region",
+          "BrokerId"
+        ]
+      }
+    },
+    {
+      "name": "promote",
+      "description": "Execute the AWS AmazonMQ `promote` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region on which the broker is in"
+          },
+          "Mode": {
+            "type": "string",
+            "description": ""
+          },
+          "BrokerId": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "region",
+          "Mode",
+          "BrokerId"
+        ]
+      }
+    },
+    {
+      "name": "reboot_broker",
+      "description": "Execute the AWS AmazonMQ `reboot_broker` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region on which the broker is in"
+          },
+          "BrokerId": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "region",
+          "BrokerId"
+        ]
+      }
+    },
+    {
+      "name": "update_broker",
+      "description": "Execute the AWS AmazonMQ `update_broker` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region on which the broker is in"
+          },
+          "BrokerId": {
+            "type": "string",
+            "description": ""
+          },
+          "AuthenticationStrategy": {
+            "type": "string",
+            "description": "<p>Optional. The authentication strategy used to secure the broker. The default is SIMPLE.</p>"
+          },
+          "AutoMinorVersionUpgrade": {
+            "type": "boolean",
+            "description": "<p>Enables automatic upgrades to new patch versions for brokers as new versions are released and supported by Amazon MQ. Automatic upgrades occur during the scheduled maintenance window or after a manual broker reboot.</p> <note><p>Must be set to true for ActiveMQ brokers version 5.18 and above and for RabbitMQ brokers version 3.13 and above.</p></note>"
+          },
+          "Configuration": {
+            "type": "string",
+            "description": "<p>A list of information about the configuration.</p>"
+          },
+          "EngineVersion": {
+            "type": "string",
+            "description": "<p>The broker engine version. For more information, see the <a href=\"https://docs.aws.amazon.com//amazon-mq/latest/developer-guide/activemq-version-management.html\">ActiveMQ version management</a> and the <a href=\"https://docs.aws.amazon.com//amazon-mq/latest/developer-guide/rabbitmq-version-management.html\">RabbitMQ version management</a> sections in the Amazon MQ Developer Guide.</p> <note><p>When upgrading to ActiveMQ version 5.18 and above or RabbitMQ version 3.13 and above, you must have autoMinorVersionUpgrade set to true for the broker.</p></note>"
+          },
+          "HostInstanceType": {
+            "type": "string",
+            "description": "<p>The broker's host instance type to upgrade to. For a list of supported instance types, see <a href=\"https://docs.aws.amazon.com//amazon-mq/latest/developer-guide/broker.html#broker-instance-types\">Broker instance types</a>.</p>"
+          },
+          "LdapServerMetadata": {
+            "type": "string",
+            "description": "<p>Optional. The metadata of the LDAP server used to authenticate and authorize connections to the broker. Does not apply to RabbitMQ brokers.</p>"
+          },
+          "Logs": {
+            "type": "string",
+            "description": "<p>Enables Amazon CloudWatch logging for brokers.</p>"
+          },
+          "MaintenanceWindowStartTime": {
+            "type": "string",
+            "description": "<p>The parameters that determine the WeeklyStartTime.</p>"
+          },
+          "SecurityGroups": {
+            "type": "string",
+            "description": "<p>The list of security groups (1 minimum, 5 maximum) that authorizes connections to brokers.</p>"
+          },
+          "DataReplicationMode": {
+            "type": "string",
+            "description": "<p>Defines whether this broker is a part of a data replication pair.</p>"
+          }
+        },
+        "required": [
+          "region",
+          "BrokerId"
+        ]
+      }
+    },
+    {
+      "name": "update_configuration",
+      "description": "Execute the AWS AmazonMQ `update_configuration` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region on which the broker is in"
+          },
+          "Data": {
+            "type": "string",
+            "description": ""
+          },
+          "ConfigurationId": {
+            "type": "string",
+            "description": ""
+          },
+          "Description": {
+            "type": "string",
+            "description": "<p>The description of the configuration.</p>"
+          }
+        },
+        "required": [
+          "region",
+          "Data",
+          "ConfigurationId"
+        ]
+      }
+    },
+    {
+      "name": "rabbimq_broker_initialize_connection",
+      "description": "Connect to a new RabbitMQ broker which authentication strategy is SIMPLE.\n\n            broker_hostname: The hostname of the broker. For example, b-a9565a64-da39-4afc-9239-c43a9376b5ba.mq.us-east-1.on.aws, b-9560b8e1-3d33-4d91-9488-a3dc4a61dfe7.mq.us-east-1.amazonaws.com\n            username: The username of user\n            password: The password of user\n            ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "broker_hostname": {
+            "type": "string",
+            "description": ""
+          },
+          "username": {
+            "type": "string",
+            "description": ""
+          },
+          "password": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "broker_hostname",
+          "username",
+          "password"
+        ]
+      }
+    },
+    {
+      "name": "rabbimq_broker_initialize_connection_with_oauth",
+      "description": "Connect to a new RabbitMQ broker using OAuth. It only applies to RabbitMQ broker which authentication strategy is config_managed.\n\n            broker_hostname: The hostname of the broker. For example, b-a9565a64-da39-4afc-9239-c43a9376b5ba.mq.us-east-1.on.aws, b-9560b8e1-3d33-4d91-9488-a3dc4a61dfe7.mq.us-east-1.amazonaws.com\n            oauth_token: A valid access token\n            ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "broker_hostname": {
+            "type": "string",
+            "description": ""
+          },
+          "oauth_token": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "broker_hostname",
+          "oauth_token"
+        ]
+      }
+    },
+    {
+      "name": "rabbitmq_broker_get_guideline",
+      "description": "Get the general best practices for deploying RabbitMQ on Amazon MQ.\n\n            - guideline_name: It can take the following value:\n                - rabbimq_broker_sizing_guide : this guide tells the customer what instance size to pick for production workload\n                - rabbitmq_broker_setup_best_practices_guide: this guide tells the customer what are the best practices in setting up the RabbitMQ broker\n                - rabbitmq_quorum_queue_migration_guide: this guide tells the customer how to migrate from classic mirror queue to quorum queue\n                - rabbitmq_client_performance_optimization_guide: this guide tells the customer how to optimize their application to get peformance gain of using RabbitMQ\n                - rabbitmq_check_broker_follow_best_practice_instructions: this contains instruction to check if a given RabbitMQ broker is following best practices\n            ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "guideline_name": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "guideline_name"
+        ]
+      }
+    },
+    {
+      "name": "rabbitmq_broker_list_queues",
+      "description": "List all the queues in the broker.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "rabbitmq_broker_list_exchanges",
+      "description": "List all the exchanges in the broker.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "rabbitmq_broker_list_vhosts",
+      "description": "List all the virtual hosts (vhosts) in the broker.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "rabbitmq_broker_get_queue_info",
+      "description": "Get detailed information about a specific queue.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "queue": {
+            "type": "string",
+            "description": ""
+          },
+          "vhost": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "queue"
+        ]
+      }
+    },
+    {
+      "name": "rabbitmq_broker_get_exchange_info",
+      "description": "Get detailed information about a specific exchange.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "exchange": {
+            "type": "string",
+            "description": ""
+          },
+          "vhost": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "exchange"
+        ]
+      }
+    },
+    {
+      "name": "rabbitmq_broker_list_shovels",
+      "description": "Get detailed information about shovels in the RabbitMQ broker.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "rabbitmq_broker_get_shovel_info",
+      "description": "Get detailed information about specific shovel by name that is in a selected virtual host (vhost) in the RabbitMQ broker.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": ""
+          },
+          "vhost": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "rabbitmq_broker_get_cluster_nodes_info",
+      "description": "Get the list of nodes and their info in the cluster.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "rabbitmq_broker_list_connections",
+      "description": "List all connections on the RabbitMQ broker.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "rabbitmq_broker_list_consumers",
+      "description": "List all consumers on the RabbitMQ broker.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "rabbitmq_broker_list_users",
+      "description": "List all users on the RabbitMQ broker.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "rabbitmq_broker_is_in_alarm",
+      "description": "Check if the RabbitMQ broker is in alarm.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "rabbitmq_broker_is_quorum_critical",
+      "description": "Check if there are quorum queues with minimum online quorum.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "rabbitmq_broker_get_broker_definition",
+      "description": "Get the RabbitMQ definitions: exchanges, queues, bindings, users, virtual hosts, permissions, topic permissions, and parameters. Everything apart from messages.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    }
+  ]
+}

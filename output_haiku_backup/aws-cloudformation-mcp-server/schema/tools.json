@@ -1,0 +1,211 @@
+{
+  "server": "aws-cloudformation-mcp-server",
+  "tools": [
+    {
+      "name": "get_resource_schema_information",
+      "description": "Get schema information for an AWS resource.\n\n    Parameters:\n        resource_type: The AWS resource type (e.g., \"AWS::S3::Bucket\")\n\n    Returns:\n        The resource schema information\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "resource_type": {
+            "type": "string",
+            "description": "The AWS resource type (e.g., \"AWS::S3::Bucket\", \"AWS::RDS::DBInstance\")"
+          },
+          "region": {
+            "type": "string",
+            "description": "The AWS region that the operation should be performed in"
+          }
+        },
+        "required": [
+          "resource_type"
+        ]
+      }
+    },
+    {
+      "name": "list_resources",
+      "description": "List AWS resources of a specified type.\n\n    Parameters:\n        resource_type: The AWS resource type (e.g., \"AWS::S3::Bucket\", \"AWS::RDS::DBInstance\")\n        region: AWS region to use (e.g., \"us-east-1\", \"us-west-2\")\n\n    Returns:\n        A list of resource identifiers\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "resource_type": {
+            "type": "string",
+            "description": "The AWS resource type (e.g., \"AWS::S3::Bucket\", \"AWS::RDS::DBInstance\")"
+          },
+          "region": {
+            "type": "string",
+            "description": "The AWS region that the operation should be performed in"
+          }
+        },
+        "required": [
+          "resource_type"
+        ]
+      }
+    },
+    {
+      "name": "get_resource",
+      "description": "Get details of a specific AWS resource.\n\n    Parameters:\n        resource_type: The AWS resource type (e.g., \"AWS::S3::Bucket\")\n        identifier: The primary identifier of the resource to get (e.g., bucket name for S3 buckets)\n        region: AWS region to use (e.g., \"us-east-1\", \"us-west-2\")\n\n    Returns:\n        Detailed information about the specified resource with a consistent structure:\n        {\n            \"identifier\": The resource identifier,\n            \"properties\": The detailed information about the resource\n        }\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "resource_type": {
+            "type": "string",
+            "description": "The AWS resource type (e.g., \"AWS::S3::Bucket\", \"AWS::RDS::DBInstance\")"
+          },
+          "identifier": {
+            "type": "string",
+            "description": "The primary identifier of the resource to get (e.g., bucket name for S3 buckets)"
+          },
+          "region": {
+            "type": "string",
+            "description": "The AWS region that the operation should be performed in"
+          }
+        },
+        "required": [
+          "resource_type",
+          "identifier"
+        ]
+      }
+    },
+    {
+      "name": "update_resource",
+      "description": "Update an AWS resource.\n\n    Parameters:\n        resource_type: The AWS resource type (e.g., \"AWS::S3::Bucket\")\n        identifier: The primary identifier of the resource to update\n        patch_document: A list of RFC 6902 JSON Patch operations to apply\n        region: AWS region to use (e.g., \"us-east-1\", \"us-west-2\")\n\n    Returns:\n        Information about the updated resource with a consistent structure:\n        {\n            \"status\": Status of the operation (\"SUCCESS\", \"PENDING\", \"FAILED\", etc.)\n            \"resource_type\": The AWS resource type\n            \"identifier\": The resource identifier\n            \"is_complete\": Boolean indicating whether the operation is complete\n            \"status_message\": Human-readable message describing the result\n            \"request_token\": A token that allows you to track long running operations via the get_resource_request_status tool\n            \"resource_info\": Optional information about the resource properties\n        }\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "resource_type": {
+            "type": "string",
+            "description": "The AWS resource type (e.g., \"AWS::S3::Bucket\", \"AWS::RDS::DBInstance\")"
+          },
+          "identifier": {
+            "type": "string",
+            "description": "The primary identifier of the resource to get (e.g., bucket name for S3 buckets)"
+          },
+          "patch_document": {
+            "type": "array",
+            "description": "A list of RFC 6902 JSON Patch operations to apply"
+          },
+          "region": {
+            "type": "string",
+            "description": "The AWS region that the operation should be performed in"
+          }
+        },
+        "required": [
+          "resource_type",
+          "identifier"
+        ]
+      }
+    },
+    {
+      "name": "create_resource",
+      "description": "Create an AWS resource.\n\n    Parameters:\n        resource_type: The AWS resource type (e.g., \"AWS::S3::Bucket\")\n        properties: A dictionary of properties for the resource\n        region: AWS region to use (e.g., \"us-east-1\", \"us-west-2\")\n\n    Returns:\n        Information about the created resource with a consistent structure:\n        {\n            \"status\": Status of the operation (\"SUCCESS\", \"PENDING\", \"FAILED\", etc.)\n            \"resource_type\": The AWS resource type\n            \"identifier\": The resource identifier\n            \"is_complete\": Boolean indicating whether the operation is complete\n            \"status_message\": Human-readable message describing the result\n            \"request_token\": A token that allows you to track long running operations via the get_resource_request_status tool\n            \"resource_info\": Optional information about the resource properties\n        }\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "resource_type": {
+            "type": "string",
+            "description": "The AWS resource type (e.g., \"AWS::S3::Bucket\", \"AWS::RDS::DBInstance\")"
+          },
+          "properties": {
+            "type": "object",
+            "description": "A dictionary of properties for the resource"
+          },
+          "region": {
+            "type": "string",
+            "description": "The AWS region that the operation should be performed in"
+          }
+        },
+        "required": [
+          "resource_type",
+          "properties"
+        ]
+      }
+    },
+    {
+      "name": "delete_resource",
+      "description": "Delete an AWS resource.\n\n    Parameters:\n        resource_type: The AWS resource type (e.g., \"AWS::S3::Bucket\")\n        identifier: The primary identifier of the resource to delete (e.g., bucket name for S3 buckets)\n        region: AWS region to use (e.g., \"us-east-1\", \"us-west-2\")\n\n    Returns:\n        Information about the deletion operation with a consistent structure:\n        {\n            \"status\": Status of the operation (\"SUCCESS\", \"PENDING\", \"FAILED\", \"NOT_FOUND\", etc.)\n            \"resource_type\": The AWS resource type\n            \"identifier\": The resource identifier\n            \"is_complete\": Boolean indicating whether the operation is complete\n            \"status_message\": Human-readable message describing the result\n            \"request_token\": A token that allows you to track long running operations via the get_resource_request_status tool\n        }\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "resource_type": {
+            "type": "string",
+            "description": "The AWS resource type (e.g., \"AWS::S3::Bucket\", \"AWS::RDS::DBInstance\")"
+          },
+          "identifier": {
+            "type": "string",
+            "description": "The primary identifier of the resource to get (e.g., bucket name for S3 buckets)"
+          },
+          "region": {
+            "type": "string",
+            "description": "The AWS region that the operation should be performed in"
+          }
+        },
+        "required": [
+          "resource_type",
+          "identifier"
+        ]
+      }
+    },
+    {
+      "name": "get_resource_request_status",
+      "description": "Get the status of a long running operation with the request token.\n\n    Args:\n        request_token: The request_token returned from the long running operation\n        region: AWS region to use (e.g., \"us-east-1\", \"us-west-2\")\n\n    Returns:\n        Detailed information about the request status structured as\n        {\n            \"status\": Status of the operation (\"SUCCESS\", \"PENDING\", \"FAILED\", \"NOT_FOUND\", etc.)\n            \"resource_type\": The AWS resource type\n            \"identifier\": The resource identifier\n            \"is_complete\": Boolean indicating whether the operation is complete\n            \"status_message\": Human-readable message describing the result\n            \"request_token\": A token that allows you to track long running operations via the get_resource_request_status tool\n            \"error_code\": A code associated with any errors if the request failed\n            \"retry_after\": A duration to wait before retrying the request\n        }\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "request_token": {
+            "type": "string",
+            "description": "The request_token returned from the long running operation"
+          },
+          "region": {
+            "type": "string",
+            "description": "The AWS region that the operation should be performed in"
+          }
+        },
+        "required": [
+          "request_token"
+        ]
+      }
+    },
+    {
+      "name": "create_template",
+      "description": "Create a CloudFormation template from existing resources using the IaC Generator API.\n\n    This tool allows you to generate CloudFormation templates from existing AWS resources\n    that are not already managed by CloudFormation. The template generation process is\n    asynchronous, so you can check the status of the process and retrieve the template\n    once it's complete. You can pass up to 500 resources at a time.\n\n    Examples:\n    1. Start template generation for an S3 bucket:\n       create_template(\n           template_name=\"my-template\",\n           resources=[{\"ResourceType\": \"AWS::S3::Bucket\", \"ResourceIdentifier\": {\"BucketName\": \"my-bucket\"}}],\n           deletion_policy=\"RETAIN\",\n           update_replace_policy=\"RETAIN\"\n       )\n\n    2. Check status of template generation:\n       create_template(template_id=\"arn:aws:cloudformation:us-east-1:123456789012:generatedtemplate/abcdef12-3456-7890-abcd-ef1234567890\")\n\n    3. Retrieve and save generated template:\n       create_template(\n           template_id=\"arn:aws:cloudformation:us-east-1:123456789012:generatedtemplate/abcdef12-3456-7890-abcd-ef1234567890\",\n           save_to_file=\"/path/to/template.yaml\",\n           output_format=\"YAML\"\n       )\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "template_name": {
+            "type": "string",
+            "description": "Name for the generated template"
+          },
+          "resources": {
+            "type": "string",
+            "description": "List of resources to include in the template, each with 'ResourceType' and 'ResourceIdentifier'"
+          },
+          "output_format": {
+            "type": "string",
+            "description": "Output format for the template (JSON or YAML)"
+          },
+          "deletion_policy": {
+            "type": "string",
+            "description": "Default DeletionPolicy for resources in the template (RETAIN, DELETE, or SNAPSHOT)"
+          },
+          "update_replace_policy": {
+            "type": "string",
+            "description": "Default UpdateReplacePolicy for resources in the template (RETAIN, DELETE, or SNAPSHOT)"
+          },
+          "template_id": {
+            "type": "string",
+            "description": "ID of an existing template generation process to check status or retrieve template"
+          },
+          "save_to_file": {
+            "type": "string",
+            "description": "Path to save the generated template to a file"
+          },
+          "region": {
+            "type": "string",
+            "description": "The AWS region that the operation should be performed in"
+          }
+        },
+        "required": []
+      }
+    }
+  ]
+}

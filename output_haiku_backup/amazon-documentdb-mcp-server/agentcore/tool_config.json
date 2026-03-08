@@ -1,0 +1,523 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "connect",
+        "description": "Connect to an AWS DocumentDB cluster.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "connection_string": {
+                "type": "string",
+                "description": "DocumentDB connection string. Example: \"mongodb://user:pass@docdb-cluster.cluster-xyz.us-west-2.docdb.amazonaws.com:27017/?tls=true&tlsCAFile=global-bundle.pem\""
+              }
+            },
+            "required": [
+              "connection_string"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "disconnect",
+        "description": "Close a connection to DocumentDB.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "connection_id": {
+                "type": "string",
+                "description": "The connection ID returned by the connect tool"
+              }
+            },
+            "required": [
+              "connection_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "find",
+        "description": "Run a query against a DocumentDB collection.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "connection_id": {
+                "type": "string",
+                "description": "The connection ID returned by the connect tool"
+              },
+              "database": {
+                "type": "string",
+                "description": "Name of the database"
+              },
+              "collection": {
+                "type": "string",
+                "description": "Name of the collection"
+              },
+              "query": {
+                "type": "object",
+                "description": "Query filter (e.g., {\"name\": \"example\"})"
+              },
+              "projection": {
+                "type": "string",
+                "description": "Fields to include/exclude (e.g., {\"_id\": 0, \"name\": 1})"
+              },
+              "limit": {
+                "type": "integer",
+                "description": "Maximum number of documents to return (default: 10)"
+              }
+            },
+            "required": [
+              "connection_id",
+              "database",
+              "collection",
+              "query"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "aggregate",
+        "description": "Run an aggregation pipeline against a DocumentDB collection.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "connection_id": {
+                "type": "string",
+                "description": "The connection ID returned by the connect tool"
+              },
+              "database": {
+                "type": "string",
+                "description": "Name of the database"
+              },
+              "collection": {
+                "type": "string",
+                "description": "Name of the collection"
+              },
+              "pipeline": {
+                "type": "array",
+                "description": "DocumentDB aggregation pipeline"
+              },
+              "limit": {
+                "type": "integer",
+                "description": "Maximum number of documents to return (default: 10)"
+              }
+            },
+            "required": [
+              "connection_id",
+              "database",
+              "collection",
+              "pipeline"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "insert",
+        "description": "Insert one or more documents into a DocumentDB collection.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "connection_id": {
+                "type": "string",
+                "description": "The connection ID returned by the connect tool"
+              },
+              "database": {
+                "type": "string",
+                "description": "Name of the database"
+              },
+              "collection": {
+                "type": "string",
+                "description": "Name of the collection"
+              },
+              "documents": {
+                "type": "string",
+                "description": "Document or list of documents to insert"
+              }
+            },
+            "required": [
+              "connection_id",
+              "database",
+              "collection",
+              "documents"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "update",
+        "description": "Update documents in a DocumentDB collection.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "connection_id": {
+                "type": "string",
+                "description": "The connection ID returned by the connect tool"
+              },
+              "database": {
+                "type": "string",
+                "description": "Name of the database"
+              },
+              "collection": {
+                "type": "string",
+                "description": "Name of the collection"
+              },
+              "filter": {
+                "type": "object",
+                "description": "Filter to select documents to update"
+              },
+              "update": {
+                "type": "object",
+                "description": "Update operations to apply. It should either include DocumentDB operators like $set, or an entire document if the entire document needs to be replaced."
+              },
+              "upsert": {
+                "type": "boolean",
+                "description": "Whether to create a new document if no match is found (default: False)"
+              },
+              "many": {
+                "type": "boolean",
+                "description": "Whether to update multiple documents (default: False)"
+              }
+            },
+            "required": [
+              "connection_id",
+              "database",
+              "collection",
+              "filter",
+              "update"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "delete",
+        "description": "Delete documents from a DocumentDB collection.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "connection_id": {
+                "type": "string",
+                "description": "The connection ID returned by the connect tool"
+              },
+              "database": {
+                "type": "string",
+                "description": "Name of the database"
+              },
+              "collection": {
+                "type": "string",
+                "description": "Name of the collection"
+              },
+              "filter": {
+                "type": "object",
+                "description": "Filter to select documents to delete"
+              },
+              "many": {
+                "type": "boolean",
+                "description": "Whether to delete multiple documents (default: False)"
+              }
+            },
+            "required": [
+              "connection_id",
+              "database",
+              "collection",
+              "filter"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "listDatabases",
+        "description": "List all available databases in the DocumentDB cluster.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "connection_id": {
+                "type": "string",
+                "description": "The connection ID returned by the connect tool"
+              }
+            },
+            "required": [
+              "connection_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "createCollection",
+        "description": "Create a new collection in a DocumentDB database.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "connection_id": {
+                "type": "string",
+                "description": "The connection ID returned by the connect tool"
+              },
+              "database": {
+                "type": "string",
+                "description": "Name of the database"
+              },
+              "collection": {
+                "type": "string",
+                "description": "Name of the collection to create"
+              }
+            },
+            "required": [
+              "connection_id",
+              "database",
+              "collection"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "listCollections",
+        "description": "List collections in a DocumentDB database.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "connection_id": {
+                "type": "string",
+                "description": "The connection ID returned by the connect tool"
+              },
+              "database": {
+                "type": "string",
+                "description": "Name of the database"
+              }
+            },
+            "required": [
+              "connection_id",
+              "database"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "dropCollection",
+        "description": "Drop a collection from a DocumentDB database.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "connection_id": {
+                "type": "string",
+                "description": "The connection ID returned by the connect tool"
+              },
+              "database": {
+                "type": "string",
+                "description": "Name of the database"
+              },
+              "collection": {
+                "type": "string",
+                "description": "Name of the collection to drop"
+              }
+            },
+            "required": [
+              "connection_id",
+              "database",
+              "collection"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "countDocuments",
+        "description": "Count documents in a DocumentDB collection.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "connection_id": {
+                "type": "string",
+                "description": "The connection ID returned by the connect tool"
+              },
+              "database": {
+                "type": "string",
+                "description": "Name of the database"
+              },
+              "collection": {
+                "type": "string",
+                "description": "Name of the collection"
+              },
+              "filter": {
+                "type": "string",
+                "description": "Query filter to count specific documents"
+              }
+            },
+            "required": [
+              "connection_id",
+              "database",
+              "collection"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "getDatabaseStats",
+        "description": "Get statistics about a DocumentDB database.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "connection_id": {
+                "type": "string",
+                "description": "The connection ID returned by the connect tool"
+              },
+              "database": {
+                "type": "string",
+                "description": "Name of the database"
+              }
+            },
+            "required": [
+              "connection_id",
+              "database"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "getCollectionStats",
+        "description": "Get statistics about a DocumentDB collection.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "connection_id": {
+                "type": "string",
+                "description": "The connection ID returned by the connect tool"
+              },
+              "database": {
+                "type": "string",
+                "description": "Name of the database"
+              },
+              "collection": {
+                "type": "string",
+                "description": "Name of the collection"
+              }
+            },
+            "required": [
+              "connection_id",
+              "database",
+              "collection"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "analyzeSchema",
+        "description": "Analyze the schema of a collection by sampling documents.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "connection_id": {
+                "type": "string",
+                "description": "The connection ID returned by the connect tool"
+              },
+              "database": {
+                "type": "string",
+                "description": "Name of the database"
+              },
+              "collection": {
+                "type": "string",
+                "description": "Name of the collection to analyze"
+              },
+              "sample_size": {
+                "type": "integer",
+                "description": "Number of documents to sample (default: 100)"
+              }
+            },
+            "required": [
+              "connection_id",
+              "database",
+              "collection"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "explainOperation",
+        "description": "Get an explanation of how an operation will be executed.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "connection_id": {
+                "type": "string",
+                "description": "The connection ID returned by the connect tool"
+              },
+              "database": {
+                "type": "string",
+                "description": "Name of the database"
+              },
+              "collection": {
+                "type": "string",
+                "description": "Name of the collection"
+              },
+              "operation_type": {
+                "type": "string",
+                "description": "Type of operation to explain (find, aggregate)"
+              },
+              "query": {
+                "type": "string",
+                "description": "Query for find operations"
+              },
+              "pipeline": {
+                "type": "string",
+                "description": "Pipeline for DocumentDB aggregation operations"
+              },
+              "verbosity": {
+                "type": "string",
+                "description": "Explanation verbosity level (queryPlanner, executionStats)"
+              }
+            },
+            "required": [
+              "connection_id",
+              "database",
+              "collection",
+              "operation_type"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

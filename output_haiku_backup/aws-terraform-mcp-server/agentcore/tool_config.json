@@ -1,0 +1,226 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "ExecuteTerraformCommand",
+        "description": "Execute Terraform workflow commands against an AWS account.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "command": {
+                "type": "string",
+                "description": "Terraform command to execute"
+              },
+              "working_directory": {
+                "type": "string",
+                "description": "Directory containing Terraform files"
+              },
+              "variables": {
+                "type": "string",
+                "description": "Terraform variables to pass"
+              },
+              "aws_region": {
+                "type": "string",
+                "description": "AWS region to use"
+              },
+              "strip_ansi": {
+                "type": "boolean",
+                "description": "Whether to strip ANSI color codes from output"
+              }
+            },
+            "required": [
+              "command",
+              "working_directory"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "ExecuteTerragruntCommand",
+        "description": "Execute Terragrunt workflow commands against an AWS account.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "command": {
+                "type": "string",
+                "description": "Terragrunt command to execute"
+              },
+              "working_directory": {
+                "type": "string",
+                "description": "Directory containing Terragrunt files"
+              },
+              "variables": {
+                "type": "string",
+                "description": "Terraform variables to pass"
+              },
+              "aws_region": {
+                "type": "string",
+                "description": "AWS region to use"
+              },
+              "strip_ansi": {
+                "type": "boolean",
+                "description": "Whether to strip ANSI color codes from output"
+              },
+              "include_dirs": {
+                "type": "string",
+                "description": "Directories to include in a multi-module run"
+              },
+              "exclude_dirs": {
+                "type": "string",
+                "description": "Directories to exclude from a multi-module run"
+              },
+              "run_all": {
+                "type": "boolean",
+                "description": "Run command on all modules in subdirectories"
+              },
+              "terragrunt_config": {
+                "type": "string",
+                "description": "Path to a custom terragrunt config file (not valid with run-all)"
+              }
+            },
+            "required": [
+              "command",
+              "working_directory"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "SearchAwsProviderDocs",
+        "description": "Search AWS provider documentation for resources and attributes.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "asset_name": {
+                "type": "string",
+                "description": "Name of the AWS service (asset) to look for (e.g., \"aws_s3_bucket\", \"aws_lambda_function\")"
+              },
+              "asset_type": {
+                "type": "string",
+                "description": "Type of documentation to search - 'resource' (default), 'data_source', or 'both'"
+              }
+            },
+            "required": [
+              "asset_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "SearchAwsccProviderDocs",
+        "description": "Search AWSCC provider documentation for resources and attributes.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "asset_name": {
+                "type": "string",
+                "description": "Name of the AWSCC service (asset) to look for (e.g., awscc_s3_bucket, awscc_lambda_function)"
+              },
+              "asset_type": {
+                "type": "string",
+                "description": "Type of documentation to search - 'resource' (default), 'data_source', or 'both'"
+              }
+            },
+            "required": [
+              "asset_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "SearchSpecificAwsIaModules",
+        "description": "Search for specific AWS-IA Terraform modules.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "Optional search term to filter modules (empty returns all four modules)"
+              }
+            },
+            "required": [
+              "query"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "RunCheckovScan",
+        "description": "Run Checkov security scan on Terraform code.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "working_directory": {
+                "type": "string",
+                "description": "Directory containing Terraform files"
+              },
+              "framework": {
+                "type": "string",
+                "description": "Framework to scan (terraform, cloudformation, etc.)"
+              },
+              "check_ids": {
+                "type": "string",
+                "description": "Specific check IDs to run"
+              },
+              "skip_check_ids": {
+                "type": "string",
+                "description": "Check IDs to skip"
+              },
+              "output_format": {
+                "type": "string",
+                "description": "Output format (json, cli, etc.)"
+              }
+            },
+            "required": [
+              "working_directory"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "SearchUserProvidedModule",
+        "description": "Search for a user-provided Terraform registry module and understand its inputs, outputs, and usage.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "module_url": {
+                "type": "string",
+                "description": "URL or identifier of the Terraform module (e.g., \"hashicorp/consul/aws\")"
+              },
+              "version": {
+                "type": "string",
+                "description": "Specific version of the module to analyze"
+              },
+              "variables": {
+                "type": "string",
+                "description": "Variables to use when analyzing the module"
+              }
+            },
+            "required": [
+              "module_url"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "readonly_query",
+        "description": "Run a read-only SQL query against the configured Aurora DSQL cluster.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "sql": {
+                "type": "string",
+                "description": "The SQL query to run"
+              }
+            },
+            "required": [
+              "sql"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "transact",
+        "description": "Execute SQL statements in a transaction against the configured Aurora DSQL cluster.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "sql_list": {
+                "type": "array",
+                "description": "List of one or more SQL statements to execute in a transaction"
+              }
+            },
+            "required": [
+              "sql_list"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_schema",
+        "description": "Get the schema of the given table",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "table_name": {
+                "type": "string",
+                "description": "name of the table"
+              }
+            },
+            "required": [
+              "table_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "dsql_search_documentation",
+        "description": "Search Aurora DSQL documentation",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "search_phrase": {
+                "type": "string",
+                "description": "Search phrase to use"
+              },
+              "limit": {
+                "type": "string",
+                "description": "Maximum number of results to return"
+              }
+            },
+            "required": [
+              "search_phrase"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "dsql_read_documentation",
+        "description": "Read specific DSQL documentation pages",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "Specific url to read"
+              },
+              "start_index": {
+                "type": "string",
+                "description": "Starting character index"
+              },
+              "max_length": {
+                "type": "string",
+                "description": "Maximum number of characters to return"
+              }
+            },
+            "required": [
+              "url"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "dsql_recommend",
+        "description": "Get recommendations for DSQL best practices",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "URL of the documentation page to get recommendations for"
+              }
+            },
+            "required": [
+              "url"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

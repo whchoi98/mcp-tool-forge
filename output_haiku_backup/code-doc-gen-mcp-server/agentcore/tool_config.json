@@ -1,0 +1,94 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "prepare_repository",
+        "description": "Prepare repository for the MCP client's analysis.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "project_root": {
+                "type": "string",
+                "description": "Path to the code repository"
+              }
+            },
+            "required": [
+              "project_root"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create_context",
+        "description": "Create a DocumentationContext from a ProjectAnalysis.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "project_root": {
+                "type": "string",
+                "description": "Path to the code repository"
+              },
+              "analysis": {
+                "type": "string",
+                "description": "Completed ProjectAnalysis from prepare_repository"
+              }
+            },
+            "required": [
+              "project_root",
+              "analysis"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "plan_documentation",
+        "description": "Third step: Create documentation plan using analysis.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "doc_context": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "doc_context"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "generate_documentation",
+        "description": "Final step: Generate documentation content.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "plan": {
+                "type": "string",
+                "description": ""
+              },
+              "doc_context": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "plan",
+              "doc_context"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

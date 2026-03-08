@@ -1,0 +1,599 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "list_table_buckets",
+        "description": "List all S3 table buckets for your AWS account.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "region_name": {
+                "type": "string",
+                "description": "The AWS region name where the operation should be performed."
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_namespaces",
+        "description": "List all namespaces across all S3 table buckets.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "region_name": {
+                "type": "string",
+                "description": "The AWS region name where the operation should be performed."
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_tables",
+        "description": "List all S3 tables across all table buckets and namespaces.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "region_name": {
+                "type": "string",
+                "description": "The AWS region name where the operation should be performed."
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create_table_bucket",
+        "description": "Creates an S3 table bucket.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the table bucket to create. Must be 3-63 characters long and contain only lowercase letters, numbers, and hyphens."
+              },
+              "region_name": {
+                "type": "string",
+                "description": "The AWS region name where the operation should be performed."
+              }
+            },
+            "required": [
+              "name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create_namespace",
+        "description": "Create a new namespace in an S3 table bucket.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "table_bucket_arn": {
+                "type": "string",
+                "description": "Table bucket ARN"
+              },
+              "namespace": {
+                "type": "string",
+                "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "region_name": {
+                "type": "string",
+                "description": "The AWS region name where the operation should be performed."
+              }
+            },
+            "required": [
+              "table_bucket_arn",
+              "namespace"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create_table",
+        "description": "Create a new S3 table in an S3 table bucket.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "table_bucket_arn": {
+                "type": "string",
+                "description": "Table bucket ARN"
+              },
+              "namespace": {
+                "type": "string",
+                "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the table. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "format": {
+                "type": "string",
+                "description": "The format for the S3 table."
+              },
+              "metadata": {
+                "type": "string",
+                "description": "The metadata for the S3 table."
+              },
+              "region_name": {
+                "type": "string",
+                "description": "The AWS region name where the operation should be performed."
+              }
+            },
+            "required": [
+              "table_bucket_arn",
+              "namespace",
+              "name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_table_maintenance_config",
+        "description": "Get details about the maintenance configuration of a table.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "table_bucket_arn": {
+                "type": "string",
+                "description": "Table bucket ARN"
+              },
+              "namespace": {
+                "type": "string",
+                "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the table. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "region_name": {
+                "type": "string",
+                "description": "The AWS region name where the operation should be performed."
+              }
+            },
+            "required": [
+              "table_bucket_arn",
+              "namespace",
+              "name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_maintenance_job_status",
+        "description": "Get the status of a maintenance job for a table.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "table_bucket_arn": {
+                "type": "string",
+                "description": "Table bucket ARN"
+              },
+              "namespace": {
+                "type": "string",
+                "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the table. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "region_name": {
+                "type": "string",
+                "description": "The AWS region name where the operation should be performed."
+              }
+            },
+            "required": [
+              "table_bucket_arn",
+              "namespace",
+              "name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_table_metadata_location",
+        "description": "Get the location of the S3 table metadata.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "table_bucket_arn": {
+                "type": "string",
+                "description": "Table bucket ARN"
+              },
+              "namespace": {
+                "type": "string",
+                "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the table. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "region_name": {
+                "type": "string",
+                "description": "The AWS region name where the operation should be performed."
+              }
+            },
+            "required": [
+              "table_bucket_arn",
+              "namespace",
+              "name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "rename_table",
+        "description": "Rename an S3 table or move it to a different S3 namespace.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "table_bucket_arn": {
+                "type": "string",
+                "description": "Table bucket ARN"
+              },
+              "namespace": {
+                "type": "string",
+                "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the table. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "new_name": {
+                "type": "string",
+                "description": "The name of the table. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "new_namespace_name": {
+                "type": "string",
+                "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "version_token": {
+                "type": "string",
+                "description": "The version token of the S3 table. Must be 1-2048 characters long."
+              },
+              "region_name": {
+                "type": "string",
+                "description": "The AWS region name where the operation should be performed."
+              }
+            },
+            "required": [
+              "table_bucket_arn",
+              "namespace",
+              "name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "update_table_metadata_location",
+        "description": "Update the metadata location for an S3 table.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "table_bucket_arn": {
+                "type": "string",
+                "description": "Table bucket ARN"
+              },
+              "namespace": {
+                "type": "string",
+                "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the table. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "metadata_location": {
+                "type": "string",
+                "description": "The new metadata location for the S3 table. Must be 1-2048 characters long."
+              },
+              "version_token": {
+                "type": "string",
+                "description": "The version token of the S3 table. Must be 1-2048 characters long."
+              },
+              "region_name": {
+                "type": "string",
+                "description": "The AWS region name where the operation should be performed."
+              }
+            },
+            "required": [
+              "table_bucket_arn",
+              "namespace",
+              "name",
+              "metadata_location",
+              "version_token"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "query_database",
+        "description": "Execute SQL queries against S3 Tables using PyIceberg/Daft.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "warehouse": {
+                "type": "string",
+                "description": "Warehouse string for Iceberg catalog"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region for S3Tables/Iceberg REST endpoint"
+              },
+              "namespace": {
+                "type": "string",
+                "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "query": {
+                "type": "string",
+                "description": "Optional SQL query. If not provided, will execute SELECT * FROM table. Must be a read operation."
+              },
+              "uri": {
+                "type": "string",
+                "description": "REST URI for Iceberg catalog"
+              },
+              "catalog_name": {
+                "type": "string",
+                "description": "Catalog name"
+              },
+              "rest_signing_name": {
+                "type": "string",
+                "description": "REST signing name"
+              },
+              "rest_sigv4_enabled": {
+                "type": "string",
+                "description": "Enable SigV4 signing"
+              }
+            },
+            "required": [
+              "warehouse",
+              "region",
+              "namespace",
+              "uri"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "import_csv_to_table",
+        "description": "Import data from a CSV file into an S3 table.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "warehouse": {
+                "type": "string",
+                "description": "Warehouse string for Iceberg catalog"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region for S3Tables/Iceberg REST endpoint"
+              },
+              "namespace": {
+                "type": "string",
+                "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "table_name": {
+                "type": "string",
+                "description": "The name of the table. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "s3_url": {
+                "type": "string",
+                "description": "The S3 URL of the file to preview (format: s3://bucket-name/key)"
+              },
+              "uri": {
+                "type": "string",
+                "description": "REST URI for Iceberg catalog"
+              },
+              "catalog_name": {
+                "type": "string",
+                "description": "Catalog name"
+              },
+              "rest_signing_name": {
+                "type": "string",
+                "description": "REST signing name"
+              },
+              "rest_sigv4_enabled": {
+                "type": "string",
+                "description": "Enable SigV4 signing"
+              },
+              "preserve_case": {
+                "type": "boolean",
+                "description": "Preserve case of column names"
+              }
+            },
+            "required": [
+              "warehouse",
+              "region",
+              "namespace",
+              "table_name",
+              "s3_url",
+              "uri"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "import_parquet_to_table",
+        "description": "Import data from a Parquet file into an existing S3 table.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "warehouse": {
+                "type": "string",
+                "description": "Warehouse string for Iceberg catalog"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region for S3Tables/Iceberg REST endpoint"
+              },
+              "namespace": {
+                "type": "string",
+                "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "table_name": {
+                "type": "string",
+                "description": "The name of the table. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "s3_url": {
+                "type": "string",
+                "description": "The S3 URL of the file to preview (format: s3://bucket-name/key)"
+              },
+              "uri": {
+                "type": "string",
+                "description": "REST URI for Iceberg catalog"
+              },
+              "catalog_name": {
+                "type": "string",
+                "description": "Catalog name"
+              },
+              "rest_signing_name": {
+                "type": "string",
+                "description": "REST signing name"
+              },
+              "rest_sigv4_enabled": {
+                "type": "string",
+                "description": "Enable SigV4 signing"
+              },
+              "preserve_case": {
+                "type": "boolean",
+                "description": "Preserve case of column names"
+              }
+            },
+            "required": [
+              "warehouse",
+              "region",
+              "namespace",
+              "table_name",
+              "s3_url",
+              "uri"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_bucket_metadata_config",
+        "description": "Get the metadata table configuration for a regular general purpose S3 bucket.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "bucket": {
+                "type": "string",
+                "description": "The name of the S3 bucket to get metadata table configuration for."
+              },
+              "region_name": {
+                "type": "string",
+                "description": "The AWS region name where the operation should be performed."
+              }
+            },
+            "required": [
+              "bucket"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "append_rows_to_table",
+        "description": "Append rows to an Iceberg table using PyIceberg/Daft.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "warehouse": {
+                "type": "string",
+                "description": "Warehouse string for Iceberg catalog"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region for S3Tables/Iceberg REST endpoint"
+              },
+              "namespace": {
+                "type": "string",
+                "description": "The name of the namespace. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "table_name": {
+                "type": "string",
+                "description": "The name of the table. Must be 1-255 characters long and contain only alphanumeric characters, underscores, and hyphens."
+              },
+              "rows": {
+                "type": "array",
+                "description": "List of rows to append, each as a dict"
+              },
+              "uri": {
+                "type": "string",
+                "description": "REST URI for Iceberg catalog"
+              },
+              "catalog_name": {
+                "type": "string",
+                "description": "Catalog name"
+              },
+              "rest_signing_name": {
+                "type": "string",
+                "description": "REST signing name"
+              },
+              "rest_sigv4_enabled": {
+                "type": "string",
+                "description": "Enable SigV4 signing"
+              }
+            },
+            "required": [
+              "warehouse",
+              "region",
+              "namespace",
+              "table_name",
+              "rows",
+              "uri"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

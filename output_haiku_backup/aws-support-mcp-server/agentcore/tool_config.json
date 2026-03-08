@@ -1,0 +1,211 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "create_support_case",
+        "description": "Create a new AWS Support case.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "subject": {
+                "type": "string",
+                "description": "The subject of the support case"
+              },
+              "service_code": {
+                "type": "string",
+                "description": "The code for the AWS service. Use describe_services get valid codes."
+              },
+              "category_code": {
+                "type": "string",
+                "description": "The category code for the issue. Use describe_services to get valid codes."
+              },
+              "severity_code": {
+                "type": "string",
+                "description": "The severity code for the issue. Use describe_severity_levels to get valid codes."
+              },
+              "communication_body": {
+                "type": "string",
+                "description": "The initial communication for the case"
+              },
+              "cc_email_addresses": {
+                "type": "string",
+                "description": "Email addresses to CC on the case"
+              },
+              "language": {
+                "type": "string",
+                "description": "The language of the case (ISO 639-1 code)"
+              },
+              "issue_type": {
+                "type": "string",
+                "description": "The type of issue: technical, account-and-billing, or service-limit"
+              },
+              "attachment_set_id": {
+                "type": "string",
+                "description": "The ID of the attachment set"
+              }
+            },
+            "required": [
+              "subject",
+              "service_code",
+              "category_code",
+              "severity_code",
+              "communication_body"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe_support_cases",
+        "description": "Retrieve information about support cases.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "case_id_list": {
+                "type": "string",
+                "description": "List of case IDs to retrieve"
+              },
+              "display_id": {
+                "type": "string",
+                "description": "The display ID of the case"
+              },
+              "after_time": {
+                "type": "string",
+                "description": "The start date for a filtered date search (ISO 8601 format)"
+              },
+              "before_time": {
+                "type": "string",
+                "description": "The end date for a filtered date search (ISO 8601 format)"
+              },
+              "include_resolved_cases": {
+                "type": "boolean",
+                "description": "Include resolved cases in the results"
+              },
+              "include_communications": {
+                "type": "boolean",
+                "description": "Include communications in the results"
+              },
+              "language": {
+                "type": "string",
+                "description": "The language of the case (ISO 639-1 code)"
+              },
+              "max_results": {
+                "type": "string",
+                "description": "The maximum number of results to return"
+              },
+              "next_token": {
+                "type": "string",
+                "description": "A resumption point for pagination"
+              },
+              "format": {
+                "type": "string",
+                "description": "The format of the response (json or markdown)"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe_severity_levels",
+        "description": "Retrieve information about AWS Support severity levels. This tool provides details about the available severity levels for AWS Support cases, including their codes and descriptions.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "format": {
+                "type": "string",
+                "description": "The format of the response in markdown or json"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "add_communication_to_case",
+        "description": "Add communication to a support case.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "case_id": {
+                "type": "string",
+                "description": "The ID of the support case"
+              },
+              "communication_body": {
+                "type": "string",
+                "description": "The text of the communication"
+              },
+              "cc_email_addresses": {
+                "type": "string",
+                "description": "Email addresses to CC on the communication"
+              },
+              "attachment_set_id": {
+                "type": "string",
+                "description": "The ID of the attachment set"
+              }
+            },
+            "required": [
+              "case_id",
+              "communication_body"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "resolve_support_case",
+        "description": "Resolve a support case.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "case_id": {
+                "type": "string",
+                "description": "The ID of the support case"
+              }
+            },
+            "required": [
+              "case_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe_services",
+        "description": "Retrieve information about AWS services available for support cases.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "service_code_list": {
+                "type": "string",
+                "description": "Optional list of service codes to filter results"
+              },
+              "language": {
+                "type": "string",
+                "description": "The language code (e.g., 'en' for English, 'ja' for Japanese)"
+              },
+              "format": {
+                "type": "string",
+                "description": "The format of the response (json or markdown)"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    }
+  ]
+}

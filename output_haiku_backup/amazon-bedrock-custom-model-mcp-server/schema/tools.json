@@ -1,0 +1,97 @@
+{
+  "server": "amazon-bedrock-custom-model-mcp-server",
+  "tools": [
+    {
+      "name": "create_model_import_job",
+      "description": "Create a model import job to import a model into Amazon Bedrock.\n\nThis tool creates a model import job in Amazon Bedrock to import a custom model.\nThe job name and model name are mandatory parameters. The S3 URI for the model data source\nis optional and will be automatically inferred from the model name if not provided.\n\n## Usage Instructions\n1. Create descriptive job and model names based on the model you want to import\n   - The tool itself will automatically add a timestamp suffix to distinguish names from multiple imports\n   - Example: For a LLAMA-2 model, use \"llama-2-import-job\" and \"llama-2\" for job name and model name respectively\n2. The S3 URI is NOT required - it will be automatically inferred from the model name\n3. For advanced configurations, you can optionally specify:\n   - Role ARN for permissions\n   - VPC configuration for secure imports\n   - KMS key for encryption\n   - Tags for resource organization\n\n## Best Practices\n- Use clear, descriptive names for both jobName and importedModelName\n- Name the model based on its architecture and purpose (e.g., \"llama-2-7b-chat\")\n- When importing multiple versions of the same model, use consistent naming with version indicators\n\nArgs:\n    ctx: The MCP context\n    request: The model import job request containing job name, model name, and optional parameters\n\nReturns:\n    str: Formatted markdown text containing the model import job details\n\nRaises:\n    Exception: If there is an error creating the model import job",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "object",
+            "description": "Request model for creating a model import job."
+          }
+        },
+        "required": [
+          "request"
+        ]
+      }
+    },
+    {
+      "name": "get_model_import_job",
+      "description": "Get model import job details from Amazon Bedrock.\n\nThis tool retrieves detailed information about a model import job in Amazon Bedrock.\nIf the exact job name is not found, it will attempt to find a close match.\n\n## Usage Instructions\n1. Provide the job name or ARN as the job_identifier parameter\n2. The tool will attempt to find close matches if the exact name isn't found\n\n## Information Returned\n- Job status (In Progress, Completed, or Failed)\n- Creation, modification, and completion timestamps\n- Job ARN and failure message (if applicable)\n- Model details including name and ARN\n- Configuration details including role ARN, data source, VPC config, and KMS key\n\n## When to Use\n- To check the status of an ongoing model import\n- To troubleshoot failed imports by examining error messages\n- To verify the configuration of a completed import\n- To get the ARN of an imported model after job completion\n\n## Status Indicators\n- \ud83d\udd04 In Progress: The import job is currently running\n- \u2705 Completed: The import job has successfully completed\n- \u274c Failed: The import job encountered an error\n\nArgs:\n    ctx: The MCP context\n    job_identifier: The name or ARN of the model import job to retrieve\n\nReturns:\n    str: Formatted markdown text containing the job details\n\nRaises:\n    ValueError: If job cannot be found even with approximate matching\n    ClientError: If there is an error from the AWS service",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "job_identifier": {
+            "type": "string",
+            "description": "Name or ARN of the job"
+          }
+        },
+        "required": [
+          "job_identifier"
+        ]
+      }
+    },
+    {
+      "name": "list_model_import_jobs",
+      "description": "List model import jobs in Amazon Bedrock.\n\nThis tool retrieves a list of model import jobs in Amazon Bedrock.\nThe results can be filtered and sorted using the optional request parameters.\n\n## Usage Instructions\n1. Call this tool without parameters to list all model import jobs\n2. Optionally provide filtering parameters in the request:\n   - creationTimeAfter: Filter jobs created after this time\n   - creationTimeBefore: Filter jobs created before this time\n   - statusEquals: Filter jobs by status (InProgress, Completed, Failed)\n   - nameContains: Filter jobs by name substring\n   - sortBy: Sort results by field (e.g., CreationTime)\n   - sortOrder: Sort order (Ascending, Descending)\n\n## Information Returned\n- Job name and ARN\n- Status with visual indicator (\ud83d\udd04 In Progress, \u2705 Completed, \u274c Failed)\n- Creation and last modified times\n- Associated model name and ARN\n\n## How to Use This Information\n- Monitor ongoing imports with status indicators\n- Find recently created or modified jobs\n- Identify completed jobs to access their imported models\n- Troubleshoot failed imports\n\n## When to Use\n- To check the status of recent model imports\n- Before using get_model_import_job to find the exact job name\n- To monitor multiple ongoing imports\n- To verify if a specific import job exists\n- To find the job associated with a specific model\n\nArgs:\n    ctx: The MCP context\n    request: Optional request parameters for filtering and sorting the results\n\nReturns:\n    str: Formatted markdown text containing the list of jobs\n\nRaises:\n    Exception: If there is an error listing the jobs",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "get_imported_model",
+      "description": "Get imported model details from Amazon Bedrock.\n\nThis tool retrieves detailed information about a custom model that was previously\nimported into Amazon Bedrock. If the exact model name is not found, it will attempt\nto find a close match using approximate matching.\n\n## Usage Instructions\n1. Provide the model name or ARN as the model_identifier parameter\n2. The tool will attempt to find close matches if the exact name isn't found\n\n## Information Returned\n- Model ARN and creation time\n- Model architecture details\n- Whether the model supports chat or instructions\n- Custom model units used for billing the model (if applicable)\n- KMS key information (if encrypted)\n- Import job details and data source\n\n## How to Use This Information\n- Verify model details before using in applications\n- Check if the model supports instruction for chat applications using Bedrock Converse API\n- Review the model details to trace model provenance\n- Use the model ARN when configuring inference endpoints\n\nArgs:\n    ctx: The MCP context\n    model_identifier: The ID or name of the model to retrieve\n\nReturns:\n    str: Formatted markdown text containing the model details\n\nRaises:\n    ValueError: If model cannot be found even with approximate matching\n    ClientError: If there is an error from the AWS service",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "model_identifier": {
+            "type": "string",
+            "description": "Name or ARN of the model"
+          }
+        },
+        "required": [
+          "model_identifier"
+        ]
+      }
+    },
+    {
+      "name": "delete_imported_model",
+      "description": "Delete an imported model from Amazon Bedrock.\n\nThis tool permanently deletes a custom model that was previously imported into Amazon Bedrock.\nThis operation cannot be undone and will permanently remove the model from your AWS account.\n\n## Usage Instructions\n1. Provide either the model name or ARN as the model_identifier parameter\n2. You can get a list of available models using the list_imported_models tool\n3. Verify you're deleting the correct model before proceeding\n\n## Important Considerations\n- This operation is IRREVERSIBLE - the model will be permanently deleted\n- Any applications using this model will fail after deletion\n- Consider backing up important model data before deletion\n- Deletion may take some time to complete for large models\n\n## When to Use\n- When you no longer need a specific model\n- To manage costs by removing unused models\n\nArgs:\n    ctx: The MCP context\n    model_identifier: The name or ARN of the model to delete\n\nReturns:\n    str: Formatted markdown text confirming the deletion\n\nRaises:\n    Exception: If there is an error deleting the model",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "model_identifier": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "model_identifier"
+        ]
+      }
+    },
+    {
+      "name": "list_imported_models",
+      "description": "List imported models in Amazon Bedrock.\n\nThis tool retrieves a list of models that have already been imported into Amazon Bedrock.\nThe results can be filtered and sorted using the optional request parameters.\n\n## Usage Instructions\n1. Call this tool without parameters to list all imported models\n2. Optionally provide filtering parameters in the request:\n   - creationTimeAfter: Filter models created after this time\n   - creationTimeBefore: Filter models created before this time\n   - nameContains: Filter models by name substring\n   - sortBy: Sort results by field (e.g., CreationTime)\n   - sortOrder: Sort order (Ascending, Descending)\n\n## Information Returned\n- Model name and ARN\n- Creation time\n- Model architecture\n- Whether the model supports instruction tuning (\u2705 or \u274c)\n\n## How to Use This Information\n- Note model names for use with other tools like get_imported_model\n- Check instruction support to determine if models can be used for chat applications\n- Review model architectures to understand model capabilities\n\n## When to Use\n- Before using get_imported_model to find the exact model name\n- When you need to see all available models in your account\n- To check if a specific model exists by filtering with nameContains\n- To find the most recently imported models by sorting by creation time\n\nArgs:\n    ctx: The MCP context\n    request: Optional request parameters for filtering and sorting the results\n\nReturns:\n    str: Formatted markdown text containing the list of models\n\nRaises:\n    Exception: If there is an error listing the models",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": []
+      }
+    }
+  ]
+}

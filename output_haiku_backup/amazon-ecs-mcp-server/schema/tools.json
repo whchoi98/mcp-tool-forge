@@ -1,0 +1,221 @@
+{
+  "server": "amazon-ecs-mcp-server",
+  "tools": [
+    {
+      "name": "containerize_app",
+      "description": "Start here if a user wants to run their application locally or deploy an app to the cloud.\nProvides guidance for containerizing a web application.\n\nThis tool provides guidance on how to build Docker images for web applications,\nincluding recommendations for base images, build tools, and architecture choices.\n\nUSAGE INSTRUCTIONS:\n1. Run this tool to get guidance on how to configure your application for ECS.\n2. Follow the steps generated from the tool.\n3. Proceed to create_ecs_infrastructure tool.\n\nThe guidance includes:\n- Example Dockerfile content\n- Example docker-compose.yml content\n- Build commands for different container tools\n- Architecture recommendations\n- Troubleshooting tips\n\nParameters:\n    app_path: Path to the web application directory\n    port: Port the application listens on\n\nReturns:\n    Dictionary containing containerization guidance",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "app_path": {
+            "type": "string",
+            "description": "Absolute file path to the web application directory"
+          },
+          "port": {
+            "type": "integer",
+            "description": "Port the application listens on"
+          }
+        },
+        "required": [
+          "app_path",
+          "port"
+        ]
+      }
+    },
+    {
+      "name": "build_and_push_image_to_ecr",
+      "description": "Creates ECR infrastructure and builds/pushes a Docker image to ECR.\n\nThis tool automates the complete ECR setup and image deployment process:\n1. Creates ECR repository via CloudFormation\n2. Creates IAM role with ECR push/pull permissions\n3. Builds Docker image from your application\n4. Pushes image to ECR\n\n## Parameters:\n- Required: app_name (Application name, 1-20 chars, lowercase letters/digits/hyphens only)\n- Required: app_path (Path to application directory with Dockerfile)\n- Optional: tag (Image tag, defaults to epoch timestamp)\n\n## Prerequisites:\n- Docker installed and running locally\n- Dockerfile exists in the application directory\n- AWS credentials configured with appropriate permissions\n\n## Returns:\nDictionary containing:\n- repository_uri: ECR repository URI\n- image_tag: The tag of the pushed image\n- full_image_uri: Complete image URI with tag (use this for deployment)\n- ecr_push_pull_role_arn: ARN of the IAM role created for ECR access\n- stack_name: Name of the CloudFormation stack created\n\n## Usage Examples:\n```\n# Build and push with auto-generated tag\nbuild_and_push_image_to_ecr(\n    app_name=\"my-app\",\n    app_path=\"/home/user/my-flask-app\"\n)\n\n# Build and push with specific tag\nbuild_and_push_image_to_ecr(\n    app_name=\"my-app\",\n    app_path=\"/home/user/my-flask-app\",\n    tag=\"v1.0.0\"\n)\n```\n\nReturns:\n```\n{\n  \"repository_uri\": \"123456789012.dkr.ecr.us-west-2.amazonaws.com/my-app-repo\",\n  \"image_tag\": \"1700000000\",\n  \"full_image_uri\": \"123456789012.dkr.ecr.us-west-2.amazonaws.com/my-app-repo:1700000000\",\n  \"ecr_push_pull_role_arn\": \"arn:aws:iam::123456789012:role/my-app-ecr-push-pull-role\",\n  \"stack_name\": \"my-app-ecr-infrastructure\"\n}\n```",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "app_name": {
+            "type": "string",
+            "description": "Name of the application (used for ECR repository and stack names)"
+          },
+          "app_path": {
+            "type": "string",
+            "description": "Absolute file path to the web application directory containing the Dockerfile"
+          },
+          "tag": {
+            "type": "string",
+            "description": "Optional image tag (if None, uses epoch timestamp)"
+          }
+        },
+        "required": [
+          "app_name",
+          "app_path"
+        ]
+      }
+    },
+    {
+      "name": "validate_ecs_express_mode_prerequisites",
+      "description": "Validates prerequisites for ECS Express Mode deployment.\n\nThis tool checks that all required resources exist and are properly configured\nbefore deploying an ECS Express Gateway Service.\n\n## Validation Checks:\n1. Task Execution Role exists (checks default 'ecsTaskExecutionRole' if not provided)\n2. Infrastructure Role exists (checks default 'ecsInfrastructureRoleForExpressServices'\n   if not provided)\n3. Docker image exists in the specified ECR repository\n\n## Parameters:\n- Required: image_uri (Full ECR image URI including tag)\n- Optional: execution_role_arn (ARN of task execution role,\n  defaults to 'ecsTaskExecutionRole')\n- Optional: infrastructure_role_arn (ARN of infrastructure role,\n  defaults to 'ecsInfrastructureRoleForExpressServices')\n\n## Required IAM Roles:\n\n### Task Execution Role:\n- Allows ECS tasks to pull images and write logs\n- Must have trust policy for ecs-tasks.amazonaws.com\n- Should have AmazonECSTaskExecutionRolePolicy attached\n\n### Infrastructure Role:\n- Allows ECS to provision infrastructure\n- Must have trust policy for ecs.amazonaws.com\n- Should have AmazonECSInfrastructureRoleforExpressGatewayServices attached\n\n## Returns:\nDictionary containing:\n- valid: Boolean indicating if all prerequisites are met\n- errors: List of error messages if validation fails\n- warnings: List of warning messages\n- details: Detailed validation results for each check\n\n## Usage Examples:\n```\n# Validate with default role names\nvalidate_ecs_express_mode_prerequisites(\n    image_uri=\"123456789012.dkr.ecr.us-west-2.amazonaws.com/my-app:1700000000\"\n)\n\n# Validate with custom role ARNs\nvalidate_ecs_express_mode_prerequisites(\n    image_uri=\"123456789012.dkr.ecr.us-west-2.amazonaws.com/my-app:1700000000\",\n    execution_role_arn=\"arn:aws:iam::123456789012:role/custom-execution-role\",\n    infrastructure_role_arn=\"arn:aws:iam::123456789012:role/custom-infra-role\"\n)\n```\n\nReturns when successful:\n```\n{\n  \"valid\": true,\n  \"errors\": [],\n  \"warnings\": [],\n  \"details\": {\n    \"execution_role\": {\n      \"status\": \"valid\",\n      \"arn\": \"arn:aws:iam::123456789012:role/ecsTaskExecutionRole\",\n      \"name\": \"ecsTaskExecutionRole\",\n      \"message\": \"Task Execution Role is valid\"\n    },\n    \"infrastructure_role\": {\n      \"status\": \"valid\",\n      \"arn\": \"arn:aws:iam::123456789012:role/ecsInfrastructureRoleForExpressServices\",\n      \"name\": \"ecsInfrastructureRoleForExpressServices\",\n      \"message\": \"Infrastructure Role is valid\"\n    },\n    \"image\": {\n      \"status\": \"exists\",\n      \"uri\": \"123456789012.dkr.ecr.us-west-2.amazonaws.com/my-app:1700000000\",\n      \"repository\": \"my-app\",\n      \"tag\": \"1700000000\",\n      \"message\": \"Image found in ECR\"\n    }\n  }\n}\n```\n\nReturns when validation fails:\n```\n{\n  \"valid\": false,\n  \"errors\": [\n    \"Infrastructure Role not found: \"\n    \"arn:aws:iam::123456789012:role/ecsInfrastructureRoleForExpressServices\"\n  ],\n  \"warnings\": [],\n  \"details\": {\n    \"execution_role\": {\"status\": \"valid\", ...},\n    \"infrastructure_role\": {\"status\": \"not_found\", ...},\n    \"image\": {\"status\": \"exists\", ...}\n  }\n}\n```",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "image_uri": {
+            "type": "string",
+            "description": "Full ECR image URI with tag (e.g., 123456789012.dkr.ecr.us-west-2.amazonaws.com/my-app:tag)"
+          },
+          "execution_role_arn": {
+            "type": "string",
+            "description": "Optional ARN of the ECS task execution role (defaults to ecsTaskExecutionRole)"
+          },
+          "infrastructure_role_arn": {
+            "type": "string",
+            "description": "Optional ARN of the infrastructure role for Express Gateway (defaults to ecsInfrastructureRoleForExpressServices)"
+          }
+        },
+        "required": [
+          "image_uri"
+        ]
+      }
+    },
+    {
+      "name": "delete_app",
+      "description": "Deletes a complete Express Mode deployment including service and ECR infrastructure.\n\nThis tool performs complete cleanup of an Express Mode deployment:\n1. Deletes the Express Gateway Service\n2. Deletes the ECR CloudFormation stack (ECR repository + IAM role)\n\n## Parameters:\n- Required: service_arn (ARN of Express Gateway Service)\n- Required: app_name (Application name used during deployment)\n\n## What Gets Deleted:\n- Express Gateway Service and all provisioned infrastructure\n  (ALB, target groups, security groups)\n- CloudFormation stack for ECR resources, including ECR repo and container images\n\n## Returns:\nDictionary containing:\n- service_deletion: Status and details of service deletion\n- ecr_deletion: Status and details of ECR stack deletion\n- summary: Overall deletion summary with list of deleted resources\n- errors: List of any errors encountered\n\n## Usage Examples:\n```\n# Delete complete deployment\ndelete_app(\n    service_arn=\"arn:aws:ecs:us-west-2:123456789012:express-service/my-api\",\n    app_name=\"my-app\"\n)\n```\n\nReturns on success:\n```\n{\n  \"service_deletion\": {\n    \"status\": \"deleted\",\n    \"service_arn\": \"arn:aws:ecs:us-west-2:123456789012:express-service/my-api\",\n    \"message\": \"Express Gateway Service deleted successfully\"\n  },\n  \"ecr_deletion\": {\n    \"status\": \"deleted\",\n    \"stack_name\": \"my-app-ecr-infrastructure\",\n    \"message\": \"ECR stack deleted successfully\",\n    \"deleted_resources\": [\n      \"ECR repository: my-app-repo\",\n      \"IAM role: my-app-ecr-push-pull-role\"\n    ]\n  },\n  \"summary\": {\n    \"status\": \"success\",\n    \"message\": \"Successfully deleted Express Mode deployment for my-app\",\n    \"deleted_resources\": [\n      \"Express Gateway Service: arn:aws:ecs:...\",\n      \"ECR repository: my-app-repo\",\n      \"IAM role: my-app-ecr-push-pull-role\"\n    ]\n  },\n  \"errors\": []\n}\n```\n\n## Important Notes:\n- This operation requires WRITE permission (ALLOW_WRITE=true)\n- Deletion is irreversible - all container images will be deleted\n- Service deletion may take a few minutes as infrastructure is deprovisioned\n- If errors occur, partial deletion is possible (check summary for details)",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "service_arn": {
+            "type": "string",
+            "description": "ARN of the Express Gateway Service to delete"
+          },
+          "app_name": {
+            "type": "string",
+            "description": "Name of the application (used to identify ECR stack to delete)"
+          }
+        },
+        "required": [
+          "service_arn",
+          "app_name"
+        ]
+      }
+    },
+    {
+      "name": "wait_for_service_ready",
+      "description": "Waits for ECS tasks in a service to reach RUNNING status.\n\nThis tool polls the service every 10 seconds to check if tasks are running.\nIt will wait up to the specified timeout before returning a timeout status.\n\n## Parameters:\n- Required: cluster (ECS cluster name)\n- Required: service_name (ECS service name)\n- Optional: timeout_seconds (Max wait time, defaults to 300 seconds)\n\n## Returns:\nDictionary containing:\n- status: \"success\" if tasks are running, \"timeout\" if timeout reached,\n  \"failed\" if an error occurred\n- message: Human-readable status message\n\n## Usage Examples:\n```\n# Wait for service with default 5-minute timeout\nwait_for_service_ready(\n    cluster=\"my-cluster\",\n    service_name=\"my-service\"\n)\n\n# Wait for service with custom timeout\nwait_for_service_ready(\n    cluster=\"my-cluster\",\n    service_name=\"my-service\",\n    timeout_seconds=600\n)\n```\n\nReturns on success:\n```\n{\n  \"status\": \"success\",\n  \"message\": \"Service is ready with 2 running task(s)\"\n}\n```\n\nReturns on timeout:\n```\n{\n  \"status\": \"timeout\",\n  \"message\": \"Timeout after 300s - service not ready\"\n}\n```",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cluster": {
+            "type": "string",
+            "description": "Name of the ECS cluster"
+          },
+          "service_name": {
+            "type": "string",
+            "description": "Name of the ECS service"
+          },
+          "timeout_seconds": {
+            "type": "integer",
+            "description": "Maximum time to wait in seconds (default: 300 = 5 minutes)"
+          }
+        },
+        "required": [
+          "cluster",
+          "service_name"
+        ]
+      }
+    },
+    {
+      "name": "ecs_resource_management",
+      "description": "Execute ECS API operations directly.\n\nThis tool allows direct execution of ECS API operations using boto3.\n\nSupported operations:\n- CreateCapacityProvider (requires WRITE permission)\n- CreateCluster (requires WRITE permission)\n- CreateExpressGatewayService (requires WRITE permission)\n- CreateService (requires WRITE permission)\n- CreateTaskSet (requires WRITE permission)\n- DeleteAccountSetting (requires WRITE permission)\n- DeleteAttributes (requires WRITE permission)\n- DeleteCapacityProvider (requires WRITE permission)\n- DeleteCluster (requires WRITE permission)\n- DeleteExpressGatewayService (requires WRITE permission)\n- DeleteService (requires WRITE permission)\n- DeleteTaskDefinitions (requires WRITE permission)\n- DeleteTaskSet (requires WRITE permission)\n- DeregisterContainerInstance (requires WRITE permission)\n- DeregisterTaskDefinition (requires WRITE permission)\n- DescribeCapacityProviders (read-only)\n- DescribeClusters (read-only)\n- DescribeContainerInstances (read-only)\n- DescribeExpressGatewayService (read-only)\n- DescribeServiceDeployments (read-only)\n- DescribeServiceRevisions (read-only)\n- DescribeServices (read-only)\n- DescribeTaskDefinition (read-only)\n- DescribeTasks (read-only)\n- DescribeTaskSets (read-only)\n- DiscoverPollEndpoint (requires WRITE permission)\n- ExecuteCommand (requires WRITE permission)\n- GetTaskProtection (requires WRITE permission)\n- ListAccountSettings (read-only)\n- ListAttributes (read-only)\n- ListClusters (read-only)\n- ListContainerInstances (read-only)\n- ListExpressGatewayServices (read-only)\n- ListServiceDeployments (read-only)\n- ListServices (read-only)\n- ListServicesByNamespace (read-only)\n- ListTagsForResource (read-only)\n- ListTaskDefinitionFamilies (read-only)\n- ListTaskDefinitions (read-only)\n- ListTasks (read-only)\n- PutAccountSetting (requires WRITE permission)\n- PutAccountSettingDefault (requires WRITE permission)\n- PutAttributes (requires WRITE permission)\n- PutClusterCapacityProviders (requires WRITE permission)\n- RegisterContainerInstance (requires WRITE permission)\n- RegisterTaskDefinition (requires WRITE permission)\n- RunTask (requires WRITE permission)\n- StartTask (requires WRITE permission)\n- StopServiceDeployment (requires WRITE permission)\n- StopTask (requires WRITE permission)\n- SubmitAttachmentStateChanges (requires WRITE permission)\n- SubmitContainerStateChange (requires WRITE permission)\n- SubmitTaskStateChange (requires WRITE permission)\n- TagResource (requires WRITE permission)\n- UntagResource (requires WRITE permission)\n- UpdateCapacityProvider (requires WRITE permission)\n- UpdateCluster (requires WRITE permission)\n- UpdateClusterSettings (requires WRITE permission)\n- UpdateContainerAgent (requires WRITE permission)\n- UpdateContainerInstancesState (requires WRITE permission)\n- UpdateExpressGatewayService (requires WRITE permission)\n- UpdateService (requires WRITE permission)\n- UpdateServicePrimaryTaskSet (requires WRITE permission)\n- UpdateTaskProtection (requires WRITE permission)\n- UpdateTaskSet (requires WRITE permission)\n\nParameters:\n    api_operation: The ECS API operation to execute (CamelCase)\n    api_params: Dictionary of parameters to pass to the API operation\n\nReturns:\n    Dictionary containing the API response",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "api_operation": {
+            "type": "string",
+            "description": "The ECS API operation to execute (CamelCase)"
+          },
+          "api_params": {
+            "type": "object",
+            "description": "Dictionary of parameters to pass to the API operation"
+          }
+        },
+        "required": [
+          "api_operation"
+        ]
+      }
+    },
+    {
+      "name": "ecs_troubleshooting_tool",
+      "description": "ECS troubleshooting tool with multiple diagnostic actions.\n\nThis tool provides access to all ECS troubleshooting operations through a single interface.\nUse the 'action' parameter to specify which troubleshooting operation to perform.\n\n## Available Actions and Parameters:\n\n### 1. get_ecs_troubleshooting_guidance\nInitial assessment and data collection\n- Required: ecs_cluster_name\n- Optional: ecs_service_name (Name of the ECS Service to troubleshoot),\n           symptoms_description (Description of symptoms experienced by the user)\n- Example: action=\"get_ecs_troubleshooting_guidance\",\n           parameters={\"ecs_cluster_name\": \"my-cluster\", \"ecs_service_name\": \"my-service\",\n                       \"symptoms_description\": \"ALB returning 503 errors\"}\n\n### 2. fetch_cloudformation_status\nInfrastructure-level diagnostics for CloudFormation Stacks\n- Required: cfn_stack_name\n- Example: action=\"fetch_cloudformation_status\",\n           parameters={\"cfn_stack_name\": \"my-app-stack\"}\n\n### 3. fetch_service_events\nService-level diagnostics for ECS Services\n- Required: ecs_cluster_name, ecs_service_name\n- Optional: time_window (Time window in seconds to look back for events (default: 3600)),\n            start_time (Explicit start time for the analysis window (UTC, takes\n            precedence over time_window if provided)),\n            end_time (Explicit end time for the analysis window (UTC, defaults to\n            current time if not provided))\n- Example: action=\"fetch_service_events\",\n           parameters={\"ecs_cluster_name\": \"my-cluster\",\n                       \"ecs_service_name\": \"my-service\",\n                       \"time_window\": 7200}\n\n### 4. fetch_task_failures\nTask-level diagnostics for ECS Task failures\n- Required: ecs_cluster_name\n- Optional: time_window (Time window in seconds to look back for failures (default: 3600)),\n            start_time (Explicit start time for the analysis window (UTC, takes\n            precedence over time_window if provided)),\n            end_time (Explicit end time for the analysis window (UTC, defaults to\n            current time if not provided))\n- Example: action=\"fetch_task_failures\",\n           parameters={\"ecs_cluster_name\": \"my-cluster\",\n                       \"time_window\": 3600}\n\n### 5. fetch_task_logs\nApplication-level diagnostics through CloudWatch Logs\n- Required: ecs_cluster_name\n- Optional: ecs_task_id (Specific ECS Task ID to retrieve logs for),\n            time_window (Time window in seconds to look back for logs (default: 3600)),\n            filter_pattern (CloudWatch Logs filter pattern),\n            start_time (Explicit start time for the analysis window (UTC, takes\n            precedence over time_window if provided)),\n            end_time (Explicit end time for the analysis window (UTC, defaults to\n            current time if not provided))\n- Example: action=\"fetch_task_logs\",\n           parameters={\"ecs_cluster_name\": \"my-cluster\",\n                       \"filter_pattern\": \"ERROR\",\n                       \"time_window\": 1800}\n\n### 6. detect_image_pull_failures\nSpecialized tool for detecting container image pull failures\n- Required: None (but at least one valid parameter combination must be provided)\n- Valid combinations: ecs_cluster_name+ecs_service_name, ecs_cluster_name+ecs_task_id,\n  cfn_stack_name,\n  family_prefix\n- Optional: ecs_cluster_name, ecs_service_name, cfn_stack_name, family_prefix, ecs_task_id\n- Example: action=\"detect_image_pull_failures\",\n           parameters={\"ecs_cluster_name\": \"my-cluster\", \"ecs_service_name\": \"my-service\"}\n\n### 7. fetch_network_configuration\nNetwork-level diagnostics for ECS deployments\n- Required: ecs_cluster_name\n- Optional: vpc_id (Specific VPC ID to analyze)\n- Example: action=\"fetch_network_configuration\",\n           parameters={\"ecs_cluster_name\": \"my-cluster\", \"vpc_id\": \"vpc-12345678\"}\n\n## Resource Discovery:\nIf you don't know the cluster or service names, use `ecs_resource_management` tool first:\n\n# List all clusters\necs_resource_management(api_operation=\"ListClusters\")\n\n# List services in a cluster\necs_resource_management(api_operation=\"ListServices\", api_params={\"cluster\": \"my-cluster\"})\n\n# Get detailed cluster information\necs_resource_management(api_operation=\"DescribeClusters\",\n                       api_params={\"clusters\": [\"my-cluster\"]})\n\n## Quick Usage Examples:\n```\n# Initial assessment and data collection\naction: \"get_ecs_troubleshooting_guidance\"\nparameters: {\"ecs_cluster_name\": \"my-cluster\",\n            \"symptoms_description\": \"ALB returning 503 errors\"}\n\n# Infrastructure-level diagnostics for CloudFormation Stacks\naction: \"fetch_cloudformation_status\"\nparameters: {\"cfn_stack_name\": \"my-app-stack\"}\n\n# Service-level diagnostics for ECS Services\naction: \"fetch_service_events\"\nparameters: {\"ecs_cluster_name\": \"my-cluster\",\n            \"ecs_service_name\": \"my-service\",\n            \"time_window\": 7200}\n\n# Task-level diagnostics for ECS Task failures\naction: \"fetch_task_failures\"\nparameters: {\"ecs_cluster_name\": \"my-cluster\",\n            \"time_window\": 3600}\n\n# Application-level diagnostics through CloudWatch Logs\naction: \"fetch_task_logs\"\nparameters: {\"ecs_cluster_name\": \"my-cluster\",\n            \"filter_pattern\": \"ERROR\",\n            \"time_window\": 1800}\n\n# Specialized tool for detecting container image pull failures\naction: \"detect_image_pull_failures\"\nparameters: {\"ecs_cluster_name\": \"my-cluster\", \"ecs_service_name\": \"my-service\"}\n\n# Network-level diagnostics for ECS deployments\naction: \"fetch_network_configuration\"\nparameters: {\"ecs_cluster_name\": \"my-cluster\", \"vpc_id\": \"vpc-12345678\"}\n```\n\nParameters:\n    action: The troubleshooting action to perform (see available actions above)\n    parameters: Action-specific parameters (see parameter specifications above)\n\nReturns:\n    Results from the selected troubleshooting action",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "description": ""
+          },
+          "parameters": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "aws_knowledge_aws___read_documentation",
+      "description": "Fetch and convert an AWS documentation page to markdown format.\n\n## Usage\n\nThis tool retrieves the content of an AWS documentation page and converts it to markdown format.\nFor long documents, you can make multiple calls with different start_index values to retrieve\nthe entire content in chunks.\n\n## URL Requirements\n\nAllow-listed URL prefixes:\n- docs.aws.amazon.com\n- aws.amazon.com\n- repost.aws/knowledge-center\n- docs.amplify.aws\n- ui.docs.amplify.aws\n- github.com/aws-cloudformation/aws-cloudformation-templates\n- github.com/aws-samples/aws-cdk-examples\n- github.com/aws-samples/generative-ai-cdk-constructs-samples\n- github.com/aws-samples/serverless-patterns\n- github.com/awsdocs/aws-cdk-guide\n- github.com/awslabs/aws-solutions-constructs\n- github.com/cdklabs/cdk-nag\n- constructs.dev/packages/@aws-cdk-containers\n- constructs.dev/packages/@aws-cdk\n- constructs.dev/packages/@cdk-cloudformation\n- constructs.dev/packages/aws-analytics-reference-architecture\n- constructs.dev/packages/aws-cdk-lib\n- constructs.dev/packages/cdk-amazon-chime-resources\n- constructs.dev/packages/cdk-aws-lambda-powertools-layer\n- constructs.dev/packages/cdk-ecr-deployment\n- constructs.dev/packages/cdk-lambda-powertools-python-layer\n- constructs.dev/packages/cdk-serverless-clamscan\n- constructs.dev/packages/cdk8s\n- constructs.dev/packages/cdk8s-plus-33\n\nDeny-listed URL prefixes:\n- aws.amazon.com/marketplace\n\n## Example URLs\n\n- https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html\n- https://docs.aws.amazon.com/lambda/latest/dg/lambda-invocation.html\n- https://aws.amazon.com/about-aws/whats-new/2023/02/aws-telco-network-builder/\n- https://aws.amazon.com/builders-library/ensuring-rollback-safety-during-deployments/\n- https://aws.amazon.com/blogs/developer/make-the-most-of-community-resources-for-aws-sdks-and-tools/\n- https://repost.aws/knowledge-center/example-article\n- https://docs.amplify.aws/react/build-a-backend/auth/\n- https://ui.docs.amplify.aws/angular/connected-components/authenticator\n- https://github.com/aws-samples/aws-cdk-examples/blob/main/README.md\n- https://github.com/awslabs/aws-solutions-constructs/blob/main/README.md\n- https://constructs.dev/packages/aws-cdk-lib/v/2.229.1?submodule=aws_lambda&lang=typescript\n- https://github.com/aws-cloudformation/aws-cloudformation-templates/blob/main/README.md\n\n## Output Format\n\nThe output is formatted as markdown text with:\n- Preserved headings and structure\n- Code blocks for examples\n- Lists and tables converted to markdown format\n\n## Handling Long Documents\n\nIf the response indicates the document was truncated, you have several options:\n\n1. **Continue Reading**: Make another call with start_index set to the end of the previous response\n2. **Jump to Section**: If a Table of Contents is provided, you can jump directly to any section using the character positions shown (e.g., \"char 1500-2800\"). Note: Table of Contents length is not counted toward max_length.\n3. **Stop Early**: For very long documents (>30,000 characters), if you've already found the specific information needed, you can stop reading\n\n    ## ECS DOCUMENTATION GUIDANCE:\n    This tool provides up-to-date ECS documentation and implementation guidance, including new ECS features beyond standard LLM training data.\n\n    New ECS features include:\n    - ECS Native Blue-Green Deployments (different from CodeDeploy blue-green, launched 2025)\n    - ECS Managed Instances (launched 2025)\n    - ECS Express Mode / Express Gateway Services (launched 2025)\n",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "start_index": {
+            "type": "integer",
+            "description": "On return output starting at this character index, useful if a previous fetch was truncated and more content is required."
+          },
+          "url": {
+            "type": "string",
+            "description": "URL of the AWS documentation page to read"
+          },
+          "max_length": {
+            "type": "integer",
+            "description": "Maximum number of characters to return."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "aws_knowledge_aws___recommend",
+      "description": "Get content recommendations for an AWS documentation page.\n\n## Usage\n\nThis tool provides recommendations for related AWS documentation pages based on a given URL.\nUse it to discover additional relevant content that might not appear in search results.\nURL must be from the docs.aws.amazon.com domain.\n\n## Recommendation Types\n\nThe recommendations include four categories:\n\n1. **Highly Rated**: Popular pages within the same AWS service\n2. **New**: Recently added pages within the same AWS service - useful for finding newly released features\n3. **Similar**: Pages covering similar topics to the current page\n4. **Journey**: Pages commonly viewed next by other users\n\n## When to Use\n\n- After reading a documentation page to find related content\n- When exploring a new AWS service to discover important pages\n- To find alternative explanations of complex concepts\n- To discover the most popular pages for a service\n- To find newly released information by using a service's welcome page URL and checking the **New** recommendations\n\n## Finding New Features\n\nTo find newly released information about a service:\n1. Find any page belong to that service, typically you can try the welcome page\n2. Call this tool with that URL\n3. Look specifically at the **New** recommendation type in the results\n\n## Result Interpretation\n\nEach recommendation includes:\n- url: The documentation page URL\n- title: The page title\n- context: A brief description (if available)\n\n    ## ECS DOCUMENTATION GUIDANCE:\n    This tool provides up-to-date ECS documentation and implementation guidance, including new ECS features beyond standard LLM training data.\n\n    New ECS features include:\n    - ECS Native Blue-Green Deployments (different from CodeDeploy blue-green, launched 2025)\n    - ECS Managed Instances (launched 2025)\n    - ECS Express Mode / Express Gateway Services (launched 2025)\n",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the AWS documentation page to get recommendations for"
+          }
+        },
+        "required": [
+          "url"
+        ]
+      }
+    },
+    {
+      "name": "aws_knowledge_aws___search_documentation",
+      "description": "# AWS Documentation Search Tool\nThis is your primary source for AWS information\u2014always prefer this over general knowledge for AWS services, features, configurations, troubleshooting, and best practices.\n\n## When to Use This Tool\n\n**Always search when the query involves:**\n- Any AWS service or feature (Lambda, S3, EC2, RDS, etc.)\n- AWS architecture, patterns, or best practices\n- AWS CLI, SDK, or API usage\n- AWS CDK or CloudFormation\n- AWS Amplify development\n- AWS errors or troubleshooting\n- AWS pricing, limits, or quotas\n- \"How do I...\" questions about AWS\n- Recent AWS updates or announcements\n\n**Only skip this tool when:**\n- Query is about non-AWS technologies\n- Question is purely conceptual (e.g., \"What is a database?\")\n- General programming questions unrelated to AWS\n\n## Quick Topic Selection\n\n| Query Type | Use Topic | Example |\n|------------|-----------|---------|\n| API/SDK/CLI code | `reference_documentation` | \"S3 PutObject boto3\", \"Lambda invoke API\" |\n| New features, releases | `current_awareness` | \"Lambda new features 2024\", \"what's new in ECS\" |\n| Errors, debugging | `troubleshooting` | \"AccessDenied S3\", \"Lambda timeout error\" |\n| Amplify apps | `amplify_docs` | \"Amplify Auth React\", \"Amplify Storage Flutter\" |\n| CDK concepts, APIs, CLI | `cdk_docs` | \"CDK stack props Python\", \"cdk deploy command\" |\n| CDK code samples, patterns | `cdk_constructs` | \"serverless API CDK\", \"Lambda function example TypeScript\" |\n| CloudFormation templates | `cloudformation` | \"DynamoDB CloudFormation\", \"StackSets template\" |\n| Architecture, blogs, guides | `general` | \"Lambda best practices\", \"S3 architecture patterns\" |\n\n## Documentation Topics\n\n### reference_documentation\n**For: API methods, SDK code, CLI commands, technical specifications**\n\nUse for:\n- SDK method signatures: \"boto3 S3 upload_file parameters\"\n- CLI commands: \"aws ec2 describe-instances syntax\"\n- API references: \"Lambda InvokeFunction API\"\n- Service configuration: \"RDS parameter groups\"\n\nDon't confuse with general\u2014use this for specific technical implementation.\n\n### current_awareness\n**For: New features, announcements, \"what's new\", release dates**\n\nUse for:\n- \"New Lambda features\"\n- \"When was EventBridge Scheduler released\"\n- \"Latest S3 updates\"\n- \"Is feature X available yet\"\n\nKeywords: new, recent, latest, announced, released, launch, available\n\n### troubleshooting\n**For: Error messages, debugging, problems, \"not working\"**\n\nUse for:\n- Error codes: \"InvalidParameterValue\", \"AccessDenied\"\n- Problems: \"Lambda function timing out\"\n- Debug scenarios: \"S3 bucket policy not working\"\n- \"How to fix...\" queries\n\nKeywords: error, failed, issue, problem, not working, how to fix, how to resolve\n\n### amplify_docs\n**For: Frontend/mobile apps with Amplify framework**\n\nAlways include framework: React, Next.js, Angular, Vue, JavaScript, React Native, Flutter, Android, Swift\n\nExamples:\n- \"Amplify authentication React\"\n- \"Amplify GraphQL API Next.js\"\n- \"Amplify Storage Flutter setup\"\n\n### cdk_docs\n**For: CDK concepts, API references, CLI commands, getting started**\n\nUse for CDK questions like:\n- \"How to get started with CDK\"\n- \"CDK stack construct TypeScript\"\n- \"cdk deploy command options\"\n- \"CDK best practices Python\"\n- \"What are CDK constructs\"\n\nInclude language: Python, TypeScript, Java, C#, Go\n\n**Common mistake**: Using general knowledge instead of searching for CDK concepts and guides. Always search for CDK questions!\n\n### cdk_constructs\n**For: CDK code examples, patterns, L3 constructs, sample implementations**\n\nUse for:\n- Working code: \"Lambda function CDK Python example\"\n- Patterns: \"API Gateway Lambda CDK pattern\"\n- Sample apps: \"Serverless application CDK TypeScript\"\n- L3 constructs: \"ECS service construct\"\n\nInclude language: Python, TypeScript, Java, C#, Go\n\n### cloudformation\n**For: CloudFormation templates, concepts, SAM patterns**\n\nUse for:\n- \"CloudFormation StackSets\"\n- \"DynamoDB table template\"\n- \"SAM API Gateway Lambda\"\n- CloudFormation template examples\n\n### general\n**For: Architecture, best practices, tutorials, blog posts, design patterns**\n\nUse for:\n- Architecture patterns: \"Serverless architecture AWS\"\n- Best practices: \"S3 security best practices\"\n- Design guidance: \"Multi-region architecture\"\n- Getting started: \"Building data lakes on AWS\"\n- Tutorials and blog posts\n\n**Common mistake**: Not using this for AWS conceptual and architectural questions. Always search for AWS best practices and patterns!\n\n**Don't use general knowledge for AWS topics\u2014search instead!**\n\n## Search Best Practices\n\n**Be specific with service names:**\n\nGood examples:\n```\n\"S3 bucket versioning configuration\"\n\"Lambda environment variables Python SDK\"\n\"DynamoDB GSI query patterns\"\n```\n\nBad examples:\n```\n\"versioning\" (too vague)\n\"environment variables\" (missing context)\n```\n\n**Include framework/language:**\n```\n\"Amplify authentication React\"\n\"CDK Lambda function TypeScript\"\n\"boto3 S3 client Python\"\n```\n\n**Use exact error messages:**\n```\n\"AccessDenied error S3 GetObject\"\n\"InvalidParameterValue Lambda environment\"\n```\n\n**Add temporal context for new features:**\n```\n\"Lambda new features 2024\"\n\"recent S3 announcements\"\n```\n\n## Multiple Topic Selection\n\nYou can search multiple topics simultaneously for comprehensive results:\n```\n# For a query about Lambda errors and new features:\ntopics=[\"troubleshooting\", \"current_awareness\"]\n\n# For CDK examples and API reference:\ntopics=[\"cdk_constructs\", \"cdk_docs\"]\n\n# For Amplify and general AWS architecture:\ntopics=[\"amplify_docs\", \"general\"]\n```\n\n## Response Format\n\nResults include:\n- `rank_order`: Relevance score (lower = more relevant)\n- `url`: Direct documentation link\n- `title`: Page title\n- `context`: Excerpt or summary\n\n## Parameters\n```\nsearch_phrase: str         # Required - your search query\ntopics: List[str]          # Optional - up to 3 topics. Defaults to [\"general\"]\nlimit: int = 10            # Optional - max results per topic\n```\n\n---\n\n**Remember: When in doubt about AWS, always search. This tool provides the most current, accurate AWS information.**\n\n    ## ECS DOCUMENTATION GUIDANCE:\n    This tool provides up-to-date ECS documentation and implementation guidance, including new ECS features beyond standard LLM training data.\n\n    New ECS features include:\n    - ECS Native Blue-Green Deployments (different from CodeDeploy blue-green, launched 2025)\n    - ECS Managed Instances (launched 2025)\n    - ECS Express Mode / Express Gateway Services (launched 2025)\n",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "topics": {
+            "type": "array",
+            "description": "List of documentation topics to search. Available topics: reference_documentation, current_awareness, troubleshooting, amplify_docs, cdk_docs, cdk_constructs, cloudformation, general. Can specify multiple topics, up-to 3, to search across them. Use 'general' only if query doesn't match other topics."
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          },
+          "search_phrase": {
+            "type": "string",
+            "description": "Search phrase to use"
+          }
+        },
+        "required": [
+          "search_phrase"
+        ]
+      }
+    }
+  ]
+}

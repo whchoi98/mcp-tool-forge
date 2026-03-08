@@ -1,0 +1,350 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "audit_services",
+        "description": "PRIMARY SERVICE AUDIT TOOL - The #1 tool for comprehensive AWS service health auditing and monitoring.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "service_targets": {
+                "type": "string",
+                "description": "REQUIRED. JSON array of service targets. Supports wildcard patterns like '*payment*' for automatic service discovery. Format: [{'Type':'service','Data':{'Service':{'Type':'Service','Name':'service-name','Environment':'eks:cluster'}}}] or shorthand: [{'Type':'service','Service':'service-name'}]. Large target lists are automatically processed in batches."
+              },
+              "start_time": {
+                "type": "string",
+                "description": "Start time (unix seconds or 'YYYY-MM-DD HH:MM:SS'). Defaults to now-24h UTC."
+              },
+              "end_time": {
+                "type": "string",
+                "description": "End time (unix seconds or 'YYYY-MM-DD HH:MM:SS'). Defaults to now UTC."
+              },
+              "auditors": {
+                "type": "string",
+                "description": "Optional. Comma-separated auditors (e.g., 'slo,operation_metric,dependency_metric'). Defaults to 'slo,operation_metric' for fast service health auditing. Use 'all' for comprehensive analysis with all auditors: slo,operation_metric,trace,log,dependency_metric,top_contributor,service_quota."
+              }
+            },
+            "required": [
+              "service_targets"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "audit_slos",
+        "description": "PRIMARY SLO AUDIT TOOL - The #1 tool for comprehensive SLO compliance monitoring and breach analysis.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "slo_targets": {
+                "type": "string",
+                "description": "REQUIRED. JSON array of SLO targets. Supports wildcard patterns like '*payment*' for automatic SLO discovery. Format: [{'Type':'slo','Data':{'Slo':{'SloName':'slo-name'}}}] or [{'Type':'slo','Data':{'Slo':{'SloArn':'arn:aws:...'}}}]. Large target lists are automatically processed in batches."
+              },
+              "start_time": {
+                "type": "string",
+                "description": "Start time (unix seconds or 'YYYY-MM-DD HH:MM:SS'). Defaults to now-24h UTC."
+              },
+              "end_time": {
+                "type": "string",
+                "description": "End time (unix seconds or 'YYYY-MM-DD HH:MM:SS'). Defaults to now UTC."
+              },
+              "auditors": {
+                "type": "string",
+                "description": "Optional. Comma-separated auditors (e.g., 'slo,trace,log'). Defaults to 'slo' for fast SLO compliance auditing. Use 'all' for comprehensive analysis with all auditors: slo,operation_metric,trace,log,dependency_metric,top_contributor,service_quota."
+              }
+            },
+            "required": [
+              "slo_targets"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "audit_service_operations",
+        "description": "\ud83e\udd47 PRIMARY OPERATION AUDIT TOOL - The #1 RECOMMENDED tool for operation-specific analysis and performance investigation.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "operation_targets": {
+                "type": "string",
+                "description": "REQUIRED. JSON array of service operation targets. Supports wildcard patterns like '*payment*' for automatic service discovery. Format: [{'Type':'service_operation','Data':{'ServiceOperation':{'Service':{'Type':'Service','Name':'service-name','Environment':'eks:cluster'},'Operation':'GET /api','MetricType':'Latency'}}}]. Large target lists are automatically processed in batches."
+              },
+              "start_time": {
+                "type": "string",
+                "description": "Start time (unix seconds or 'YYYY-MM-DD HH:MM:SS'). Defaults to now-24h UTC."
+              },
+              "end_time": {
+                "type": "string",
+                "description": "End time (unix seconds or 'YYYY-MM-DD HH:MM:SS'). Defaults to now UTC."
+              },
+              "auditors": {
+                "type": "string",
+                "description": "Optional. Comma-separated auditors (e.g., 'operation_metric,trace,log'). Defaults to 'operation_metric' for fast operation-level auditing. Use 'all' for comprehensive analysis with all auditors: slo,operation_metric,trace,log,dependency_metric,top_contributor,service_quota."
+              }
+            },
+            "required": [
+              "operation_targets"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "analyze_canary_failures",
+        "description": "Comprehensive canary failure analysis with deep dive into issues.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "canary_name": {
+                "type": "string",
+                "description": ""
+              },
+              "region": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "canary_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_monitored_services",
+        "description": "OPTIONAL TOOL for service discovery - audit_services() can automatically discover services using wildcard patterns.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {},
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_service_detail",
+        "description": "Get detailed information about a specific Application Signals service.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "service_name": {
+                "type": "string",
+                "description": "Name of the service to get details for (case-sensitive)"
+              }
+            },
+            "required": [
+              "service_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "query_service_metrics",
+        "description": "Get CloudWatch metrics for a specific Application Signals service.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "service_name": {
+                "type": "string",
+                "description": "Name of the service to get metrics for (case-sensitive)"
+              },
+              "metric_name": {
+                "type": "string",
+                "description": "Specific metric name (e.g., Latency, Error, Fault). Leave empty to list available metrics"
+              },
+              "statistic": {
+                "type": "string",
+                "description": "Standard statistic type (Average, Sum, Maximum, Minimum, SampleCount)"
+              },
+              "extended_statistic": {
+                "type": "string",
+                "description": "Extended statistic (p99, p95, p90, p50, etc)"
+              },
+              "hours": {
+                "type": "integer",
+                "description": "Number of hours to look back (default 1, max 168 for 1 week)"
+              }
+            },
+            "required": [
+              "service_name",
+              "metric_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_service_operations",
+        "description": "OPERATION DISCOVERY TOOL - For operation inventory only. Use audit_services() as PRIMARY tool for operation auditing.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "service_name": {
+                "type": "string",
+                "description": "Name of the service to list operations for (case-sensitive)"
+              },
+              "hours": {
+                "type": "integer",
+                "description": "Number of hours to look back for operation discovery (default 24, max 24 for Application Signals operation discovery)"
+              }
+            },
+            "required": [
+              "service_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_slo",
+        "description": "Get detailed information about a specific Service Level Objective (SLO).",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "slo_id": {
+                "type": "string",
+                "description": "The ARN or name of the SLO to retrieve"
+              }
+            },
+            "required": [
+              "slo_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_slos",
+        "description": "List all Service Level Objectives (SLOs) in Application Signals.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key_attributes": {
+                "type": "string",
+                "description": "JSON string of key attributes to filter SLOs (e.g., '{\"Name\": \"my-service\", \"Environment\": \"ecs:my-cluster\"}'. Defaults to empty object to list all SLOs."
+              },
+              "include_linked_accounts": {
+                "type": "boolean",
+                "description": "Whether to include SLOs from linked accounts (default: True)"
+              },
+              "max_results": {
+                "type": "integer",
+                "description": "Maximum number of SLOs to return (default: 50, max: 50)"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "search_transaction_spans",
+        "description": "Executes a CloudWatch Logs Insights query for transaction search (100% sampled trace data).",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "log_group_name": {
+                "type": "string",
+                "description": "CloudWatch log group name (defaults to \"aws/spans\" if not provided)"
+              },
+              "start_time": {
+                "type": "string",
+                "description": "Start time in ISO 8601 format (e.g., \"2025-04-19T20:00:00+00:00\")"
+              },
+              "end_time": {
+                "type": "string",
+                "description": "End time in ISO 8601 format (e.g., \"2025-04-19T21:00:00+00:00\")"
+              },
+              "query_string": {
+                "type": "string",
+                "description": "CloudWatch Logs Insights query string"
+              },
+              "limit": {
+                "type": "string",
+                "description": "Maximum number of results to return"
+              },
+              "max_timeout": {
+                "type": "integer",
+                "description": "Maximum time in seconds to wait for query completion"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "query_sampled_traces",
+        "description": "SECONDARY TRACE TOOL - Query AWS X-Ray traces (5% sampled data) for trace investigation.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "start_time": {
+                "type": "string",
+                "description": "Start time in ISO format (e.g., \"2024-01-01T00:00:00Z\"). Defaults to 3 hours ago"
+              },
+              "end_time": {
+                "type": "string",
+                "description": "End time in ISO format (e.g., \"2024-01-01T01:00:00Z\"). Defaults to current time"
+              },
+              "filter_expression": {
+                "type": "string",
+                "description": "X-Ray filter expression to narrow results (e.g., service(\"service-name\"){fault = true})"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region (defaults to AWS_REGION environment variable)"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_slis",
+        "description": "SPECIALIZED TOOL - Use audit_service_health() as the PRIMARY tool for service auditing.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "hours": {
+                "type": "integer",
+                "description": "Number of hours to look back (default 24, typically use 24 for daily checks)"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    }
+  ]
+}

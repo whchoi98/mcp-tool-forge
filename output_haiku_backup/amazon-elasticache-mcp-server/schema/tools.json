@@ -1,0 +1,1026 @@
+{
+  "server": "amazon-elasticache-mcp-server",
+  "tools": [
+    {
+      "name": "create-replication-group",
+      "description": "Create an Amazon ElastiCache replication group.\n\n    This tool creates a new replication group with specified configuration including:\n    - Basic replication group settings\n    - Cache node configuration\n    - Network and security settings\n    - Encryption settings\n    - Backup and maintenance settings\n    - Monitoring and logging settings\n\n    Args:\n        request: The CreateReplicationGroupRequest object containing all parameters\n\n    Returns:\n        Dict containing information about the created replication group.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "request"
+        ]
+      }
+    },
+    {
+      "name": "connect-jump-host-replication-group",
+      "description": "Configures an existing EC2 instance as a jump host to access an ElastiCache replication group.\n\n    Args:\n        replication_group_id (str): ID of the ElastiCache replication group to connect to\n        instance_id (str): ID of the EC2 instance to use as jump host\n\n    Returns:\n        Dict[str, Any]: Dictionary containing connection details and configuration status\n\n    Raises:\n        ValueError: If VPC compatibility check fails or required resources not found\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "replication_group_id": {
+            "type": "string",
+            "description": ""
+          },
+          "instance_id": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "replication_group_id",
+          "instance_id"
+        ]
+      }
+    },
+    {
+      "name": "get-ssh-tunnel-command-replication-group",
+      "description": "Generates an SSH tunnel command to connect to an ElastiCache replication group through an EC2 jump host.\n\n    Args:\n        replication_group_id (str): ID of the ElastiCache replication group to connect to\n        instance_id (str): ID of the EC2 instance to use as jump host\n\n    Returns:\n        Dict[str, Union[str, int]]: Dictionary containing the SSH tunnel command and related details\n\n    Raises:\n        ValueError: If required resources not found or information cannot be retrieved\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "replication_group_id": {
+            "type": "string",
+            "description": ""
+          },
+          "instance_id": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "replication_group_id",
+          "instance_id"
+        ]
+      }
+    },
+    {
+      "name": "create-jump-host-replication-group",
+      "description": "Creates an EC2 jump host instance to access an ElastiCache replication group via SSH tunnel.\n\n    Args:\n        replication_group_id (str): ID of the ElastiCache replication group to connect to\n        key_name (str): Name of the EC2 key pair to use for SSH access\n        subnet_id (str, optional): ID of the subnet to launch the EC2 instance in (must be public).\n            If not provided and replication group uses default VPC, will auto-select a default subnet.\n        security_group_id (str, optional): ID of the security group to assign to the EC2 instance.\n            If not provided and replication group uses default VPC, will use the default security group.\n        instance_type (str, optional): EC2 instance type. Defaults to \"t3.small\"\n\n    Returns:\n        Dict[str, Any]: Dictionary containing the created EC2 instance details\n\n    Raises:\n        ValueError: If subnet is not public or VPC compatibility check fails\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "replication_group_id": {
+            "type": "string",
+            "description": ""
+          },
+          "key_name": {
+            "type": "string",
+            "description": ""
+          },
+          "subnet_id": {
+            "type": "string",
+            "description": ""
+          },
+          "security_group_id": {
+            "type": "string",
+            "description": ""
+          },
+          "instance_type": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "replication_group_id",
+          "key_name"
+        ]
+      }
+    },
+    {
+      "name": "delete-replication-group",
+      "description": "Delete an Amazon ElastiCache replication group.\n\n    This tool deletes an existing replication group. You can optionally retain the primary cluster\n    as a standalone cache cluster or create a final snapshot before deletion.\n\n    Parameters:\n        replication_group_id (str): The identifier of the replication group to delete.\n        retain_primary_cluster (Optional[bool]): If True, retains the primary cluster as a standalone\n            cache cluster. If False, deletes all clusters in the replication group.\n        final_snapshot_name (Optional[str]): The name of a final cache cluster snapshot to create\n            before deleting the replication group.\n\n    Returns:\n        Dict containing information about the deleted replication group.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "replication_group_id": {
+            "type": "string",
+            "description": ""
+          },
+          "retain_primary_cluster": {
+            "type": "string",
+            "description": ""
+          },
+          "final_snapshot_name": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "replication_group_id"
+        ]
+      }
+    },
+    {
+      "name": "describe-replication-groups",
+      "description": "Describe one or more ElastiCache replication groups.\n\n    This tool returns information about provisioned replication groups. If a replication group ID\n    is specified, information about only that replication group is returned. Otherwise, information\n    about up to MaxRecords replication groups is returned.\n\n    Parameters:\n        replication_group_id (Optional[str]): The identifier for the replication group to describe.\n            If not provided, information about all replication groups is returned.\n        max_records (Optional[int]): The maximum number of records to include in the response.\n            If more records exist than the specified MaxRecords value, a marker is included\n            in the response so that the remaining results can be retrieved.\n        marker (Optional[str]): An optional marker returned from a previous request. Use this marker\n            for pagination of results from this operation. If this parameter is specified,\n            the response includes only records beyond the marker, up to the value specified\n            by MaxRecords.\n\n    Returns:\n        Dict containing information about the replication group(s), including:\n        - ReplicationGroups: List of replication groups\n        - Marker: Pagination marker for next set of results\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "replication_group_id": {
+            "type": "string",
+            "description": ""
+          },
+          "max_records": {
+            "type": "string",
+            "description": ""
+          },
+          "marker": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "modify-replication-group-shard-configuration",
+      "description": "Modify the shard configuration of an existing Amazon ElastiCache replication group.\n\n    This tool modifies the shard configuration of an existing replication group by:\n    - Modifying the number of replicas in a shard\n    - Specifying preferred availability zones for replicas\n\n    Parameters:\n        replication_group_id (str): The identifier of the replication group to modify.\n        node_group_count (int): The number of node groups (shards) in the replication group.\n        apply_immediately (Optional[bool]): Whether to apply changes immediately or during maintenance window.\n        resharding_configuration (Optional[Union[str, List[Dict]]]): Resharding configuration in either shorthand string format or list of dictionaries format.\n            Shorthand format: \"NodeGroupId=string,NewShardConfiguration={NewReplicaCount=integer,PreferredAvailabilityZones=string1,string2}\"\n            Multiple configurations can be separated by spaces.\n            JSON format: List of dictionaries with required fields:\n            - NodeGroupId: string\n            - NewShardConfiguration:\n                - NewReplicaCount: integer\n                - PreferredAvailabilityZones: list of strings (optional)\n\n    Returns:\n        Dict containing information about the modified replication group.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "replication_group_id": {
+            "type": "string",
+            "description": ""
+          },
+          "node_group_count": {
+            "type": "integer",
+            "description": ""
+          },
+          "apply_immediately": {
+            "type": "string",
+            "description": ""
+          },
+          "resharding_configuration": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "replication_group_id",
+          "node_group_count"
+        ]
+      }
+    },
+    {
+      "name": "modify-replication-group",
+      "description": "Modify an existing Amazon ElastiCache replication group.\n\n    This tool modifies the settings of an existing replication group including:\n    - Node configuration\n    - Security settings\n    - Maintenance settings\n    - Backup settings\n    - Engine settings\n    - Monitoring settings\n    - User group settings\n\n    Args:\n        request: The ModifyReplicationGroupRequest object containing all parameters\n\n    Returns:\n        Dict containing information about the modified replication group.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "request"
+        ]
+      }
+    },
+    {
+      "name": "test-migration",
+      "description": "Test migration to an Amazon ElastiCache replication group.\n\n    This tool tests migration from a Redis instance to an ElastiCache replication group.\n    It validates that data can be successfully migrated from the specified endpoint to\n    the target replication group.\n\n    Args:\n        request: The TestMigrationRequest object containing:\n            - replication_group_id: The ID of the replication group to which data is to be migrated\n            - customer_node_endpoint_list: List of endpoints from which data should be migrated.\n              List should have only one element with Address and Port fields.\n\n    Returns:\n        Dict containing information about the migration test result.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "request"
+        ]
+      }
+    },
+    {
+      "name": "start-migration",
+      "description": "Start migration to an Amazon ElastiCache replication group.\n\n    This tool starts migration from a Redis instance to an ElastiCache replication group.\n    It initiates the data migration process from the specified endpoint(s) to\n    the target replication group.\n\n    Args:\n        request: The StartMigrationRequest object containing:\n            - replication_group_id: The ID of the replication group to which data should be migrated\n            - customer_node_endpoint_list: List of endpoints from which data should be migrated.\n              For Valkey or Redis OSS (cluster mode disabled), the list should have only one element.\n\n    Returns:\n        Dict containing information about the migration start result.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "request"
+        ]
+      }
+    },
+    {
+      "name": "complete-migration",
+      "description": "Complete migration to an Amazon ElastiCache replication group.\n\n    This tool completes the migration of data from a Redis instance to an ElastiCache replication group.\n    It finalizes the data migration process and transitions the replication group to normal operation.\n\n    Args:\n        request: The CompleteMigrationRequest object containing:\n            - replication_group_id: The ID of the replication group to which data is being migrated\n            - force: (Optional) Forces the migration to stop without ensuring that data is in sync.\n              It is recommended to use this option only to abort the migration and not recommended\n              when application wants to continue migration to ElastiCache.\n\n    Returns:\n        Dict containing information about the migration completion result.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "request"
+        ]
+      }
+    },
+    {
+      "name": "create-cache-cluster",
+      "description": "Create an Amazon ElastiCache cache cluster.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "request"
+        ]
+      }
+    },
+    {
+      "name": "delete-cache-cluster",
+      "description": "Delete an Amazon ElastiCache cache cluster.\n\n    This tool deletes an existing cache cluster. Optionally, it can create a final\n    snapshot of the cluster before deletion.\n\n    Parameters:\n        cache_cluster_id (str): The ID of the cache cluster to delete.\n        final_snapshot_identifier (Optional[str]): The user-supplied name of a final\n            cache cluster snapshot. This is the unique name that identifies the\n            snapshot. ElastiCache creates the snapshot, and then deletes the cache\n            cluster immediately afterward.\n\n    Returns:\n        Dict containing information about the deleted cache cluster.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cache_cluster_id": {
+            "type": "string",
+            "description": ""
+          },
+          "final_snapshot_identifier": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "cache_cluster_id"
+        ]
+      }
+    },
+    {
+      "name": "describe-cache-clusters",
+      "description": "Describe one or more ElastiCache cache clusters.\n\n    This tool returns information about provisioned cache clusters. If a cache cluster ID\n    is specified, information about only that cache cluster is returned. Otherwise, information\n    about up to MaxRecords cache clusters is returned.\n\n    Parameters:\n        cache_cluster_id (Optional[str]): The identifier for the cache cluster to describe.\n            If not provided, information about all cache clusters is returned.\n        max_records (Optional[int]): The maximum number of records to include in the response.\n            If more records exist than the specified MaxRecords value, a marker is included\n            in the response so that the remaining results can be retrieved.\n        marker (Optional[str]): An optional marker returned from a previous request. Use this marker\n            for pagination of results from this operation. If this parameter is specified,\n            the response includes only records beyond the marker, up to the value specified\n            by MaxRecords.\n        show_cache_node_info (Optional[bool]): Whether to include detailed information about\n            cache nodes in the response.\n        show_cache_clusters_not_in_replication_groups (Optional[bool]): Whether to show only\n            cache clusters that are not members of a replication group.\n\n    Returns:\n        Dict containing information about the cache cluster(s), including:\n        - CacheClusters: List of cache clusters\n        - Marker: Pagination marker for next set of results\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cache_cluster_id": {
+            "type": "string",
+            "description": ""
+          },
+          "max_records": {
+            "type": "string",
+            "description": ""
+          },
+          "marker": {
+            "type": "string",
+            "description": ""
+          },
+          "show_cache_node_info": {
+            "type": "string",
+            "description": ""
+          },
+          "show_cache_clusters_not_in_replication_groups": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "modify-cache-cluster",
+      "description": "Modify an existing Amazon ElastiCache cache cluster.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "request"
+        ]
+      }
+    },
+    {
+      "name": "connect-jump-host-cache-cluster",
+      "description": "Configures an existing EC2 instance as a jump host to access an ElastiCache cluster.\n\n    Args:\n        cache_cluster_id (str): ID of the ElastiCache cluster to connect to\n        instance_id (str): ID of the EC2 instance to use as jump host\n\n    Returns:\n        Dict[str, Any]: Dictionary containing connection details and configuration status\n\n    Raises:\n        ValueError: If VPC compatibility check fails or required resources not found\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cache_cluster_id": {
+            "type": "string",
+            "description": ""
+          },
+          "instance_id": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "cache_cluster_id",
+          "instance_id"
+        ]
+      }
+    },
+    {
+      "name": "get-ssh-tunnel-command-cache-cluster",
+      "description": "Generates an SSH tunnel command to connect to an ElastiCache cluster through an EC2 jump host.\n\n    Args:\n        cache_cluster_id (str): ID of the ElastiCache cluster to connect to\n        instance_id (str): ID of the EC2 instance to use as jump host\n\n    Returns:\n        Dict[str, Union[str, int]]: Dictionary containing the SSH tunnel command and related details\n\n    Raises:\n        ValueError: If required resources not found or information cannot be retrieved\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cache_cluster_id": {
+            "type": "string",
+            "description": ""
+          },
+          "instance_id": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "cache_cluster_id",
+          "instance_id"
+        ]
+      }
+    },
+    {
+      "name": "create-jump-host-cache-cluster",
+      "description": "Creates an EC2 jump host instance to access an ElastiCache cluster via SSH tunnel.\n\n    Args:\n        cache_cluster_id (str): ID of the ElastiCache cluster to connect to\n        key_name (str): Name of the EC2 key pair to use for SSH access\n        subnet_id (str, optional): ID of the subnet to launch the EC2 instance in (must be public).\n            If not provided and cache uses default VPC, will auto-select a default subnet.\n        security_group_id (str, optional): ID of the security group to assign to the EC2 instance.\n            If not provided and cache uses default VPC, will use the default security group.\n        instance_type (str, optional): EC2 instance type. Defaults to \"t3.small\"\n\n    Returns:\n        Dict[str, Any]: Dictionary containing the created EC2 instance details\n\n    Raises:\n        ValueError: If subnet is not public or VPC compatibility check fails\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cache_cluster_id": {
+            "type": "string",
+            "description": ""
+          },
+          "key_name": {
+            "type": "string",
+            "description": ""
+          },
+          "subnet_id": {
+            "type": "string",
+            "description": ""
+          },
+          "security_group_id": {
+            "type": "string",
+            "description": ""
+          },
+          "instance_type": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "cache_cluster_id",
+          "key_name"
+        ]
+      }
+    },
+    {
+      "name": "get-cost-and-usage",
+      "description": "Get cost and usage data for ElastiCache resources.\n\n    This tool retrieves cost and usage data for ElastiCache resources with customizable\n    time periods and granularity. It uses default configurations for:\n    - Metrics: BlendedCost, UnblendedCost, UsageQuantity\n    - Group By: SERVICE dimension and Environment tag\n    - Filter: Filtered to Amazon ElastiCache service\n\n    Args:\n        request: The GetCostAndUsageRequest object containing:\n            - time_period: Time period in YYYY-MM-DD/YYYY-MM-DD format\n            - granularity: Data granularity (DAILY, MONTHLY, or HOURLY)\n\n    Returns:\n        Dict containing the cost and usage data.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "request"
+        ]
+      }
+    },
+    {
+      "name": "get-metric-statistics",
+      "description": "Get CloudWatch metric statistics.\n\n    Args:\n        metric_name: The name of the metric\n        start_time: The start time in ISO 8601 format\n        end_time: The end time in ISO 8601 format\n        period: The granularity, in seconds, of the returned data points\n        dimensions: The dimensions to filter by\n        statistics: The metric statistics to return\n        extended_statistics: The percentile statistics to return\n        unit: The unit for the metric\n\n    Returns:\n        Dict containing metric statistics\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "metric_name": {
+            "type": "string",
+            "description": ""
+          },
+          "start_time": {
+            "type": "string",
+            "description": ""
+          },
+          "end_time": {
+            "type": "string",
+            "description": ""
+          },
+          "period": {
+            "type": "integer",
+            "description": ""
+          },
+          "dimensions": {
+            "type": "string",
+            "description": ""
+          },
+          "statistics": {
+            "type": "string",
+            "description": ""
+          },
+          "extended_statistics": {
+            "type": "string",
+            "description": ""
+          },
+          "unit": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "metric_name",
+          "start_time",
+          "end_time",
+          "period"
+        ]
+      }
+    },
+    {
+      "name": "get-log-events",
+      "description": "Get log events from CloudWatch Logs.\n\n    Args:\n        log_group_name: The name of the log group\n        log_group_identifier: The unique identifier of the log group\n        log_stream_name: The name of the log stream\n        start_time: The start of the time range, inclusive\n        end_time: The end of the time range, inclusive\n        next_token: The token for the next set of items to return\n        limit: The maximum number of log events to return\n        start_from_head: If true, read from oldest to newest\n        unmask: If true, unmask sensitive log data\n\n    Returns:\n        Dict containing:\n        - events: List of log events\n        - nextForwardToken: Token for getting the next set of events\n        - nextBackwardToken: Token for getting the previous set of events\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "log_stream_name": {
+            "type": "string",
+            "description": ""
+          },
+          "log_group_name": {
+            "type": "string",
+            "description": ""
+          },
+          "log_group_identifier": {
+            "type": "string",
+            "description": ""
+          },
+          "start_time": {
+            "type": "string",
+            "description": ""
+          },
+          "end_time": {
+            "type": "string",
+            "description": ""
+          },
+          "next_token": {
+            "type": "string",
+            "description": ""
+          },
+          "limit": {
+            "type": "string",
+            "description": ""
+          },
+          "start_from_head": {
+            "type": "string",
+            "description": ""
+          },
+          "unmask": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "log_stream_name"
+        ]
+      }
+    },
+    {
+      "name": "create-log-group",
+      "description": "Create a new CloudWatch Logs log group.\n\n    Args:\n        log_group_name: The name of the log group to create\n        kms_key_id: The Amazon Resource Name (ARN) of the KMS key to use for encryption\n        tags: The key-value pairs to use for the tags\n        log_group_class: Specify one of the following classes:\n            STANDARD - Standard log events (default)\n            INFREQUENT_ACCESS - Infrequent Access log events\n\n    Returns:\n        Dict containing success message or error details\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "log_group_name": {
+            "type": "string",
+            "description": ""
+          },
+          "kms_key_id": {
+            "type": "string",
+            "description": ""
+          },
+          "tags": {
+            "type": "string",
+            "description": ""
+          },
+          "log_group_class": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "log_group_name"
+        ]
+      }
+    },
+    {
+      "name": "describe-log-groups",
+      "description": "Describe CloudWatch Logs log groups.\n\n    Args:\n        account_identifiers: List of account IDs to filter log groups\n        log_group_name_prefix: Prefix to filter log groups by name\n        log_group_name_pattern: Pattern to match log group names\n        include_linked_accounts: Whether to include log groups from linked accounts\n        log_group_class: Filter by log group class (STANDARD or INFREQUENT_ACCESS)\n        log_group_identifiers: List of log group identifiers to describe\n        starting_token: Token for starting the list from a specific page\n        page_size: Number of records to include in each page\n        max_items: Maximum number of records to return in total\n\n    Returns:\n        Dict containing log groups information or error details\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "account_identifiers": {
+            "type": "string",
+            "description": ""
+          },
+          "log_group_name_prefix": {
+            "type": "string",
+            "description": ""
+          },
+          "log_group_name_pattern": {
+            "type": "string",
+            "description": ""
+          },
+          "include_linked_accounts": {
+            "type": "string",
+            "description": ""
+          },
+          "log_group_class": {
+            "type": "string",
+            "description": ""
+          },
+          "log_group_identifiers": {
+            "type": "string",
+            "description": ""
+          },
+          "starting_token": {
+            "type": "string",
+            "description": ""
+          },
+          "page_size": {
+            "type": "string",
+            "description": ""
+          },
+          "max_items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "describe-log-streams",
+      "description": "Describe CloudWatch Logs log streams.\n\n    Args:\n        log_group_name: The name of the log group containing the log streams to describe.\n        log_group_identifier: The unique identifier of the log group.\n        log_stream_name_prefix: The prefix to match when describing log streams.\n        order_by: The parameter to sort by (LogStreamName or LastEventTime).\n        descending: If true, results are returned in descending order.\n        starting_token: Token for starting the list from a specific page.\n        page_size: Number of records to include in each page.\n        max_items: Maximum number of records to return in total.\n\n    Returns:\n        Dict containing information about the log streams or error details.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "log_group_name": {
+            "type": "string",
+            "description": ""
+          },
+          "log_group_identifier": {
+            "type": "string",
+            "description": ""
+          },
+          "log_stream_name_prefix": {
+            "type": "string",
+            "description": ""
+          },
+          "order_by": {
+            "type": "string",
+            "description": ""
+          },
+          "descending": {
+            "type": "string",
+            "description": ""
+          },
+          "starting_token": {
+            "type": "string",
+            "description": ""
+          },
+          "page_size": {
+            "type": "string",
+            "description": ""
+          },
+          "max_items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "filter-log-events",
+      "description": "Filter log events from CloudWatch Logs.\n\n    Args:\n        log_group_name: The name of the log group\n        log_group_identifier: The unique identifier of the log group\n        log_stream_names: Optional list of log stream names to search\n        log_stream_name_prefix: Optional prefix to match log stream names\n        start_time: The start of the time range, inclusive\n        end_time: The end of the time range, inclusive\n        filter_pattern: The filter pattern to use\n        interleaved: If true, multiple log streams are interleaved\n        unmask: If true, unmask sensitive log data\n        starting_token: Token for getting the next set of events\n        page_size: Number of events to return per page\n        max_items: Maximum number of events to return in total\n\n    Returns:\n        Dict containing:\n        - events: List of filtered log events\n        - searchedLogStreams: List of log streams that were searched\n        - nextToken: Token for getting the next set of events\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "log_group_name": {
+            "type": "string",
+            "description": ""
+          },
+          "log_group_identifier": {
+            "type": "string",
+            "description": ""
+          },
+          "log_stream_names": {
+            "type": "string",
+            "description": ""
+          },
+          "log_stream_name_prefix": {
+            "type": "string",
+            "description": ""
+          },
+          "start_time": {
+            "type": "string",
+            "description": ""
+          },
+          "end_time": {
+            "type": "string",
+            "description": ""
+          },
+          "filter_pattern": {
+            "type": "string",
+            "description": ""
+          },
+          "interleaved": {
+            "type": "string",
+            "description": ""
+          },
+          "unmask": {
+            "type": "string",
+            "description": ""
+          },
+          "starting_token": {
+            "type": "string",
+            "description": ""
+          },
+          "page_size": {
+            "type": "string",
+            "description": ""
+          },
+          "max_items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list-delivery-streams",
+      "description": "List your delivery streams.\n\n    Args:\n        limit: The maximum number of delivery streams to list\n        delivery_stream_type: The delivery stream type. This can be one of the following values:\n            DirectPut - Provider data is sent directly to the Firehose stream\n            KinesisStreamAsSource - Data is sourced from an existing Kinesis stream\n        exclusive_start_delivery_stream_name: The name of the delivery stream to start the list after\n\n    Returns:\n        Dict containing the list of delivery streams and whether there are more streams available\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "string",
+            "description": ""
+          },
+          "delivery_stream_type": {
+            "type": "string",
+            "description": ""
+          },
+          "exclusive_start_delivery_stream_name": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "batch-apply-update-action",
+      "description": "Apply service update to multiple ElastiCache resources.\n\n    Parameters:\n        service_update_name (str): The unique ID of the service update to apply.\n        replication_group_ids (Optional[List[str]]): List of replication group IDs to update.\n            Either this or cache_cluster_ids must be provided.\n        cache_cluster_ids (Optional[List[str]]): List of cache cluster IDs to update.\n            Either this or replication_group_ids must be provided.\n\n    Returns:\n        Dict containing information about the batch update operation.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "service_update_name": {
+            "type": "string",
+            "description": ""
+          },
+          "replication_group_ids": {
+            "type": "string",
+            "description": ""
+          },
+          "cache_cluster_ids": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "service_update_name"
+        ]
+      }
+    },
+    {
+      "name": "batch-stop-update-action",
+      "description": "Stop service update for multiple ElastiCache resources.\n\n    Parameters:\n        service_update_name (str): The unique ID of the service update to stop.\n        replication_group_ids (Optional[List[str]]): List of replication group IDs to stop update.\n            Either this or cache_cluster_ids must be provided.\n        cache_cluster_ids (Optional[List[str]]): List of cache cluster IDs to stop update.\n            Either this or replication_group_ids must be provided.\n\n    Returns:\n        Dict containing information about the batch stop operation.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "service_update_name": {
+            "type": "string",
+            "description": ""
+          },
+          "replication_group_ids": {
+            "type": "string",
+            "description": ""
+          },
+          "cache_cluster_ids": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "service_update_name"
+        ]
+      }
+    },
+    {
+      "name": "describe-cache-engine-versions",
+      "description": "Returns a list of the available cache engines and their versions.\n\n    Parameters:\n        engine (Optional[str]): The cache engine to return. Valid values: memcached | redis | valkey\n        engine_version (Optional[str]): The cache engine version to return.\n            Example: memcached 1.4.14, redis 6.x, valkey 8.0\n        cache_parameter_group_family (Optional[str]): The name of a specific cache parameter group family.\n            Valid values are: memcached1.4 | memcached1.5 | memcached1.6 | redis2.6 | redis2.8 |\n            redis3.2 | redis4.0 | redis5.0 | redis6.x | redis7.x | valkey7.x | valkey8.x\n        max_records (Optional[int]): The maximum number of records to include in the response.\n            If more records exist than the specified MaxRecords value, a marker is included\n            in the response so that the remaining results can be retrieved.\n        marker (Optional[str]): An optional marker returned from a previous request. Use this marker\n            for pagination of results from this operation. If this parameter is specified,\n            the response includes only records beyond the marker, up to the value specified\n            by MaxRecords.\n        default_only (Optional[bool]): If true, specifies that only the default version of the specified engine\n            or engine and major version combination is to be returned.\n\n    Returns:\n        Dict containing information about the cache engine versions, including:\n        - CacheEngineVersions: List of cache engine versions\n        - Marker: Pagination marker for next set of results\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "engine": {
+            "type": "string",
+            "description": ""
+          },
+          "engine_version": {
+            "type": "string",
+            "description": ""
+          },
+          "cache_parameter_group_family": {
+            "type": "string",
+            "description": ""
+          },
+          "max_records": {
+            "type": "string",
+            "description": ""
+          },
+          "marker": {
+            "type": "string",
+            "description": ""
+          },
+          "default_only": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "describe-engine-default-parameters",
+      "description": "Returns the default engine and system parameter information for the specified cache engine family.\n\n    Parameters:\n        cache_parameter_group_family (str): The name of the cache parameter group family.\n            Valid values are: memcached1.4 | memcached1.5 | memcached1.6 | redis2.6 | redis2.8 |\n            redis3.2 | redis4.0 | redis5.0 | redis6.x | redis7.x | valkey7.x | valkey8.x\n        max_records (Optional[int]): The maximum number of records to include in the response.\n            If more records exist than the specified MaxRecords value, a marker is included\n            in the response so that the remaining results can be retrieved.\n        marker (Optional[str]): An optional marker returned from a previous request. Use this marker\n            for pagination of results from this operation. If this parameter is specified,\n            the response includes only records beyond the marker, up to the value specified\n            by MaxRecords.\n\n    Returns:\n        Dict containing information about the engine default parameters, including:\n        - Parameters: List of parameters with their details\n        - CacheParameterGroupFamily: The name of the cache parameter group family\n        - Marker: Pagination marker for next set of results\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cache_parameter_group_family": {
+            "type": "string",
+            "description": ""
+          },
+          "max_records": {
+            "type": "string",
+            "description": ""
+          },
+          "marker": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "cache_parameter_group_family"
+        ]
+      }
+    },
+    {
+      "name": "describe-events",
+      "description": "Returns events related to clusters, cache security groups, and parameter groups.\n\n    Parameters:\n        source_type (Optional[str]): The event source to retrieve events for. If not specified, all\n            events are returned. Valid values: cache-cluster | cache-parameter-group |\n            cache-security-group | cache-subnet-group | replication-group | user | user-group\n        source_identifier (Optional[str]): The identifier of the event source for which events are\n            returned. For example, if source_type is cache-cluster, you can specify a cluster\n            identifier to see all events for only that cluster.\n        start_time (Optional[datetime]): The beginning of the time interval to retrieve events for,\n            specified in ISO 8601 format.\n        end_time (Optional[datetime]): The end of the time interval to retrieve events for,\n            specified in ISO 8601 format.\n        duration (Optional[int]): The number of minutes worth of events to retrieve.\n        max_records (Optional[int]): The maximum number of records to include in the response.\n            If more records exist than the specified MaxRecords value, a marker is included\n            in the response so that the remaining results can be retrieved.\n        marker (Optional[str]): An optional marker returned from a previous request. Use this marker\n            for pagination of results from this operation. If this parameter is specified,\n            the response includes only records beyond the marker, up to the value specified\n            by MaxRecords.\n\n    Returns:\n        Dict containing information about the events, including:\n        - Events: List of events\n        - Marker: Pagination marker for next set of results\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "source_type": {
+            "type": "string",
+            "description": ""
+          },
+          "source_identifier": {
+            "type": "string",
+            "description": ""
+          },
+          "start_time": {
+            "type": "string",
+            "description": ""
+          },
+          "end_time": {
+            "type": "string",
+            "description": ""
+          },
+          "duration": {
+            "type": "string",
+            "description": ""
+          },
+          "max_records": {
+            "type": "string",
+            "description": ""
+          },
+          "marker": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "describe-service-updates",
+      "description": "Returns details of the service updates.\n\n    Parameters:\n        service_update_name (Optional[str]): The unique ID of the service update to describe.\n        service_update_status (Optional[List[str]]): List of status values to filter by.\n            Valid values: available | cancelled | expired | complete\n        starting_token (Optional[str]): An optional token returned from a previous request.\n            Use this token for pagination of results from this operation.\n        page_size (Optional[int]): The maximum number of records to include in each page\n            of results.\n        max_items (Optional[int]): The maximum number of records to include in the response.\n            If more records exist than the specified MaxItems value, a marker is included\n            in the response so that the remaining results can be retrieved.\n\n    Returns:\n        Dict containing information about the service updates, including:\n        - ServiceUpdates: List of service updates\n        - NextToken: Token for next set of results\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "service_update_name": {
+            "type": "string",
+            "description": ""
+          },
+          "service_update_status": {
+            "type": "string",
+            "description": ""
+          },
+          "starting_token": {
+            "type": "string",
+            "description": ""
+          },
+          "page_size": {
+            "type": "string",
+            "description": ""
+          },
+          "max_items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create-serverless-cache",
+      "description": "Create a new Amazon ElastiCache serverless cache.\n\n    This tool creates a new serverless cache with specified configuration including:\n    - Serverless cache name and capacity\n    - Optional VPC and security settings\n    - Optional encryption settings\n    - Optional snapshot restoration and backup settings\n    - Optional usage limits and user groups\n    - Optional tags\n\n    Parameters:\n        serverless_cache_name (str): Name of the serverless cache.\n        engine (str): Cache engine type.\n        description (Optional[str]): Description for the cache.\n        kms_key_id (Optional[str]): KMS key ID for encryption.\n        major_engine_version (Optional[str]): Major engine version.\n        snapshot_arns_to_restore (Optional[List[str]]): List of snapshot ARNs to restore from.\n        subnet_ids (Optional[List[str]]): List of subnet IDs for VPC configuration.\n        tags (Optional[Union[str, List[Dict[str, Optional[str]]], Dict[str, Optional[str]]]]): Tags to apply to the cache.\n            Tag requirements:\n            - Key: (string) Required. The key for the tag. Must not be empty.\n            - Value: (string) Optional. The tag's value. May be null.\n\n            Supports three formats:\n            1. Shorthand syntax: \"Key=value,Key2=value2\" or \"Key=,Key2=\" for null values\n            2. Dictionary: {\"key\": \"value\", \"key2\": null}\n            3. JSON array: [{\"Key\": \"string\", \"Value\": \"string\"}, {\"Key\": \"string2\", \"Value\": null}]\n\n            Can be None if no tags are needed.\n        security_group_ids (Optional[List[str]]): List of security group IDs.\n        cache_usage_limits (Optional[CacheUsageLimits]): Usage limits for the cache. Structure:\n            {\n                \"DataStorage\": {\n                    \"Maximum\": int,  # Maximum storage in GB\n                    \"Minimum\": int,  # Minimum storage in GB\n                    \"Unit\": \"GB\"     # Storage unit (currently only GB is supported)\n                },\n                \"ECPUPerSecond\": {\n                    \"Maximum\": int,  # Maximum ECPU per second\n                    \"Minimum\": int   # Minimum ECPU per second\n                }\n            }\n        user_group_id (Optional[str]): ID of the user group to associate with the cache.\n        snapshot_retention_limit (Optional[int]): Number of days for which ElastiCache retains automatic snapshots.\n        daily_snapshot_time (Optional[str]): Time range (in UTC) when daily snapshots are taken (e.g., '04:00-05:00').\n\n    Returns:\n        Dict containing information about the created serverless cache.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "request"
+        ]
+      }
+    },
+    {
+      "name": "delete-serverless-cache",
+      "description": "Delete an Amazon ElastiCache serverless cache.\n\n    This tool deletes a specified serverless cache from your AWS account.\n    The cache must exist and be in a deletable state.\n\n    Parameters:\n        serverless_cache_name (str): Name of the serverless cache to delete.\n        final_snapshot_name (Optional[str]): Name of the final snapshot to create before deletion.\n\n    Returns:\n        Dict containing the deletion response or error information.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "serverless_cache_name": {
+            "type": "string",
+            "description": ""
+          },
+          "final_snapshot_name": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "serverless_cache_name"
+        ]
+      }
+    },
+    {
+      "name": "describe-serverless-caches",
+      "description": "Describe Amazon ElastiCache serverless caches in your AWS account.\n\n    This tool retrieves detailed information about serverless caches including:\n    - Cache configuration\n    - Cache endpoints\n    - Cache status\n    - Cache size\n    - Cache connections\n\n    Parameters:\n        serverless_cache_name (Optional[str]): Name of the serverless cache to describe. If not provided, describes all caches.\n        max_items (Optional[int]): Maximum number of results to return.\n        starting_token (Optional[str]): Token to start the list from a specific page.\n        page_size (Optional[int]): Number of records to include in each page.\n\n    Returns:\n        Dict containing information about the serverless cache(s).\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "serverless_cache_name": {
+            "type": "string",
+            "description": ""
+          },
+          "max_items": {
+            "type": "string",
+            "description": ""
+          },
+          "starting_token": {
+            "type": "string",
+            "description": ""
+          },
+          "page_size": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "modify-serverless-cache",
+      "description": "Modify an Amazon ElastiCache serverless cache.\n\n    This tool modifies the configuration of an existing serverless cache including:\n    - Cache description\n    - Engine version\n    - Snapshot settings\n    - Usage limits\n    - Security groups\n    - User groups\n\n    Parameters:\n        serverless_cache_name (str): Name of the serverless cache to modify.\n        apply_immediately (Optional[bool]): Whether to apply changes immediately or during maintenance window.\n        description (Optional[str]): New description for the cache.\n        major_engine_version (Optional[str]): New major engine version.\n        snapshot_retention_limit (Optional[int]): Number of days for which ElastiCache retains automatic snapshots.\n        daily_snapshot_time (Optional[str]): Time range (in UTC) when daily snapshots are taken (e.g., '04:00-05:00').\n        cache_usage_limits (Optional[CacheUsageLimits]): New usage limits for the cache. Structure:\n            {\n                \"DataStorage\": {\n                    \"Maximum\": int,  # Maximum storage in GB\n                    \"Minimum\": int,  # Minimum storage in GB\n                    \"Unit\": \"GB\"     # Storage unit (currently only GB is supported)\n                },\n                \"ECPUPerSecond\": {\n                    \"Maximum\": int,  # Maximum ECPU per second\n                    \"Minimum\": int   # Minimum ECPU per second\n                }\n            }\n        security_group_ids (Optional[List[str]]): List of security group IDs.\n        user_group_id (Optional[str]): ID of the user group to associate with the cache.\n\n    Returns:\n        Dict containing information about the modified serverless cache.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "request"
+        ]
+      }
+    },
+    {
+      "name": "connect-jump-host-serverless-cache",
+      "description": "Configures an existing EC2 instance as a jump host to access an ElastiCache serverless cache.\n\n    Args:\n        serverless_cache_name (str): Name of the ElastiCache serverless cache to connect to\n        instance_id (str): ID of the EC2 instance to use as jump host\n\n    Returns:\n        Dict[str, Any]: Dictionary containing connection details and configuration status\n\n    Raises:\n        ValueError: If VPC compatibility check fails or required resources not found\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "serverless_cache_name": {
+            "type": "string",
+            "description": ""
+          },
+          "instance_id": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "serverless_cache_name",
+          "instance_id"
+        ]
+      }
+    },
+    {
+      "name": "get-ssh-tunnel-command-serverless-cache",
+      "description": "Generates an SSH tunnel command to connect to an ElastiCache serverless cache through an EC2 jump host.\n\n    Args:\n        serverless_cache_name (str): Name of the ElastiCache serverless cache to connect to\n        instance_id (str): ID of the EC2 instance to use as jump host\n\n    Returns:\n        Dict[str, Union[str, int]]: Dictionary containing the SSH tunnel command and related details\n\n    Raises:\n        ValueError: If required resources not found or information cannot be retrieved\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "serverless_cache_name": {
+            "type": "string",
+            "description": ""
+          },
+          "instance_id": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "serverless_cache_name",
+          "instance_id"
+        ]
+      }
+    },
+    {
+      "name": "create-jump-host-serverless-cache",
+      "description": "Creates an EC2 jump host instance to access an ElastiCache serverless cache via SSH tunnel.\n\n    Args:\n        serverless_cache_name (str): Name of the ElastiCache serverless cache to connect to\n        key_name (str): Name of the EC2 key pair to use for SSH access\n        subnet_id (str, optional): ID of the subnet to launch the EC2 instance in (must be public).\n            If not provided and serverless cache uses default VPC, will auto-select a default subnet.\n        security_group_id (str, optional): ID of the security group to assign to the EC2 instance.\n            If not provided and serverless cache uses default VPC, will use the default security group.\n        instance_type (str, optional): EC2 instance type. Defaults to \"t3.small\"\n\n    Returns:\n        Dict[str, Any]: Dictionary containing the created EC2 instance details\n\n    Raises:\n        ValueError: If subnet is not public or VPC compatibility check fails\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "serverless_cache_name": {
+            "type": "string",
+            "description": ""
+          },
+          "key_name": {
+            "type": "string",
+            "description": ""
+          },
+          "subnet_id": {
+            "type": "string",
+            "description": ""
+          },
+          "security_group_id": {
+            "type": "string",
+            "description": ""
+          },
+          "instance_type": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "serverless_cache_name",
+          "key_name"
+        ]
+      }
+    }
+  ]
+}

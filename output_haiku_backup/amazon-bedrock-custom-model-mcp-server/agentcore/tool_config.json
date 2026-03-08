@@ -1,0 +1,120 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "create_model_import_job",
+        "description": "Create a model import job to import a model into Amazon Bedrock.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "request": {
+                "type": "object",
+                "description": "Request model for creating a model import job."
+              }
+            },
+            "required": [
+              "request"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_model_import_job",
+        "description": "Get model import job details from Amazon Bedrock.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "job_identifier": {
+                "type": "string",
+                "description": "Name or ARN of the job"
+              }
+            },
+            "required": [
+              "job_identifier"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_model_import_jobs",
+        "description": "List model import jobs in Amazon Bedrock.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "request": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_imported_model",
+        "description": "Get imported model details from Amazon Bedrock.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "model_identifier": {
+                "type": "string",
+                "description": "Name or ARN of the model"
+              }
+            },
+            "required": [
+              "model_identifier"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "delete_imported_model",
+        "description": "Delete an imported model from Amazon Bedrock.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "model_identifier": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "model_identifier"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_imported_models",
+        "description": "List imported models in Amazon Bedrock.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "request": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    }
+  ]
+}

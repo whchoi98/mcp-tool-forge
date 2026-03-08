@@ -1,0 +1,1285 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "get_sitewise_server_mode",
+        "description": "Get the current SiteWise server mode and available capabilities.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {},
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe_asset",
+        "description": "Retrieve information about an asset.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "asset_id": {
+                "type": "string",
+                "description": "The ID of the asset (UUID format: 12345678-1234-1234-1234-123456789012 or external ID format: externalId:my-external-id)"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              },
+              "exclude_properties": {
+                "type": "boolean",
+                "description": "Whether to exclude asset properties from the response"
+              }
+            },
+            "required": [
+              "asset_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_assets",
+        "description": "Retrieve a paginated list of asset summaries.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              },
+              "next_token": {
+                "type": "string",
+                "description": "The token to be used for the next set of paginated results"
+              },
+              "max_results": {
+                "type": "integer",
+                "description": "The maximum number of results to return (1-250)"
+              },
+              "asset_model_id": {
+                "type": "string",
+                "description": "The ID of the asset model by which to filter the list of assets"
+              },
+              "filter_type": {
+                "type": "string",
+                "description": "Filter assets by ALL or TOP_LEVEL"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_associated_assets",
+        "description": "Retrieve a paginated list of associated assets.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "asset_id": {
+                "type": "string",
+                "description": "The ID of the asset to query (UUID format: 12345678-1234-1234-1234-123456789012 or external ID format: externalId:my-external-id)"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              },
+              "hierarchy_id": {
+                "type": "string",
+                "description": "The ID of the hierarchy by which child assets are associated"
+              },
+              "traversal_direction": {
+                "type": "string",
+                "description": "The direction to list associated assets (PARENT, CHILD)"
+              },
+              "next_token": {
+                "type": "string",
+                "description": "The token to be used for the next set of paginated results"
+              },
+              "max_results": {
+                "type": "integer",
+                "description": "The maximum number of results to return (1-250)"
+              }
+            },
+            "required": [
+              "asset_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe_asset_model",
+        "description": "Retrieve information about an asset model.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "asset_model_id": {
+                "type": "string",
+                "description": "The ID of the asset model (UUID format: 12345678-1234-1234-1234-123456789012 or external ID format: externalId:my-external-id)"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              },
+              "exclude_properties": {
+                "type": "boolean",
+                "description": "Whether to exclude asset model properties"
+              },
+              "asset_model_version": {
+                "type": "string",
+                "description": "The version of the asset model (LATEST, ACTIVE)"
+              }
+            },
+            "required": [
+              "asset_model_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_asset_models",
+        "description": "Retrieve a paginated list of summaries for all asset models.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              },
+              "next_token": {
+                "type": "string",
+                "description": "The token to be used for the next set of paginated results"
+              },
+              "max_results": {
+                "type": "integer",
+                "description": "The maximum number of results to return (1-250)"
+              },
+              "asset_model_types": {
+                "type": "string",
+                "description": "The type of asset model (ASSET_MODEL, COMPONENT_MODEL)"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_asset_model_properties",
+        "description": "Retrieve a paginated list of properties associated with an asset model.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "asset_model_id": {
+                "type": "string",
+                "description": "The ID of the asset model (UUID format: 12345678-1234-1234-1234-123456789012 or external ID format: externalId:my-external-id)"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              },
+              "next_token": {
+                "type": "string",
+                "description": "The token to be used for the next set of paginated results"
+              },
+              "max_results": {
+                "type": "integer",
+                "description": "The maximum number of results to return (1-250)"
+              },
+              "asset_model_version": {
+                "type": "string",
+                "description": "The version of the asset model (LATEST, ACTIVE)"
+              },
+              "filter_type": {
+                "type": "string",
+                "description": "Filter properties by type (ALL, BASE)"
+              }
+            },
+            "required": [
+              "asset_model_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_asset_property_value",
+        "description": "Get the current value for the given asset property.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "asset_id": {
+                "type": "string",
+                "description": "The ID of the asset"
+              },
+              "property_id": {
+                "type": "string",
+                "description": "The ID of the asset property"
+              },
+              "property_alias": {
+                "type": "string",
+                "description": "The alias that identifies the property"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_asset_property_value_history",
+        "description": "Get the history of an asset property's values.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "asset_id": {
+                "type": "string",
+                "description": "The ID of the asset"
+              },
+              "property_id": {
+                "type": "string",
+                "description": "The ID of the asset property"
+              },
+              "property_alias": {
+                "type": "string",
+                "description": "The alias that identifies the property"
+              },
+              "start_date": {
+                "type": "string",
+                "description": "The exclusive start of the range (ISO 8601 format)"
+              },
+              "end_date": {
+                "type": "string",
+                "description": "The inclusive end of the range (ISO 8601 format)"
+              },
+              "qualities": {
+                "type": "string",
+                "description": "The quality by which to filter asset data (GOOD, BAD, UNCERTAIN)"
+              },
+              "time_ordering": {
+                "type": "string",
+                "description": "The chronological sorting order (ASCENDING, DESCENDING)"
+              },
+              "next_token": {
+                "type": "string",
+                "description": "The token to be used for the next set of paginated results"
+              },
+              "max_results": {
+                "type": "integer",
+                "description": "The maximum number of results to return (1-4000)"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_asset_property_aggregates",
+        "description": "Get aggregated values for an asset property.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "asset_id": {
+                "type": "string",
+                "description": "The ID of the asset"
+              },
+              "property_id": {
+                "type": "string",
+                "description": "The ID of the asset property"
+              },
+              "property_alias": {
+                "type": "string",
+                "description": "The alias that identifies the property"
+              },
+              "aggregate_types": {
+                "type": "string",
+                "description": "The data aggregating function (AVERAGE, COUNT, MAXIMUM, MINIMUM, SUM, STANDARD_DEVIATION)"
+              },
+              "resolution": {
+                "type": "string",
+                "description": "The time interval over which to aggregate data"
+              },
+              "start_date": {
+                "type": "string",
+                "description": "The exclusive start of the range (ISO 8601 format)"
+              },
+              "end_date": {
+                "type": "string",
+                "description": "The inclusive end of the range (ISO 8601 format)"
+              },
+              "qualities": {
+                "type": "string",
+                "description": "The quality by which to filter asset data (GOOD, BAD, UNCERTAIN)"
+              },
+              "time_ordering": {
+                "type": "string",
+                "description": "The chronological sorting order (ASCENDING, DESCENDING)"
+              },
+              "next_token": {
+                "type": "string",
+                "description": "The token to be used for the next set of paginated results"
+              },
+              "max_results": {
+                "type": "integer",
+                "description": "The maximum number of results to return (1-4000)"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_interpl_asset_property_values",
+        "description": "Get interpolated values for an asset property for a specified time interval.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "asset_id": {
+                "type": "string",
+                "description": "The ID of the asset"
+              },
+              "property_id": {
+                "type": "string",
+                "description": "The ID of the asset property"
+              },
+              "property_alias": {
+                "type": "string",
+                "description": "The alias that identifies the property"
+              },
+              "start_time_in_seconds": {
+                "type": "string",
+                "description": "The exclusive start of the range (Unix epoch time in seconds)"
+              },
+              "end_time_in_seconds": {
+                "type": "string",
+                "description": "The inclusive end of the range (Unix epoch time in seconds)"
+              },
+              "quality": {
+                "type": "string",
+                "description": "The quality of the asset property value (GOOD, BAD, UNCERTAIN)"
+              },
+              "interval_in_seconds": {
+                "type": "integer",
+                "description": "The time interval in seconds over which to interpolate data"
+              },
+              "next_token": {
+                "type": "string",
+                "description": "The token to be used for the next set of paginated results"
+              },
+              "max_results": {
+                "type": "integer",
+                "description": "The maximum number of results to return (1-250)"
+              },
+              "interpolation_type": {
+                "type": "string",
+                "description": "The interpolation type (LINEAR_INTERPOLATION, LOCF_INTERPOLATION)"
+              },
+              "interval_window_in_seconds": {
+                "type": "string",
+                "description": "The query interval for interpolated values"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "batch_get_asset_property_value",
+        "description": "Get the current values for multiple asset properties.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "entries": {
+                "type": "array",
+                "description": "The list of asset property identifiers for the batch get request"
+              },
+              "next_token": {
+                "type": "string",
+                "description": "The token to be used for the next set of paginated results"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              }
+            },
+            "required": [
+              "entries"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "batch_get_asset_property_value_hist",
+        "description": "Get the historical values for multiple asset properties.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "entries": {
+                "type": "array",
+                "description": "The list of asset property historical value entries for the batch get request"
+              },
+              "next_token": {
+                "type": "string",
+                "description": "The token to be used for the next set of paginated results"
+              },
+              "max_results": {
+                "type": "integer",
+                "description": "The maximum number of results to return (1-4000)"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              }
+            },
+            "required": [
+              "entries"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "batch_get_asset_property_aggregates",
+        "description": "Get aggregated values for multiple asset properties.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "entries": {
+                "type": "array",
+                "description": "The list of asset property aggregate entries for the batch get request"
+              },
+              "next_token": {
+                "type": "string",
+                "description": "The token to be used for the next set of paginated results"
+              },
+              "max_results": {
+                "type": "integer",
+                "description": "The maximum number of results to return (1-4000)"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              }
+            },
+            "required": [
+              "entries"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_bulk_import_jobs",
+        "description": "List bulk import jobs in AWS IoT SiteWise.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "filter": {
+                "type": "string",
+                "description": "Filter to apply to the list of bulk import jobs. Valid values: ALL, PENDING, RUNNING, CANCELLED, FAILED, COMPLETED_WITH_FAILURES, COMPLETED"
+              },
+              "next_token": {
+                "type": "string",
+                "description": "The token to be used for the next set of paginated results"
+              },
+              "max_results": {
+                "type": "integer",
+                "description": "The maximum number of results to return (1-250)"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe_bulk_import_job",
+        "description": "Get detailed information about a specific bulk import job in AWS IoT SiteWise.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "job_id": {
+                "type": "string",
+                "description": "The ID of the bulk import job to describe (UUID format)"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              }
+            },
+            "required": [
+              "job_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "execute_query",
+        "description": "Execute comprehensive SQL queries against AWS IoT SiteWise data using the executeQuery API.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "query_statement": {
+                "type": "string",
+                "description": "SQL query statement to execute against AWS IoT SiteWise data"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              },
+              "next_token": {
+                "type": "string",
+                "description": "The token to be used for the next set of paginated results"
+              },
+              "max_results": {
+                "type": "integer",
+                "description": "The maximum number of results to return (1-10000)"
+              }
+            },
+            "required": [
+              "query_statement"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe_gateway",
+        "description": "Retrieve information about a gateway.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "gateway_id": {
+                "type": "string",
+                "description": "The ID of the gateway device"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              }
+            },
+            "required": [
+              "gateway_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_gateways",
+        "description": "Retrieve a paginated list of gateways.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              },
+              "next_token": {
+                "type": "string",
+                "description": "The token to be used for the next set of paginated results"
+              },
+              "max_results": {
+                "type": "integer",
+                "description": "The maximum number of results to return (1-250)"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe_gateway_capability_config",
+        "description": "Retrieve information about a gateway capability configuration.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "gateway_id": {
+                "type": "string",
+                "description": "The ID of the gateway that defines the capability configuration"
+              },
+              "capability_namespace": {
+                "type": "string",
+                "description": "The namespace of the capability configuration"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              }
+            },
+            "required": [
+              "gateway_id",
+              "capability_namespace"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_time_series",
+        "description": "Retrieve a paginated list of time series (data streams).",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              },
+              "next_token": {
+                "type": "string",
+                "description": "The token to be used for the next set of paginated results"
+              },
+              "max_results": {
+                "type": "integer",
+                "description": "The maximum number of results to return (1-250)"
+              },
+              "asset_id": {
+                "type": "string",
+                "description": "The ID of the asset in which the asset property was created"
+              },
+              "alias_prefix": {
+                "type": "string",
+                "description": "The alias prefix of the time series"
+              },
+              "time_series_type": {
+                "type": "string",
+                "description": "The type of the time series (ASSOCIATED, DISASSOCIATED)"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe_time_series",
+        "description": "Retrieve information about a time series (data stream).",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "alias": {
+                "type": "string",
+                "description": "The alias that identifies the time series"
+              },
+              "asset_id": {
+                "type": "string",
+                "description": "The ID of the asset in which the asset property was created"
+              },
+              "property_id": {
+                "type": "string",
+                "description": "The ID of the asset property"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe_default_encryption_config",
+        "description": "Retrieve information about the default encryption configuration for your AWS account.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe_logging_options",
+        "description": "Retrieve the current AWS IoT SiteWise logging options.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe_storage_configuration",
+        "description": "Retrieve information about the storage configuration for your AWS account.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create_bulk_import_schema",
+        "description": "Construct and validate a bulk import schema.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "asset_models": {
+                "type": "string",
+                "description": ""
+              },
+              "assets": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_metadata_transfer_job",
+        "description": "Get details of a metadata transfer job.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "metadata_transfer_job_id": {
+                "type": "string",
+                "description": "The metadata transfer job ID to retrieve"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              }
+            },
+            "required": [
+              "metadata_transfer_job_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_metadata_transfer_jobs",
+        "description": "List metadata transfer jobs.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "source_type": {
+                "type": "string",
+                "description": "Filter by source type (s3, iotsitewise) - REQUIRED"
+              },
+              "destination_type": {
+                "type": "string",
+                "description": "Filter by destination type (s3, iotsitewise) - REQUIRED"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region"
+              },
+              "max_results": {
+                "type": "integer",
+                "description": "Maximum number of results to return (1-200)"
+              },
+              "next_token": {
+                "type": "string",
+                "description": "Token for pagination"
+              }
+            },
+            "required": [
+              "source_type",
+              "destination_type"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_computation_models",
+        "description": "List computation models in AWS IoT SiteWise.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "region": {
+                "type": "string",
+                "description": ""
+              },
+              "computation_model_type": {
+                "type": "string",
+                "description": ""
+              },
+              "max_results": {
+                "type": "string",
+                "description": ""
+              },
+              "next_token": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe_computation_model",
+        "description": "Describe a computation model in AWS IoT SiteWise.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "computation_model_id": {
+                "type": "string",
+                "description": ""
+              },
+              "region": {
+                "type": "string",
+                "description": ""
+              },
+              "computation_model_version": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "computation_model_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe_computation_model_execution_summary",
+        "description": "Describe a computation model execution summary in AWS IoT SiteWise.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "computation_model_id": {
+                "type": "string",
+                "description": ""
+              },
+              "region": {
+                "type": "string",
+                "description": ""
+              },
+              "resolve_to_resource_id": {
+                "type": "string",
+                "description": ""
+              },
+              "resolve_to_resource_type": {
+                "type": "string",
+                "description": ""
+              },
+              "configuration_type": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "computation_model_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_computation_model_data_binding_usages",
+        "description": "Find computation models that use a given resource in data binding.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "data_binding_value_filter": {
+                "type": "object",
+                "description": ""
+              },
+              "region": {
+                "type": "string",
+                "description": ""
+              },
+              "max_results": {
+                "type": "string",
+                "description": ""
+              },
+              "next_token": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "data_binding_value_filter"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_computation_model_resolve_to_resources",
+        "description": "List computation model resolve to resources in AWS IoT SiteWise.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "computation_model_id": {
+                "type": "string",
+                "description": ""
+              },
+              "region": {
+                "type": "string",
+                "description": ""
+              },
+              "max_results": {
+                "type": "string",
+                "description": ""
+              },
+              "next_token": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "computation_model_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_actions",
+        "description": "List actions for a specific target resource in AWS IoT SiteWise.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "target_resource_id": {
+                "type": "string",
+                "description": ""
+              },
+              "target_resource_type": {
+                "type": "string",
+                "description": ""
+              },
+              "region": {
+                "type": "string",
+                "description": ""
+              },
+              "max_results": {
+                "type": "string",
+                "description": ""
+              },
+              "next_token": {
+                "type": "string",
+                "description": ""
+              },
+              "resolve_to_resource_id": {
+                "type": "string",
+                "description": ""
+              },
+              "resolve_to_resource_type": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "target_resource_id",
+              "target_resource_type"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe_action",
+        "description": "Describe an action in AWS IoT SiteWise.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "action_id": {
+                "type": "string",
+                "description": ""
+              },
+              "region": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "action_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_executions",
+        "description": "List executions for a specific target resource in AWS IoT SiteWise.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "target_resource_id": {
+                "type": "string",
+                "description": ""
+              },
+              "target_resource_type": {
+                "type": "string",
+                "description": ""
+              },
+              "region": {
+                "type": "string",
+                "description": ""
+              },
+              "action_type": {
+                "type": "string",
+                "description": ""
+              },
+              "max_results": {
+                "type": "string",
+                "description": ""
+              },
+              "next_token": {
+                "type": "string",
+                "description": ""
+              },
+              "resolve_to_resource_id": {
+                "type": "string",
+                "description": ""
+              },
+              "resolve_to_resource_type": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "target_resource_id",
+              "target_resource_type"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "describe_execution",
+        "description": "Describe an execution in AWS IoT SiteWise.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "execution_id": {
+                "type": "string",
+                "description": ""
+              },
+              "region": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "execution_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "convert_unix_timestamp",
+        "description": "Convert Unix epoch timestamp to human-readable format.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "timestamp": {
+                "type": "string",
+                "description": ""
+              },
+              "format_string": {
+                "type": "string",
+                "description": ""
+              },
+              "timezone": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "timestamp"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "convert_multiple_timestamps",
+        "description": "Convert multiple Unix epoch timestamps to human-readable format.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "timestamps": {
+                "type": "object",
+                "description": ""
+              },
+              "format_string": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "timestamps"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "create_timestamp_range",
+        "description": "Create a formatted timestamp range from start and end timestamps.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "start_timestamp": {
+                "type": "string",
+                "description": ""
+              },
+              "end_timestamp": {
+                "type": "string",
+                "description": ""
+              },
+              "format_string": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "start_timestamp",
+              "end_timestamp"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_current_timestamp",
+        "description": "Get the current Unix timestamp and formatted time.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {},
+            "required": []
+          }
+        }
+      }
+    }
+  ]
+}

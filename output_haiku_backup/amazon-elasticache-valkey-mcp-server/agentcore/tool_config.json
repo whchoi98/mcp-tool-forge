@@ -1,0 +1,2845 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "bitmap_set",
+        "description": "Set the bit at offset to value.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "offset": {
+                "type": "integer",
+                "description": ""
+              },
+              "value": {
+                "type": "integer",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "offset",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "bitmap_get",
+        "description": "Get the bit value at offset.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "offset": {
+                "type": "integer",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "offset"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "bitmap_count",
+        "description": "Count the number of set bits (1) in a range.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "start": {
+                "type": "string",
+                "description": ""
+              },
+              "end": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "bitmap_pos",
+        "description": "Find positions of bits set to a specific value.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "bit": {
+                "type": "integer",
+                "description": ""
+              },
+              "start": {
+                "type": "string",
+                "description": ""
+              },
+              "end": {
+                "type": "string",
+                "description": ""
+              },
+              "count": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "bit"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "hash_set",
+        "description": "Set field in hash.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "field": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "field",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "hash_set_multiple",
+        "description": "Set multiple fields in hash.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "mapping": {
+                "type": "object",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "mapping"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "hash_set_if_not_exists",
+        "description": "Set field in hash only if it does not exist.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "field": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "field",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "hash_get",
+        "description": "Get field from hash.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "field": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "field"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "hash_get_all",
+        "description": "Get all fields and values from hash.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "hash_exists",
+        "description": "Check if field exists in hash.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "field": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "field"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "hash_increment",
+        "description": "Increment field value in hash.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "field": {
+                "type": "string",
+                "description": ""
+              },
+              "amount": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "field"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "hash_keys",
+        "description": "Get all field names from hash.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "hash_length",
+        "description": "Get number of fields in hash.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "hash_random_field",
+        "description": "Get random field(s) from hash.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "count": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "hash_random_field_with_values",
+        "description": "Get random field(s) with their values from hash.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "count": {
+                "type": "integer",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "count"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "hash_strlen",
+        "description": "Get length of field value in hash.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "field": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "field"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "hash_values",
+        "description": "Get all values from hash.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "hll_add",
+        "description": "Add one element to a HyperLogLog.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "element": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "element"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "hll_count",
+        "description": "Get the estimated cardinality of a HyperLogLog.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "json_set",
+        "description": "Set the JSON value at path.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "path": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              },
+              "nx": {
+                "type": "boolean",
+                "description": ""
+              },
+              "xx": {
+                "type": "boolean",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "path",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "json_get",
+        "description": "Get the JSON value at path.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "path": {
+                "type": "string",
+                "description": ""
+              },
+              "indent": {
+                "type": "string",
+                "description": ""
+              },
+              "newline": {
+                "type": "string",
+                "description": ""
+              },
+              "space": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "json_type",
+        "description": "Get the type of JSON value at path.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "path": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "json_numincrby",
+        "description": "Increment the number at path by value.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "path": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "path",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "json_nummultby",
+        "description": "Multiply the number at path by value.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "path": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "path",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "json_strappend",
+        "description": "Append a string to the string at path.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "path": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "path",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "json_strlen",
+        "description": "Get the length of string at path.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "path": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "path"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "json_arrappend",
+        "description": "Append values to the array at path.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "path": {
+                "type": "string",
+                "description": ""
+              },
+              "values": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "path",
+              "values"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "json_arrindex",
+        "description": "Get the index of value in array at path.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "path": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              },
+              "start": {
+                "type": "string",
+                "description": ""
+              },
+              "stop": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "path",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "json_arrlen",
+        "description": "Get the length of array at path.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "path": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "path"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "json_arrpop",
+        "description": "Pop a value from the array at path and index.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "path": {
+                "type": "string",
+                "description": ""
+              },
+              "index": {
+                "type": "integer",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "path"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "json_arrtrim",
+        "description": "Trim array at path to include only elements within range.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "path": {
+                "type": "string",
+                "description": ""
+              },
+              "start": {
+                "type": "integer",
+                "description": ""
+              },
+              "stop": {
+                "type": "integer",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "path",
+              "start",
+              "stop"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "json_objkeys",
+        "description": "Get the keys in the object at path.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "path": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "path"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "json_objlen",
+        "description": "Get the number of keys in the object at path.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "path": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "path"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "json_toggle",
+        "description": "Toggle boolean value at path.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "path": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "path"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "json_clear",
+        "description": "Clear container at path (array or object).",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "path": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "path"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "json_del",
+        "description": "Delete value at path.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "path": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "path"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_append",
+        "description": "Append value to list.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_prepend",
+        "description": "Prepend value to list.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_append_multiple",
+        "description": "Append multiple values to list.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "values": {
+                "type": "array",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "values"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_prepend_multiple",
+        "description": "Prepend multiple values to list.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "values": {
+                "type": "array",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "values"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_get",
+        "description": "Get value at index from list.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "index": {
+                "type": "integer",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "index"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_set",
+        "description": "Set value at index in list.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "index": {
+                "type": "integer",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "index",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_range",
+        "description": "Get range of values from list.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "start": {
+                "type": "integer",
+                "description": ""
+              },
+              "stop": {
+                "type": "integer",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_trim",
+        "description": "Trim list to specified range.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "start": {
+                "type": "integer",
+                "description": ""
+              },
+              "stop": {
+                "type": "integer",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "start",
+              "stop"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_length",
+        "description": "Get length of list.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_pop_left",
+        "description": "Pop value(s) from left of list.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "count": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_pop_right",
+        "description": "Pop value(s) from right of list.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "count": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_position",
+        "description": "Find position(s) of value in list.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              },
+              "rank": {
+                "type": "string",
+                "description": ""
+              },
+              "count": {
+                "type": "string",
+                "description": ""
+              },
+              "maxlen": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_move",
+        "description": "Move element from one list to another.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "source": {
+                "type": "string",
+                "description": ""
+              },
+              "destination": {
+                "type": "string",
+                "description": ""
+              },
+              "wherefrom": {
+                "type": "string",
+                "description": ""
+              },
+              "whereto": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "source",
+              "destination"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_insert_before",
+        "description": "Insert value before pivot in list.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "pivot": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "pivot",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_insert_after",
+        "description": "Insert value after pivot in list.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "pivot": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "pivot",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_remove",
+        "description": "Remove occurrences of value from list.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              },
+              "count": {
+                "type": "integer",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "delete",
+        "description": "Delete a Valkey key.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "type",
+        "description": "Returns the string representation of the type of the value stored at key.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "expire",
+        "description": "Set an expiration time for a Redis key.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": ""
+              },
+              "expire_seconds": {
+                "type": "integer",
+                "description": ""
+              }
+            },
+            "required": [
+              "name",
+              "expire_seconds"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "rename",
+        "description": "Renames a Redis key from old_key to new_key.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "old_key": {
+                "type": "string",
+                "description": ""
+              },
+              "new_key": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "old_key",
+              "new_key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "dbsize",
+        "description": "Get the number of keys stored in the Valkey database.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {},
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "info",
+        "description": "Get Valkey server information and statistics.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "section": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "client_list",
+        "description": "Get a list of connected clients to the Valkey server.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {},
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "set_add",
+        "description": "Add member to set.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "member": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "member"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "set_remove",
+        "description": "Remove member from set.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "member": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "member"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "set_pop",
+        "description": "Remove and return random member(s) from set.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "count": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "set_move",
+        "description": "Move member from one set to another.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "source": {
+                "type": "string",
+                "description": ""
+              },
+              "destination": {
+                "type": "string",
+                "description": ""
+              },
+              "member": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "source",
+              "destination",
+              "member"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "set_cardinality",
+        "description": "Get number of members in set.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "set_members",
+        "description": "Get all members in set.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "set_random_member",
+        "description": "Get random member(s) from set without removing.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "count": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "set_contains",
+        "description": "Check if member exists in set.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "member": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "member"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "sorted_set_add",
+        "description": "Add member-score pairs to sorted set.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "mapping": {
+                "type": "object",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "mapping"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "sorted_set_add_incr",
+        "description": "Add member to sorted set or increment its score.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "member": {
+                "type": "string",
+                "description": ""
+              },
+              "score": {
+                "type": "number",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "member",
+              "score"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "sorted_set_remove",
+        "description": "Remove member(s) from sorted set.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "members": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "members"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "sorted_set_remove_by_rank",
+        "description": "Remove members by rank range.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "start": {
+                "type": "integer",
+                "description": ""
+              },
+              "stop": {
+                "type": "integer",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "start",
+              "stop"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "sorted_set_remove_by_score",
+        "description": "Remove members by score range.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "min_score": {
+                "type": "number",
+                "description": ""
+              },
+              "max_score": {
+                "type": "number",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "min_score",
+              "max_score"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "sorted_set_remove_by_lex",
+        "description": "Remove members by lexicographical range.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "min_lex": {
+                "type": "string",
+                "description": ""
+              },
+              "max_lex": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "min_lex",
+              "max_lex"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "sorted_set_cardinality",
+        "description": "Get number of members in sorted set.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "min_score": {
+                "type": "string",
+                "description": ""
+              },
+              "max_score": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "sorted_set_score",
+        "description": "Get score of member in sorted set.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "member": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "member"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "sorted_set_rank",
+        "description": "Get rank of member in sorted set.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "member": {
+                "type": "string",
+                "description": ""
+              },
+              "reverse": {
+                "type": "boolean",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "member"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "sorted_set_range",
+        "description": "Get range of members from sorted set.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "start": {
+                "type": "integer",
+                "description": ""
+              },
+              "stop": {
+                "type": "integer",
+                "description": ""
+              },
+              "withscores": {
+                "type": "boolean",
+                "description": ""
+              },
+              "reverse": {
+                "type": "boolean",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "sorted_set_range_by_score",
+        "description": "Get range of members by score.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "min_score": {
+                "type": "number",
+                "description": ""
+              },
+              "max_score": {
+                "type": "number",
+                "description": ""
+              },
+              "withscores": {
+                "type": "boolean",
+                "description": ""
+              },
+              "reverse": {
+                "type": "boolean",
+                "description": ""
+              },
+              "offset": {
+                "type": "string",
+                "description": ""
+              },
+              "count": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "min_score",
+              "max_score"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "sorted_set_range_by_lex",
+        "description": "Get range of members by lexicographical order.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "min_lex": {
+                "type": "string",
+                "description": ""
+              },
+              "max_lex": {
+                "type": "string",
+                "description": ""
+              },
+              "reverse": {
+                "type": "boolean",
+                "description": ""
+              },
+              "offset": {
+                "type": "string",
+                "description": ""
+              },
+              "count": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "min_lex",
+              "max_lex"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "sorted_set_popmin",
+        "description": "Remove and return members with lowest scores.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "count": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "sorted_set_popmax",
+        "description": "Remove and return members with highest scores.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "count": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "stream_add",
+        "description": "Add entry to stream.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "field_dict": {
+                "type": "object",
+                "description": ""
+              },
+              "id": {
+                "type": "string",
+                "description": ""
+              },
+              "maxlen": {
+                "type": "string",
+                "description": ""
+              },
+              "approximate": {
+                "type": "boolean",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "field_dict"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "stream_delete",
+        "description": "Delete entries from stream.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "id": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "stream_trim",
+        "description": "Trim stream to specified length.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "maxlen": {
+                "type": "integer",
+                "description": ""
+              },
+              "approximate": {
+                "type": "boolean",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "maxlen"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "stream_length",
+        "description": "Get length of stream.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "stream_range",
+        "description": "Get range of entries from stream.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "start": {
+                "type": "string",
+                "description": ""
+              },
+              "end": {
+                "type": "string",
+                "description": ""
+              },
+              "count": {
+                "type": "string",
+                "description": ""
+              },
+              "reverse": {
+                "type": "boolean",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "stream_read",
+        "description": "Read entries from stream.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "count": {
+                "type": "string",
+                "description": ""
+              },
+              "block": {
+                "type": "string",
+                "description": ""
+              },
+              "last_id": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "stream_group_create",
+        "description": "Create consumer group.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "group_name": {
+                "type": "string",
+                "description": ""
+              },
+              "id": {
+                "type": "string",
+                "description": ""
+              },
+              "mkstream": {
+                "type": "boolean",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "group_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "stream_group_destroy",
+        "description": "Destroy consumer group.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "group_name": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "group_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "stream_group_set_id",
+        "description": "Set consumer group's last delivered ID.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "group_name": {
+                "type": "string",
+                "description": ""
+              },
+              "id": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "group_name",
+              "id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "stream_group_delete_consumer",
+        "description": "Delete consumer from group.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "group_name": {
+                "type": "string",
+                "description": ""
+              },
+              "consumer_name": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "group_name",
+              "consumer_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "stream_read_group",
+        "description": "Read entries from stream as part of consumer group.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "group_name": {
+                "type": "string",
+                "description": ""
+              },
+              "consumer_name": {
+                "type": "string",
+                "description": ""
+              },
+              "count": {
+                "type": "string",
+                "description": ""
+              },
+              "block": {
+                "type": "string",
+                "description": ""
+              },
+              "noack": {
+                "type": "boolean",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "group_name",
+              "consumer_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "stream_info",
+        "description": "Get information about stream.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "stream_info_groups",
+        "description": "Get information about consumer groups.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "stream_info_consumers",
+        "description": "Get information about consumers in group.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "group_name": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "group_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "string_set",
+        "description": "Set string value.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              },
+              "ex": {
+                "type": "string",
+                "description": ""
+              },
+              "px": {
+                "type": "string",
+                "description": ""
+              },
+              "nx": {
+                "type": "boolean",
+                "description": ""
+              },
+              "xx": {
+                "type": "boolean",
+                "description": ""
+              },
+              "keepttl": {
+                "type": "boolean",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "string_get",
+        "description": "Get string value.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "string_append",
+        "description": "Append to string value.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "string_get_range",
+        "description": "Get substring.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "start": {
+                "type": "integer",
+                "description": ""
+              },
+              "end": {
+                "type": "integer",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "start",
+              "end"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "string_get_set",
+        "description": "Set new value and return old value.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "string_increment",
+        "description": "Increment integer value.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "amount": {
+                "type": "integer",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "string_increment_float",
+        "description": "Increment float value.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "amount": {
+                "type": "number",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "amount"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "string_decrement",
+        "description": "Decrement integer value.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "amount": {
+                "type": "integer",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "string_length",
+        "description": "Get string length.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "string_set_range",
+        "description": "Overwrite part of string.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "offset": {
+                "type": "integer",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "offset",
+              "value"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

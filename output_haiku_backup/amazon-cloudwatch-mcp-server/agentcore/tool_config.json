@@ -1,0 +1,449 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "describe_log_groups",
+        "description": "Lists AWS CloudWatch log groups and saved queries associated with them, optionally filtering by a name prefix.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "account_identifiers": {
+                "type": "string",
+                "description": "When include_linked_accounts is set to True, use this parameter to specify the list of accounts to search. IMPORTANT: Only has affect if include_linked_accounts is True"
+              },
+              "include_linked_accounts": {
+                "type": "string",
+                "description": "If the AWS account is a monitoring account, set this to True to have the tool return log groups in the accounts listed in account_identifiers.\n                If this parameter is set to true and account_identifiers contains a null value, the tool returns all log groups in the monitoring account and all log groups in all source accounts that are linked to the monitoring account."
+              },
+              "log_group_class": {
+                "type": "string",
+                "description": "If specified, filters for only log groups of the specified class."
+              },
+              "log_group_name_prefix": {
+                "type": "string",
+                "description": "An exact prefix to filter log groups by name. IMPORTANT: Only log groups with names starting with this prefix will be returned."
+              },
+              "max_items": {
+                "type": "string",
+                "description": "The maximum number of log groups to return."
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region to query. Defaults to AWS_REGION environment variable or us-east-1 if not set."
+              },
+              "profile_name": {
+                "type": "string",
+                "description": "AWS CLI Profile Name to use for AWS access. Falls back to AWS_PROFILE environment variable if not specified, or uses default AWS credential chain."
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "analyze_log_group",
+        "description": "Analyzes a CloudWatch log group for anomalies, message patterns, and error patterns within a specified time window.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "log_group_arn": {
+                "type": "string",
+                "description": "The log group arn to look for anomalies in, as returned by the describe_log_groups tools"
+              },
+              "start_time": {
+                "type": "string",
+                "description": "ISO 8601 formatted start time for the CloudWatch Logs Insights query window (e.g., \"2025-04-19T20:00:00+00:00\")."
+              },
+              "end_time": {
+                "type": "string",
+                "description": "ISO 8601 formatted end time for the CloudWatch Logs Insights query window (e.g., \"2025-04-19T21:00:00+00:00\")."
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region to query. Defaults to AWS_REGION environment variable or us-east-1 if not set."
+              },
+              "profile_name": {
+                "type": "string",
+                "description": "AWS CLI Profile Name to use for AWS access. Falls back to AWS_PROFILE environment variable if not specified, or uses default AWS credential chain."
+              }
+            },
+            "required": [
+              "log_group_arn",
+              "start_time",
+              "end_time"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "execute_log_insights_query",
+        "description": "Executes a CloudWatch Logs Insights query and waits for the results to be available.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "log_group_names": {
+                "type": "string",
+                "description": "The list of up to 50 log group names to be queried. CRITICAL: Exactly one of [log_group_names, log_group_identifiers] should be non-null."
+              },
+              "log_group_identifiers": {
+                "type": "string",
+                "description": "The list of up to 50 logGroupIdentifiers to query. You can specify them by the log group name or ARN. If a log group that you're querying is in a source account and you're using a monitoring account, you must use the ARN. CRITICAL: Exactly one of [log_group_names, log_group_identifiers] should be non-null."
+              },
+              "start_time": {
+                "type": "string",
+                "description": "ISO 8601 formatted start time for the CloudWatch Logs Insights query window (e.g., \"2025-04-19T20:00:00+00:00\")."
+              },
+              "end_time": {
+                "type": "string",
+                "description": "ISO 8601 formatted end time for the CloudWatch Logs Insights query window (e.g., \"2025-04-19T21:00:00+00:00\")."
+              },
+              "query_string": {
+                "type": "string",
+                "description": "The query string in the Cloudwatch Log Insights Query Language. See https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html."
+              },
+              "limit": {
+                "type": "string",
+                "description": "The maximum number of log events to return. It is critical to use either this parameter or a `| limit <int>` operator in the query to avoid consuming too many tokens of the agent."
+              },
+              "max_timeout": {
+                "type": "integer",
+                "description": "Maximum time in second to poll for complete results before giving up"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region to query. Defaults to AWS_REGION environment variable or us-east-1 if not set."
+              },
+              "profile_name": {
+                "type": "string",
+                "description": "AWS CLI Profile Name to use for AWS access. Falls back to AWS_PROFILE environment variable if not specified, or uses default AWS credential chain."
+              }
+            },
+            "required": [
+              "start_time",
+              "end_time",
+              "query_string"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_logs_insight_query_results",
+        "description": "Retrieves the results of a previously started CloudWatch Logs Insights query.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "query_id": {
+                "type": "string",
+                "description": "The unique ID of the query to retrieve the results for. CRITICAL: This ID is returned by the execute_log_insights_query tool."
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region to query. Defaults to AWS_REGION environment variable or us-east-1 if not set."
+              },
+              "profile_name": {
+                "type": "string",
+                "description": "AWS CLI Profile Name to use for AWS access. Falls back to AWS_PROFILE environment variable if not specified, or uses default AWS credential chain."
+              }
+            },
+            "required": [
+              "query_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cancel_logs_insight_query",
+        "description": "Cancels an ongoing CloudWatch Logs Insights query. If the query has already ended, returns an error that the given query is not running.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "query_id": {
+                "type": "string",
+                "description": "The unique ID of the ongoing query to cancel. CRITICAL: This ID is returned by the execute_log_insights_query tool."
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region to query. Defaults to AWS_REGION environment variable or us-east-1 if not set."
+              },
+              "profile_name": {
+                "type": "string",
+                "description": "AWS CLI Profile Name to use for AWS access. Falls back to AWS_PROFILE environment variable if not specified, or uses default AWS credential chain."
+              }
+            },
+            "required": [
+              "query_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_metric_data",
+        "description": "Retrieves CloudWatch metric data for a specific metric.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "namespace": {
+                "type": "string",
+                "description": ""
+              },
+              "metric_name": {
+                "type": "string",
+                "description": ""
+              },
+              "start_time": {
+                "type": "string",
+                "description": "The start time for the metric data query (ISO format or datetime)"
+              },
+              "dimensions": {
+                "type": "array",
+                "description": ""
+              },
+              "end_time": {
+                "type": "string",
+                "description": "The end time for the metric data query (ISO format or datetime), defaults to current time"
+              },
+              "statistic": {
+                "type": "string",
+                "description": "The statistic to use for the metric"
+              },
+              "target_datapoints": {
+                "type": "integer",
+                "description": "Target number of data points to return (default: 60). Controls the granularity of the returned data."
+              },
+              "group_by_dimension": {
+                "type": "string",
+                "description": "Dimension name to group by in Metrics Insights mode. Must be included in schema_dimension_keys."
+              },
+              "schema_dimension_keys": {
+                "type": "array",
+                "description": "List of dimension keys to include in the SCHEMA definition for Metrics Insights query."
+              },
+              "limit": {
+                "type": "string",
+                "description": "Maximum number of results to return in Metrics Insights mode (used with LIMIT clause)."
+              },
+              "sort_order": {
+                "type": "string",
+                "description": "Sort order for results when using ORDER BY in Metrics Insights. Can be 'ASC', 'DESC', or None."
+              },
+              "order_by_statistic": {
+                "type": "string",
+                "description": "Statistic to use in the ORDER BY clause. Required if sort_order is specified."
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region to query. Defaults to AWS_REGION environment variable or us-east-1 if not set."
+              },
+              "profile_name": {
+                "type": "string",
+                "description": "AWS CLI Profile Name to use for AWS access. Falls back to AWS_PROFILE environment variable if not specified, or uses default AWS credential chain."
+              }
+            },
+            "required": [
+              "namespace",
+              "metric_name",
+              "start_time"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_metric_metadata",
+        "description": "Gets metadata for a CloudWatch metric including description, unit and recommended",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "namespace": {
+                "type": "string",
+                "description": "The namespace of the metric (e.g., 'AWS/EC2', 'AWS/Lambda')"
+              },
+              "metric_name": {
+                "type": "string",
+                "description": "The name of the metric (e.g., 'CPUUtilization', 'Duration')"
+              }
+            },
+            "required": [
+              "namespace",
+              "metric_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "analyze_metric",
+        "description": "Analyzes CloudWatch metric data to determine seasonality, trend, data density and statistical properties.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "namespace": {
+                "type": "string",
+                "description": "The namespace of the metric (e.g., 'AWS/EC2', 'AWS/Lambda')"
+              },
+              "metric_name": {
+                "type": "string",
+                "description": "The name of the metric (e.g., 'CPUUtilization', 'Duration')"
+              },
+              "dimensions": {
+                "type": "array",
+                "description": "List of dimensions that identify the metric, each with name and value"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region to query. Defaults to AWS_REGION environment variable or us-east-1 if not set."
+              },
+              "profile_name": {
+                "type": "string",
+                "description": "AWS CLI Profile Name to use for AWS access. Falls back to AWS_PROFILE environment variable if not specified, or uses default AWS credential chain."
+              },
+              "statistic": {
+                "type": "string",
+                "description": "The statistic to use for the metric analysis"
+              }
+            },
+            "required": [
+              "namespace",
+              "metric_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_recommended_metric_alarms",
+        "description": "Gets recommended alarms for a CloudWatch metric.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "namespace": {
+                "type": "string",
+                "description": "The namespace of the metric (e.g., 'AWS/EC2', 'AWS/Lambda')"
+              },
+              "metric_name": {
+                "type": "string",
+                "description": "The name of the metric (e.g., 'CPUUtilization', 'Duration')"
+              },
+              "dimensions": {
+                "type": "array",
+                "description": "List of dimensions that identify the metric, each with name and value"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region to query. Defaults to AWS_REGION environment variable or us-east-1 if not set."
+              },
+              "profile_name": {
+                "type": "string",
+                "description": "AWS CLI Profile Name to use for AWS access. Falls back to AWS_PROFILE environment variable if not specified, or uses default AWS credential chain."
+              },
+              "statistic": {
+                "type": "string",
+                "description": "The statistic to use for alarm recommendations"
+              }
+            },
+            "required": [
+              "namespace",
+              "metric_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_active_alarms",
+        "description": "Gets all CloudWatch Alarms currently in ALARM state.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "max_items": {
+                "type": "string",
+                "description": "Maximum number of alarms to return (default: 50). Large values may cause context window overflow and impact LLM performance."
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region to query. Defaults to AWS_REGION environment variable or us-east-1 if not set."
+              },
+              "profile_name": {
+                "type": "string",
+                "description": "AWS CLI Profile Name to use for AWS access. Falls back to AWS_PROFILE environment variable if not specified, or uses default AWS credential chain."
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_alarm_history",
+        "description": "Gets the history for a CloudWatch alarm with time range suggestions for investigation.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "alarm_name": {
+                "type": "string",
+                "description": "Name of the alarm to retrieve history for"
+              },
+              "start_time": {
+                "type": "string",
+                "description": "The start time for the history query in ISO format (e.g., '2023-01-01T00:00:00Z') or as a datetime object. Defaults to 24 hours ago."
+              },
+              "end_time": {
+                "type": "string",
+                "description": "The end time for the history query in ISO format (e.g., '2023-01-01T00:00:00Z') or as a datetime object. Defaults to current time."
+              },
+              "history_item_type": {
+                "type": "string",
+                "description": "Type of history items to retrieve. Possible values: 'ConfigurationUpdate', 'StateUpdate', 'Action'. Defaults to 'StateUpdate'."
+              },
+              "max_items": {
+                "type": "string",
+                "description": "Maximum number of history items to return (default: 50). Large values may cause context window overflow and impact LLM performance. Adjust time-range to limit responses."
+              },
+              "include_component_alarms": {
+                "type": "string",
+                "description": "For composite alarms, whether to include details about component alarms. Defaults to false."
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region to query. Defaults to AWS_REGION environment variable or us-east-1 if not set."
+              },
+              "profile_name": {
+                "type": "string",
+                "description": "AWS CLI Profile Name to use for AWS access. Falls back to AWS_PROFILE environment variable if not specified, or uses default AWS credential chain."
+              }
+            },
+            "required": [
+              "alarm_name"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

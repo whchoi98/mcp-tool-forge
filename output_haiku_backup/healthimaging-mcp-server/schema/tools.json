@@ -1,0 +1,988 @@
+{
+  "server": "healthimaging-mcp-server",
+  "tools": [
+    {
+      "name": "create_datastore",
+      "description": "Create a new data store in AWS HealthImaging.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_name": {
+            "type": "string",
+            "description": "Name for the new datastore"
+          },
+          "kms_key_arn": {
+            "type": "string",
+            "description": "KMS key ARN for encryption"
+          },
+          "tags": {
+            "type": "string",
+            "description": "Tags to apply to the datastore"
+          }
+        },
+        "required": [
+          "datastore_name"
+        ]
+      }
+    },
+    {
+      "name": "delete_datastore",
+      "description": "Delete a data store from AWS HealthImaging.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore to delete"
+          }
+        },
+        "required": [
+          "datastore_id"
+        ]
+      }
+    },
+    {
+      "name": "get_datastore",
+      "description": "Get information about a specific data store.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore to retrieve"
+          }
+        },
+        "required": [
+          "datastore_id"
+        ]
+      }
+    },
+    {
+      "name": "list_datastores",
+      "description": "List all data stores in the account.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_status": {
+            "type": "string",
+            "description": "Filter by datastore status (CREATING, ACTIVE, DELETING, DELETED)"
+          },
+          "max_results": {
+            "type": "string",
+            "description": "Maximum number of results to return (1-100)"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "start_dicom_import_job",
+      "description": "Start a DICOM import job.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the target datastore"
+          },
+          "data_access_role_arn": {
+            "type": "string",
+            "description": "IAM role ARN for data access"
+          },
+          "input_s3_uri": {
+            "type": "string",
+            "description": "S3 URI of the input data"
+          },
+          "job_name": {
+            "type": "string",
+            "description": "Name for the import job"
+          },
+          "client_token": {
+            "type": "string",
+            "description": "Client token for idempotency"
+          },
+          "output_s3_uri": {
+            "type": "string",
+            "description": "S3 URI for the output data"
+          },
+          "input_owner_account_id": {
+            "type": "string",
+            "description": "Input owner account ID"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "data_access_role_arn",
+          "input_s3_uri"
+        ]
+      }
+    },
+    {
+      "name": "get_dicom_import_job",
+      "description": "Get information about a DICOM import job.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "job_id": {
+            "type": "string",
+            "description": "ID of the import job"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "job_id"
+        ]
+      }
+    },
+    {
+      "name": "list_dicom_import_jobs",
+      "description": "List DICOM import jobs for a data store.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "job_status": {
+            "type": "string",
+            "description": "Filter by job status (SUBMITTED, IN_PROGRESS, COMPLETED, FAILED)"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination"
+          },
+          "max_results": {
+            "type": "string",
+            "description": "Maximum number of results to return (1-50)"
+          }
+        },
+        "required": [
+          "datastore_id"
+        ]
+      }
+    },
+    {
+      "name": "search_image_sets",
+      "description": "Search for image sets in a data store.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "search_criteria": {
+            "type": "string",
+            "description": "Search criteria"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination"
+          },
+          "max_results": {
+            "type": "string",
+            "description": "Maximum number of results to return (1-50)"
+          }
+        },
+        "required": [
+          "datastore_id"
+        ]
+      }
+    },
+    {
+      "name": "get_image_set",
+      "description": "Get information about a specific image set.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "image_set_id": {
+            "type": "string",
+            "description": "ID of the image set"
+          },
+          "version_id": {
+            "type": "string",
+            "description": "Version ID of the image set"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "image_set_id"
+        ]
+      }
+    },
+    {
+      "name": "get_image_set_metadata",
+      "description": "Get metadata for a specific image set.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "image_set_id": {
+            "type": "string",
+            "description": "ID of the image set"
+          },
+          "version_id": {
+            "type": "string",
+            "description": "Version ID of the image set"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "image_set_id"
+        ]
+      }
+    },
+    {
+      "name": "list_image_set_versions",
+      "description": "List versions of an image set.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "image_set_id": {
+            "type": "string",
+            "description": "ID of the image set"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination"
+          },
+          "max_results": {
+            "type": "string",
+            "description": "Maximum number of results to return (1-50)"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "image_set_id"
+        ]
+      }
+    },
+    {
+      "name": "update_image_set_metadata",
+      "description": "Update metadata for an image set.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "image_set_id": {
+            "type": "string",
+            "description": "ID of the image set"
+          },
+          "latest_version_id": {
+            "type": "string",
+            "description": "Latest version ID of the image set"
+          },
+          "update_image_set_metadata_updates": {
+            "type": "object",
+            "description": "Metadata updates"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "image_set_id",
+          "latest_version_id",
+          "update_image_set_metadata_updates"
+        ]
+      }
+    },
+    {
+      "name": "delete_image_set",
+      "description": "Delete an image set.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "image_set_id": {
+            "type": "string",
+            "description": "ID of the image set"
+          },
+          "version_id": {
+            "type": "string",
+            "description": "Version ID of the image set"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "image_set_id"
+        ]
+      }
+    },
+    {
+      "name": "copy_image_set",
+      "description": "Copy an image set.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the destination datastore"
+          },
+          "source_image_set_id": {
+            "type": "string",
+            "description": "ID of the source image set"
+          },
+          "copy_image_set_information": {
+            "type": "object",
+            "description": "Copy information"
+          },
+          "source_datastore_id": {
+            "type": "string",
+            "description": "ID of the source datastore"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "source_image_set_id",
+          "copy_image_set_information"
+        ]
+      }
+    },
+    {
+      "name": "get_image_frame",
+      "description": "Get a specific image frame.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "image_set_id": {
+            "type": "string",
+            "description": "ID of the image set"
+          },
+          "image_frame_information": {
+            "type": "object",
+            "description": "Image frame information"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "image_set_id",
+          "image_frame_information"
+        ]
+      }
+    },
+    {
+      "name": "list_tags_for_resource",
+      "description": "List tags for a resource.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "resource_arn": {
+            "type": "string",
+            "description": "The ARN of the resource to list tags for"
+          }
+        },
+        "required": [
+          "resource_arn"
+        ]
+      }
+    },
+    {
+      "name": "tag_resource",
+      "description": "Add tags to a resource.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "resource_arn": {
+            "type": "string",
+            "description": "The ARN of the resource to tag"
+          },
+          "tags": {
+            "type": "object",
+            "description": "The tags to apply to the resource"
+          }
+        },
+        "required": [
+          "resource_arn",
+          "tags"
+        ]
+      }
+    },
+    {
+      "name": "untag_resource",
+      "description": "Remove tags from a resource.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "resource_arn": {
+            "type": "string",
+            "description": "The ARN of the resource to untag"
+          },
+          "tag_keys": {
+            "type": "array",
+            "description": "The tag keys to remove from the resource"
+          }
+        },
+        "required": [
+          "resource_arn",
+          "tag_keys"
+        ]
+      }
+    },
+    {
+      "name": "start_dicom_export_job",
+      "description": "Start a DICOM export job.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the source datastore"
+          },
+          "data_access_role_arn": {
+            "type": "string",
+            "description": "IAM role ARN for data access"
+          },
+          "output_s3_uri": {
+            "type": "string",
+            "description": "S3 URI for the output data"
+          },
+          "job_name": {
+            "type": "string",
+            "description": "Name for the export job"
+          },
+          "client_token": {
+            "type": "string",
+            "description": "Client token for idempotency"
+          },
+          "study_instance_uid": {
+            "type": "string",
+            "description": "Study instance UID to export"
+          },
+          "series_instance_uid": {
+            "type": "string",
+            "description": "Series instance UID to export"
+          },
+          "sop_instance_uid": {
+            "type": "string",
+            "description": "SOP instance UID to export"
+          },
+          "submitted_before": {
+            "type": "string",
+            "description": "Export images submitted before this date"
+          },
+          "submitted_after": {
+            "type": "string",
+            "description": "Export images submitted after this date"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "data_access_role_arn",
+          "output_s3_uri"
+        ]
+      }
+    },
+    {
+      "name": "get_dicom_export_job",
+      "description": "Get information about a DICOM export job.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "job_id": {
+            "type": "string",
+            "description": "ID of the export job"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "job_id"
+        ]
+      }
+    },
+    {
+      "name": "list_dicom_export_jobs",
+      "description": "List DICOM export jobs for a data store.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "job_status": {
+            "type": "string",
+            "description": "Filter by job status (SUBMITTED, IN_PROGRESS, COMPLETED, FAILED)"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination"
+          },
+          "max_results": {
+            "type": "string",
+            "description": "Maximum number of results to return (1-50)"
+          }
+        },
+        "required": [
+          "datastore_id"
+        ]
+      }
+    },
+    {
+      "name": "delete_patient_studies",
+      "description": "Delete all studies for a specific patient.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "patient_id": {
+            "type": "string",
+            "description": "DICOM Patient ID"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "patient_id"
+        ]
+      }
+    },
+    {
+      "name": "delete_study",
+      "description": "Delete all image sets for a specific study.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "study_instance_uid": {
+            "type": "string",
+            "description": "DICOM Study Instance UID"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "study_instance_uid"
+        ]
+      }
+    },
+    {
+      "name": "search_by_patient_id",
+      "description": "Search for image sets by patient ID.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "patient_id": {
+            "type": "string",
+            "description": "DICOM Patient ID"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "patient_id"
+        ]
+      }
+    },
+    {
+      "name": "search_by_study_uid",
+      "description": "Search for image sets by study instance UID.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "study_instance_uid": {
+            "type": "string",
+            "description": "DICOM Study Instance UID"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "study_instance_uid"
+        ]
+      }
+    },
+    {
+      "name": "search_by_series_uid",
+      "description": "Search for image sets by series instance UID.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "series_instance_uid": {
+            "type": "string",
+            "description": "DICOM Series Instance UID"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "series_instance_uid"
+        ]
+      }
+    },
+    {
+      "name": "get_patient_studies",
+      "description": "Get all studies for a specific patient.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "patient_id": {
+            "type": "string",
+            "description": "DICOM Patient ID"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "patient_id"
+        ]
+      }
+    },
+    {
+      "name": "get_patient_series",
+      "description": "Get all series for a specific patient.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "patient_id": {
+            "type": "string",
+            "description": "DICOM Patient ID"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "patient_id"
+        ]
+      }
+    },
+    {
+      "name": "get_study_primary_image_sets",
+      "description": "Get primary image sets for a specific study.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "study_instance_uid": {
+            "type": "string",
+            "description": "DICOM Study Instance UID"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "study_instance_uid"
+        ]
+      }
+    },
+    {
+      "name": "delete_series_by_uid",
+      "description": "Delete a series by SeriesInstanceUID using metadata updates.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "series_instance_uid": {
+            "type": "string",
+            "description": "DICOM Series Instance UID to delete"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "series_instance_uid"
+        ]
+      }
+    },
+    {
+      "name": "get_series_primary_image_set",
+      "description": "Get the primary image set for a given series.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "series_instance_uid": {
+            "type": "string",
+            "description": "DICOM Series Instance UID"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "series_instance_uid"
+        ]
+      }
+    },
+    {
+      "name": "get_patient_dicomweb_studies",
+      "description": "Retrieve DICOMweb SearchStudies level information for a given patient ID.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "patient_id": {
+            "type": "string",
+            "description": "DICOM Patient ID"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "patient_id"
+        ]
+      }
+    },
+    {
+      "name": "delete_instance_in_study",
+      "description": "Delete a specific instance in a study.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "study_instance_uid": {
+            "type": "string",
+            "description": "DICOM Study Instance UID"
+          },
+          "sop_instance_uid": {
+            "type": "string",
+            "description": "DICOM SOP Instance UID to delete"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "study_instance_uid",
+          "sop_instance_uid"
+        ]
+      }
+    },
+    {
+      "name": "delete_instance_in_series",
+      "description": "Delete a specific instance in a series.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "series_instance_uid": {
+            "type": "string",
+            "description": "DICOM Series Instance UID"
+          },
+          "sop_instance_uid": {
+            "type": "string",
+            "description": "DICOM SOP Instance UID to delete"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "series_instance_uid",
+          "sop_instance_uid"
+        ]
+      }
+    },
+    {
+      "name": "update_patient_study_metadata",
+      "description": "Update Patient/Study metadata for an entire study.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "study_instance_uid": {
+            "type": "string",
+            "description": "DICOM Study Instance UID"
+          },
+          "patient_updates": {
+            "type": "object",
+            "description": "Patient-level DICOM metadata updates"
+          },
+          "study_updates": {
+            "type": "object",
+            "description": "Study-level DICOM metadata updates"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "study_instance_uid",
+          "patient_updates",
+          "study_updates"
+        ]
+      }
+    },
+    {
+      "name": "bulk_update_patient_metadata",
+      "description": "Update patient metadata across all studies for a patient.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "patient_id": {
+            "type": "string",
+            "description": "DICOM Patient ID to update metadata for"
+          },
+          "metadata_updates": {
+            "type": "object",
+            "description": "Patient metadata updates to apply across all studies"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "patient_id",
+          "metadata_updates"
+        ]
+      }
+    },
+    {
+      "name": "bulk_delete_by_criteria",
+      "description": "Delete multiple image sets matching specified criteria.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "criteria": {
+            "type": "object",
+            "description": "Search criteria for image sets to delete (e.g., {'DICOMPatientId': 'patient123'})"
+          },
+          "max_deletions": {
+            "type": "integer",
+            "description": "Maximum number of image sets to delete (safety limit)"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "criteria"
+        ]
+      }
+    },
+    {
+      "name": "remove_series_from_image_set",
+      "description": "Remove a specific series from an image set using DICOM hierarchy operations.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "image_set_id": {
+            "type": "string",
+            "description": "ID of the image set"
+          },
+          "series_instance_uid": {
+            "type": "string",
+            "description": "DICOM Series Instance UID to remove from the image set"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "image_set_id",
+          "series_instance_uid"
+        ]
+      }
+    },
+    {
+      "name": "remove_instance_from_image_set",
+      "description": "Remove a specific instance from an image set using DICOM hierarchy operations.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "ID of the datastore"
+          },
+          "image_set_id": {
+            "type": "string",
+            "description": "ID of the image set"
+          },
+          "series_instance_uid": {
+            "type": "string",
+            "description": "DICOM Series Instance UID containing the instance"
+          },
+          "sop_instance_uid": {
+            "type": "string",
+            "description": "DICOM SOP Instance UID to remove from the image set"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "image_set_id",
+          "series_instance_uid",
+          "sop_instance_uid"
+        ]
+      }
+    }
+  ]
+}

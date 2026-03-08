@@ -1,0 +1,2426 @@
+{
+  "server": "amazon-elasticache-valkey-mcp-server",
+  "tools": [
+    {
+      "name": "bitmap_set",
+      "description": "Set the bit at offset to value.\n\n    Args:\n        key: The name of the bitmap key\n        offset: The bit offset (0-based)\n        value: The bit value (0 or 1)\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "offset": {
+            "type": "integer",
+            "description": ""
+          },
+          "value": {
+            "type": "integer",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "offset",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "bitmap_get",
+      "description": "Get the bit value at offset.\n\n    Args:\n        key: The name of the bitmap key\n        offset: The bit offset (0-based)\n\n    Returns:\n        Bit value or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "offset": {
+            "type": "integer",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "offset"
+        ]
+      }
+    },
+    {
+      "name": "bitmap_count",
+      "description": "Count the number of set bits (1) in a range.\n\n    Args:\n        key: The name of the bitmap key\n        start: Start offset (inclusive, optional)\n        end: End offset (inclusive, optional)\n\n    Returns:\n        Count of set bits or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "start": {
+            "type": "string",
+            "description": ""
+          },
+          "end": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "bitmap_pos",
+      "description": "Find positions of bits set to a specific value.\n\n    Args:\n        key: The name of the bitmap key\n        bit: Bit value to search for (0 or 1)\n        start: Start offset (inclusive, optional)\n        end: End offset (inclusive, optional)\n        count: Maximum number of positions to return (optional)\n\n    Returns:\n        List of positions or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "bit": {
+            "type": "integer",
+            "description": ""
+          },
+          "start": {
+            "type": "string",
+            "description": ""
+          },
+          "end": {
+            "type": "string",
+            "description": ""
+          },
+          "count": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "bit"
+        ]
+      }
+    },
+    {
+      "name": "hash_set",
+      "description": "Set field in hash.\n\n    Args:\n        key: The name of the key\n        field: The field name\n        value: The value to set\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "field": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "field",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "hash_set_multiple",
+      "description": "Set multiple fields in hash.\n\n    Args:\n        key: The name of the key\n        mapping: Dictionary of field-value pairs\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "mapping": {
+            "type": "object",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "mapping"
+        ]
+      }
+    },
+    {
+      "name": "hash_set_if_not_exists",
+      "description": "Set field in hash only if it does not exist.\n\n    Args:\n        key: The name of the key\n        field: The field name\n        value: The value to set\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "field": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "field",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "hash_get",
+      "description": "Get field from hash.\n\n    Args:\n        key: The name of the key\n        field: The field name\n\n    Returns:\n        Field value or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "field": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "field"
+        ]
+      }
+    },
+    {
+      "name": "hash_get_all",
+      "description": "Get all fields and values from hash.\n\n    Args:\n        key: The name of the key\n\n    Returns:\n        Dictionary of field-value pairs or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "hash_exists",
+      "description": "Check if field exists in hash.\n\n    Args:\n        key: The name of the key\n        field: The field name\n\n    Returns:\n        Boolean result or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "field": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "field"
+        ]
+      }
+    },
+    {
+      "name": "hash_increment",
+      "description": "Increment field value in hash.\n\n    Args:\n        key: The name of the key\n        field: The field name\n        amount: Amount to increment by (default: 1)\n\n    Returns:\n        New value or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "field": {
+            "type": "string",
+            "description": ""
+          },
+          "amount": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "field"
+        ]
+      }
+    },
+    {
+      "name": "hash_keys",
+      "description": "Get all field names from hash.\n\n    Args:\n        key: The name of the key\n\n    Returns:\n        List of field names or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "hash_length",
+      "description": "Get number of fields in hash.\n\n    Args:\n        key: The name of the key\n\n    Returns:\n        Number of fields or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "hash_random_field",
+      "description": "Get random field(s) from hash.\n\n    Args:\n        key: The name of the key\n        count: Number of fields to return (optional)\n\n    Returns:\n        Random field(s) or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "count": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "hash_random_field_with_values",
+      "description": "Get random field(s) with their values from hash.\n\n    Args:\n        key: The name of the key\n        count: Number of field-value pairs to return\n\n    Returns:\n        Random field-value pairs or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "count": {
+            "type": "integer",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "count"
+        ]
+      }
+    },
+    {
+      "name": "hash_strlen",
+      "description": "Get length of field value in hash.\n\n    Args:\n        key: The name of the key\n        field: The field name\n\n    Returns:\n        Length of field value or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "field": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "field"
+        ]
+      }
+    },
+    {
+      "name": "hash_values",
+      "description": "Get all values from hash.\n\n    Args:\n        key: The name of the key\n\n    Returns:\n        List of values or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "hll_add",
+      "description": "Add one element to a HyperLogLog.\n\n    Args:\n        key: The name of the HyperLogLog key\n        element: One element to add\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "element": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "element"
+        ]
+      }
+    },
+    {
+      "name": "hll_count",
+      "description": "Get the estimated cardinality of a HyperLogLog.\n\n    Args:\n        key: The name of the HyperLogLog key\n\n    Returns:\n        Estimated cardinality or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "json_set",
+      "description": "Set the JSON value at path.\n\n    Args:\n        key: The name of the key\n        path: The path in the JSON document (e.g., \"$.name\" or \".\" for root)\n        value: The value to set\n        nx: Only set if path doesn't exist\n        xx: Only set if path exists\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "path": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          },
+          "nx": {
+            "type": "boolean",
+            "description": ""
+          },
+          "xx": {
+            "type": "boolean",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "path",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "json_get",
+      "description": "Get the JSON value at path.\n\n    Args:\n        key: The name of the key\n        path: The path in the JSON document (optional, defaults to root)\n        indent: Number of spaces for indentation (optional)\n        newline: Add newlines in formatted output (optional)\n        space: Add spaces in formatted output (optional)\n\n    Returns:\n        JSON value or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "path": {
+            "type": "string",
+            "description": ""
+          },
+          "indent": {
+            "type": "string",
+            "description": ""
+          },
+          "newline": {
+            "type": "string",
+            "description": ""
+          },
+          "space": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "json_type",
+      "description": "Get the type of JSON value at path.\n\n    Args:\n        key: The name of the key\n        path: The path in the JSON document (optional, defaults to root)\n\n    Returns:\n        JSON type or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "path": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "json_numincrby",
+      "description": "Increment the number at path by value.\n\n    Args:\n        key: The name of the key\n        path: The path in the JSON document\n        value: The increment value (integer or float)\n\n    Returns:\n        New value or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "path": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "path",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "json_nummultby",
+      "description": "Multiply the number at path by value.\n\n    Args:\n        key: The name of the key\n        path: The path in the JSON document\n        value: The multiplier value (integer or float)\n\n    Returns:\n        New value or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "path": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "path",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "json_strappend",
+      "description": "Append a string to the string at path.\n\n    Args:\n        key: The name of the key\n        path: The path in the JSON document\n        value: The string to append\n\n    Returns:\n        New string length or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "path": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "path",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "json_strlen",
+      "description": "Get the length of string at path.\n\n    Args:\n        key: The name of the key\n        path: The path in the JSON document\n\n    Returns:\n        String length or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "path": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "path"
+        ]
+      }
+    },
+    {
+      "name": "json_arrappend",
+      "description": "Append values to the array at path.\n\n    Args:\n        key: The name of the key\n        path: The path in the JSON document\n        *values: One or more values to append\n\n    Returns:\n        New array length or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "path": {
+            "type": "string",
+            "description": ""
+          },
+          "values": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "path",
+          "values"
+        ]
+      }
+    },
+    {
+      "name": "json_arrindex",
+      "description": "Get the index of value in array at path.\n\n    Args:\n        key: The name of the key\n        path: The path in the JSON document\n        value: The value to search for\n        start: Start offset (optional)\n        stop: Stop offset (optional)\n\n    Returns:\n        Index or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "path": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          },
+          "start": {
+            "type": "string",
+            "description": ""
+          },
+          "stop": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "path",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "json_arrlen",
+      "description": "Get the length of array at path.\n\n    Args:\n        key: The name of the key\n        path: The path in the JSON document\n\n    Returns:\n        Array length or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "path": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "path"
+        ]
+      }
+    },
+    {
+      "name": "json_arrpop",
+      "description": "Pop a value from the array at path and index.\n\n    Args:\n        key: The name of the key\n        path: The path in the JSON document\n        index: The index to pop from (-1 for last element)\n\n    Returns:\n        Popped value or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "path": {
+            "type": "string",
+            "description": ""
+          },
+          "index": {
+            "type": "integer",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "path"
+        ]
+      }
+    },
+    {
+      "name": "json_arrtrim",
+      "description": "Trim array at path to include only elements within range.\n\n    Args:\n        key: The name of the key\n        path: The path in the JSON document\n        start: Start index (inclusive)\n        stop: Stop index (inclusive)\n\n    Returns:\n        New array length or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "path": {
+            "type": "string",
+            "description": ""
+          },
+          "start": {
+            "type": "integer",
+            "description": ""
+          },
+          "stop": {
+            "type": "integer",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "path",
+          "start",
+          "stop"
+        ]
+      }
+    },
+    {
+      "name": "json_objkeys",
+      "description": "Get the keys in the object at path.\n\n    Args:\n        key: The name of the key\n        path: The path in the JSON document\n\n    Returns:\n        List of keys or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "path": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "path"
+        ]
+      }
+    },
+    {
+      "name": "json_objlen",
+      "description": "Get the number of keys in the object at path.\n\n    Args:\n        key: The name of the key\n        path: The path in the JSON document\n\n    Returns:\n        Number of keys or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "path": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "path"
+        ]
+      }
+    },
+    {
+      "name": "json_toggle",
+      "description": "Toggle boolean value at path.\n\n    Args:\n        key: The name of the key\n        path: The path in the JSON document\n\n    Returns:\n        New boolean value or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "path": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "path"
+        ]
+      }
+    },
+    {
+      "name": "json_clear",
+      "description": "Clear container at path (array or object).\n\n    Args:\n        key: The name of the key\n        path: The path in the JSON document\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "path": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "path"
+        ]
+      }
+    },
+    {
+      "name": "json_del",
+      "description": "Delete value at path.\n\n    Args:\n        key: The name of the key\n        path: The path in the JSON document\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "path": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "path"
+        ]
+      }
+    },
+    {
+      "name": "list_append",
+      "description": "Append value to list.\n\n    Args:\n        key: The name of the key\n        value: The value to append\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "list_prepend",
+      "description": "Prepend value to list.\n\n    Args:\n        key: The name of the key\n        value: The value to prepend\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "list_append_multiple",
+      "description": "Append multiple values to list.\n\n    Args:\n        key: The name of the key\n        values: List of values to append\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "values": {
+            "type": "array",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "values"
+        ]
+      }
+    },
+    {
+      "name": "list_prepend_multiple",
+      "description": "Prepend multiple values to list.\n\n    Args:\n        key: The name of the key\n        values: List of values to prepend\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "values": {
+            "type": "array",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "values"
+        ]
+      }
+    },
+    {
+      "name": "list_get",
+      "description": "Get value at index from list.\n\n    Args:\n        key: The name of the key\n        index: The index (0-based, negative indices supported)\n\n    Returns:\n        Value or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "index": {
+            "type": "integer",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "index"
+        ]
+      }
+    },
+    {
+      "name": "list_set",
+      "description": "Set value at index in list.\n\n    Args:\n        key: The name of the key\n        index: The index (0-based, negative indices supported)\n        value: The value to set\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "index": {
+            "type": "integer",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "index",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "list_range",
+      "description": "Get range of values from list.\n\n    Args:\n        key: The name of the key\n        start: Start index (inclusive, default 0)\n        stop: Stop index (inclusive, default -1 for end)\n\n    Returns:\n        List of values or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "start": {
+            "type": "integer",
+            "description": ""
+          },
+          "stop": {
+            "type": "integer",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "list_trim",
+      "description": "Trim list to specified range.\n\n    Args:\n        key: The name of the key\n        start: Start index (inclusive)\n        stop: Stop index (inclusive)\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "start": {
+            "type": "integer",
+            "description": ""
+          },
+          "stop": {
+            "type": "integer",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "start",
+          "stop"
+        ]
+      }
+    },
+    {
+      "name": "list_length",
+      "description": "Get length of list.\n\n    Args:\n        key: The name of the key\n\n    Returns:\n        Length or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "list_pop_left",
+      "description": "Pop value(s) from left of list.\n\n    Args:\n        key: The name of the key\n        count: Number of values to pop (optional)\n\n    Returns:\n        Value(s) or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "count": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "list_pop_right",
+      "description": "Pop value(s) from right of list.\n\n    Args:\n        key: The name of the key\n        count: Number of values to pop (optional)\n\n    Returns:\n        Value(s) or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "count": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "list_position",
+      "description": "Find position(s) of value in list.\n\n    Args:\n        key: The name of the key\n        value: Value to search for\n        rank: Match the Nth occurrence (optional)\n        count: Return this many matches (optional)\n        maxlen: Limit search to first N elements (optional)\n\n    Returns:\n        Position(s) or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          },
+          "rank": {
+            "type": "string",
+            "description": ""
+          },
+          "count": {
+            "type": "string",
+            "description": ""
+          },
+          "maxlen": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "list_move",
+      "description": "Move element from one list to another.\n\n    Args:\n        source: Source list key\n        destination: Destination list key\n        wherefrom: Where to pop from (\"LEFT\" or \"RIGHT\")\n        whereto: Where to push to (\"LEFT\" or \"RIGHT\")\n\n    Returns:\n        Moved value or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": ""
+          },
+          "destination": {
+            "type": "string",
+            "description": ""
+          },
+          "wherefrom": {
+            "type": "string",
+            "description": ""
+          },
+          "whereto": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "source",
+          "destination"
+        ]
+      }
+    },
+    {
+      "name": "list_insert_before",
+      "description": "Insert value before pivot in list.\n\n    Args:\n        key: The name of the key\n        pivot: The pivot value\n        value: The value to insert\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "pivot": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "pivot",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "list_insert_after",
+      "description": "Insert value after pivot in list.\n\n    Args:\n        key: The name of the key\n        pivot: The pivot value\n        value: The value to insert\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "pivot": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "pivot",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "list_remove",
+      "description": "Remove occurrences of value from list.\n\n    Args:\n        key: The name of the key\n        value: Value to remove\n        count: Number of occurrences to remove (0 for all, positive for left-to-right, negative for right-to-left)\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          },
+          "count": {
+            "type": "integer",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "delete",
+      "description": "Delete a Valkey key.\n\n    Args:\n        key (str): The key to delete.\n\n    Returns:\n        str: Confirmation message or an error message.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "type",
+      "description": "Returns the string representation of the type of the value stored at key.\n\n    Args:\n        key (str): The key to check.\n\n    Returns:\n        str: The type of key, or none when key doesn't exist\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "expire",
+      "description": "Set an expiration time for a Redis key.\n\n    Args:\n        name: The Redis key.\n        expire_seconds: Time in seconds after which the key should expire.\n\n    Returns:\n        A success message or an error message.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": ""
+          },
+          "expire_seconds": {
+            "type": "integer",
+            "description": ""
+          }
+        },
+        "required": [
+          "name",
+          "expire_seconds"
+        ]
+      }
+    },
+    {
+      "name": "rename",
+      "description": "Renames a Redis key from old_key to new_key.\n\n    Args:\n        old_key (str): The current name of the Redis key to rename.\n        new_key (str): The new name to assign to the key.\n\n    Returns:\n        Dict[str, Any]: A dictionary containing the result of the operation.\n            On success: {\"status\": \"success\", \"message\": \"...\"}\n            On error: {\"error\": \"...\"}\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "old_key": {
+            "type": "string",
+            "description": ""
+          },
+          "new_key": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "old_key",
+          "new_key"
+        ]
+      }
+    },
+    {
+      "name": "dbsize",
+      "description": "Get the number of keys stored in the Valkey database.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "info",
+      "description": "Get Valkey server information and statistics.\n\n    Args:\n        section: The section of the info command (default, memory, cpu, etc.).\n\n    Returns:\n        A dictionary of server information or an error message.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "section": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "client_list",
+      "description": "Get a list of connected clients to the Valkey server.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "set_add",
+      "description": "Add member to set.\n\n    Args:\n        key: The name of the key\n        member: Member to add\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "member": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "member"
+        ]
+      }
+    },
+    {
+      "name": "set_remove",
+      "description": "Remove member from set.\n\n    Args:\n        key: The name of the key\n        member: Member to remove\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "member": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "member"
+        ]
+      }
+    },
+    {
+      "name": "set_pop",
+      "description": "Remove and return random member(s) from set.\n\n    Args:\n        key: The name of the key\n        count: Number of members to pop (optional)\n\n    Returns:\n        Popped member(s) or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "count": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "set_move",
+      "description": "Move member from one set to another.\n\n    Args:\n        source: Source set key\n        destination: Destination set key\n        member: Member to move\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": ""
+          },
+          "destination": {
+            "type": "string",
+            "description": ""
+          },
+          "member": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "source",
+          "destination",
+          "member"
+        ]
+      }
+    },
+    {
+      "name": "set_cardinality",
+      "description": "Get number of members in set.\n\n    Args:\n        key: The name of the key\n\n    Returns:\n        Number of members or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "set_members",
+      "description": "Get all members in set.\n\n    Args:\n        key: The name of the key\n\n    Returns:\n        List of members or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "set_random_member",
+      "description": "Get random member(s) from set without removing.\n\n    Args:\n        key: The name of the key\n        count: Number of members to return (optional)\n\n    Returns:\n        Random member(s) or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "count": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "set_contains",
+      "description": "Check if member exists in set.\n\n    Args:\n        key: The name of the key\n        member: Member to check\n\n    Returns:\n        Boolean result or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "member": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "member"
+        ]
+      }
+    },
+    {
+      "name": "sorted_set_add",
+      "description": "Add member-score pairs to sorted set.\n\n    Args:\n        key: The name of the key\n        mapping: Dictionary of member-score pairs\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "mapping": {
+            "type": "object",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "mapping"
+        ]
+      }
+    },
+    {
+      "name": "sorted_set_add_incr",
+      "description": "Add member to sorted set or increment its score.\n\n    Args:\n        key: The name of the key\n        member: The member to add/update\n        score: Score to add to existing score (or initial score)\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "member": {
+            "type": "string",
+            "description": ""
+          },
+          "score": {
+            "type": "number",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "member",
+          "score"
+        ]
+      }
+    },
+    {
+      "name": "sorted_set_remove",
+      "description": "Remove member(s) from sorted set.\n\n    Args:\n        key: The name of the key\n        *members: Members to remove\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "members": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "members"
+        ]
+      }
+    },
+    {
+      "name": "sorted_set_remove_by_rank",
+      "description": "Remove members by rank range.\n\n    Args:\n        key: The name of the key\n        start: Start rank (inclusive)\n        stop: Stop rank (inclusive)\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "start": {
+            "type": "integer",
+            "description": ""
+          },
+          "stop": {
+            "type": "integer",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "start",
+          "stop"
+        ]
+      }
+    },
+    {
+      "name": "sorted_set_remove_by_score",
+      "description": "Remove members by score range.\n\n    Args:\n        key: The name of the key\n        min_score: Minimum score (inclusive)\n        max_score: Maximum score (inclusive)\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "min_score": {
+            "type": "number",
+            "description": ""
+          },
+          "max_score": {
+            "type": "number",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "min_score",
+          "max_score"
+        ]
+      }
+    },
+    {
+      "name": "sorted_set_remove_by_lex",
+      "description": "Remove members by lexicographical range.\n\n    Args:\n        key: The name of the key\n        min_lex: Minimum value (inclusive)\n        max_lex: Maximum value (inclusive)\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "min_lex": {
+            "type": "string",
+            "description": ""
+          },
+          "max_lex": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "min_lex",
+          "max_lex"
+        ]
+      }
+    },
+    {
+      "name": "sorted_set_cardinality",
+      "description": "Get number of members in sorted set.\n\n    Args:\n        key: The name of the key\n        min_score: Minimum score (optional)\n        max_score: Maximum score (optional)\n\n    Returns:\n        Number of members or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "min_score": {
+            "type": "string",
+            "description": ""
+          },
+          "max_score": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "sorted_set_score",
+      "description": "Get score of member in sorted set.\n\n    Args:\n        key: The name of the key\n        member: The member to get score for\n\n    Returns:\n        Score or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "member": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "member"
+        ]
+      }
+    },
+    {
+      "name": "sorted_set_rank",
+      "description": "Get rank of member in sorted set.\n\n    Args:\n        key: The name of the key\n        member: The member to get rank for\n        reverse: If True, get rank in reverse order (highest first)\n\n    Returns:\n        Rank or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "member": {
+            "type": "string",
+            "description": ""
+          },
+          "reverse": {
+            "type": "boolean",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "member"
+        ]
+      }
+    },
+    {
+      "name": "sorted_set_range",
+      "description": "Get range of members from sorted set.\n\n    Args:\n        key: The name of the key\n        start: Start index (inclusive)\n        stop: Stop index (inclusive)\n        withscores: Include scores in result\n        reverse: Return results in reverse order\n\n    Returns:\n        List of members (with scores if requested) or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "start": {
+            "type": "integer",
+            "description": ""
+          },
+          "stop": {
+            "type": "integer",
+            "description": ""
+          },
+          "withscores": {
+            "type": "boolean",
+            "description": ""
+          },
+          "reverse": {
+            "type": "boolean",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "sorted_set_range_by_score",
+      "description": "Get range of members by score.\n\n    Args:\n        key: The name of the key\n        min_score: Minimum score (inclusive)\n        max_score: Maximum score (inclusive)\n        withscores: Include scores in result\n        reverse: Return results in reverse order\n        offset: Number of members to skip\n        count: Maximum number of members to return\n\n    Returns:\n        List of members (with scores if requested) or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "min_score": {
+            "type": "number",
+            "description": ""
+          },
+          "max_score": {
+            "type": "number",
+            "description": ""
+          },
+          "withscores": {
+            "type": "boolean",
+            "description": ""
+          },
+          "reverse": {
+            "type": "boolean",
+            "description": ""
+          },
+          "offset": {
+            "type": "string",
+            "description": ""
+          },
+          "count": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "min_score",
+          "max_score"
+        ]
+      }
+    },
+    {
+      "name": "sorted_set_range_by_lex",
+      "description": "Get range of members by lexicographical order.\n\n    Args:\n        key: The name of the key\n        min_lex: Minimum value (inclusive)\n        max_lex: Maximum value (inclusive)\n        reverse: Return results in reverse order\n        offset: Number of members to skip\n        count: Maximum number of members to return\n\n    Returns:\n        List of members or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "min_lex": {
+            "type": "string",
+            "description": ""
+          },
+          "max_lex": {
+            "type": "string",
+            "description": ""
+          },
+          "reverse": {
+            "type": "boolean",
+            "description": ""
+          },
+          "offset": {
+            "type": "string",
+            "description": ""
+          },
+          "count": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "min_lex",
+          "max_lex"
+        ]
+      }
+    },
+    {
+      "name": "sorted_set_popmin",
+      "description": "Remove and return members with lowest scores.\n\n    Args:\n        key: The name of the key\n        count: Number of members to pop (optional)\n\n    Returns:\n        Popped members with scores or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "count": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "sorted_set_popmax",
+      "description": "Remove and return members with highest scores.\n\n    Args:\n        key: The name of the key\n        count: Number of members to pop (optional)\n\n    Returns:\n        Popped members with scores or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "count": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "stream_add",
+      "description": "Add entry to stream.\n\n    Args:\n        key: The name of the key\n        field_dict: Dictionary of field-value pairs\n        id: Entry ID (default \"*\" for auto-generation)\n        maxlen: Maximum length of stream (optional)\n        approximate: Whether maxlen is approximate\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "field_dict": {
+            "type": "object",
+            "description": ""
+          },
+          "id": {
+            "type": "string",
+            "description": ""
+          },
+          "maxlen": {
+            "type": "string",
+            "description": ""
+          },
+          "approximate": {
+            "type": "boolean",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "field_dict"
+        ]
+      }
+    },
+    {
+      "name": "stream_delete",
+      "description": "Delete entries from stream.\n\n    Args:\n        key: The name of the key\n        id: Entry ID to delete\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "id": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "stream_trim",
+      "description": "Trim stream to specified length.\n\n    Args:\n        key: The name of the key\n        maxlen: Maximum length to trim to\n        approximate: Whether maxlen is approximate\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "maxlen": {
+            "type": "integer",
+            "description": ""
+          },
+          "approximate": {
+            "type": "boolean",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "maxlen"
+        ]
+      }
+    },
+    {
+      "name": "stream_length",
+      "description": "Get length of stream.\n\n    Args:\n        key: The name of the key\n\n    Returns:\n        Length or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "stream_range",
+      "description": "Get range of entries from stream.\n\n    Args:\n        key: The name of the key\n        start: Start ID (default \"-\" for beginning)\n        end: End ID (default \"+\" for end)\n        count: Maximum number of entries to return\n        reverse: Return entries in reverse order\n\n    Returns:\n        List of entries or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "start": {
+            "type": "string",
+            "description": ""
+          },
+          "end": {
+            "type": "string",
+            "description": ""
+          },
+          "count": {
+            "type": "string",
+            "description": ""
+          },
+          "reverse": {
+            "type": "boolean",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "stream_read",
+      "description": "Read entries from stream.\n\n    Args:\n        key: The name of the key\n        count: Maximum number of entries to return\n        block: Milliseconds to block (optional)\n        last_id: Last ID received (default \"$\" for new entries only)\n\n    Returns:\n        List of entries or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "count": {
+            "type": "string",
+            "description": ""
+          },
+          "block": {
+            "type": "string",
+            "description": ""
+          },
+          "last_id": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "stream_group_create",
+      "description": "Create consumer group.\n\n    Args:\n        key: The name of the key\n        group_name: Name of consumer group\n        id: ID to start reading from (default \"$\" for new entries only)\n        mkstream: Create stream if it doesn't exist\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "group_name": {
+            "type": "string",
+            "description": ""
+          },
+          "id": {
+            "type": "string",
+            "description": ""
+          },
+          "mkstream": {
+            "type": "boolean",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "group_name"
+        ]
+      }
+    },
+    {
+      "name": "stream_group_destroy",
+      "description": "Destroy consumer group.\n\n    Args:\n        key: The name of the key\n        group_name: Name of consumer group\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "group_name": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "group_name"
+        ]
+      }
+    },
+    {
+      "name": "stream_group_set_id",
+      "description": "Set consumer group's last delivered ID.\n\n    Args:\n        key: The name of the key\n        group_name: Name of consumer group\n        id: ID to set as last delivered\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "group_name": {
+            "type": "string",
+            "description": ""
+          },
+          "id": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "group_name",
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "stream_group_delete_consumer",
+      "description": "Delete consumer from group.\n\n    Args:\n        key: The name of the key\n        group_name: Name of consumer group\n        consumer_name: Name of consumer to delete\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "group_name": {
+            "type": "string",
+            "description": ""
+          },
+          "consumer_name": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "group_name",
+          "consumer_name"
+        ]
+      }
+    },
+    {
+      "name": "stream_read_group",
+      "description": "Read entries from stream as part of consumer group.\n\n    Args:\n        key: The name of the key\n        group_name: Name of consumer group\n        consumer_name: Name of this consumer\n        count: Maximum number of entries to return\n        block: Milliseconds to block (optional)\n        noack: Don't require acknowledgment\n\n    Returns:\n        List of entries or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "group_name": {
+            "type": "string",
+            "description": ""
+          },
+          "consumer_name": {
+            "type": "string",
+            "description": ""
+          },
+          "count": {
+            "type": "string",
+            "description": ""
+          },
+          "block": {
+            "type": "string",
+            "description": ""
+          },
+          "noack": {
+            "type": "boolean",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "group_name",
+          "consumer_name"
+        ]
+      }
+    },
+    {
+      "name": "stream_info",
+      "description": "Get information about stream.\n\n    Args:\n        key: The name of the key\n\n    Returns:\n        Stream information or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "stream_info_groups",
+      "description": "Get information about consumer groups.\n\n    Args:\n        key: The name of the key\n\n    Returns:\n        Consumer groups information or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "stream_info_consumers",
+      "description": "Get information about consumers in group.\n\n    Args:\n        key: The name of the key\n        group_name: Name of consumer group\n\n    Returns:\n        Consumers information or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "group_name": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "group_name"
+        ]
+      }
+    },
+    {
+      "name": "string_set",
+      "description": "Set string value.\n\n    Args:\n        key: The name of the key\n        value: The value to set\n        ex: Expire time in seconds\n        px: Expire time in milliseconds\n        nx: Only set if key does not exist\n        xx: Only set if key exists\n        keepttl: Retain the time to live associated with the key\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          },
+          "ex": {
+            "type": "string",
+            "description": ""
+          },
+          "px": {
+            "type": "string",
+            "description": ""
+          },
+          "nx": {
+            "type": "boolean",
+            "description": ""
+          },
+          "xx": {
+            "type": "boolean",
+            "description": ""
+          },
+          "keepttl": {
+            "type": "boolean",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "string_get",
+      "description": "Get string value.\n\n    Args:\n        key: The name of the key\n\n    Returns:\n        Value or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "string_append",
+      "description": "Append to string value.\n\n    Args:\n        key: The name of the key\n        value: String to append\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "string_get_range",
+      "description": "Get substring.\n\n    Args:\n        key: The name of the key\n        start: Start index (inclusive)\n        end: End index (inclusive)\n\n    Returns:\n        Substring or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "start": {
+            "type": "integer",
+            "description": ""
+          },
+          "end": {
+            "type": "integer",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "start",
+          "end"
+        ]
+      }
+    },
+    {
+      "name": "string_get_set",
+      "description": "Set new value and return old value.\n\n    Args:\n        key: The name of the key\n        value: New value to set\n\n    Returns:\n        Old value or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "string_increment",
+      "description": "Increment integer value.\n\n    Args:\n        key: The name of the key\n        amount: Amount to increment by (default 1)\n\n    Returns:\n        New value or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "amount": {
+            "type": "integer",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "string_increment_float",
+      "description": "Increment float value.\n\n    Args:\n        key: The name of the key\n        amount: Amount to increment by\n\n    Returns:\n        New value or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "amount": {
+            "type": "number",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "amount"
+        ]
+      }
+    },
+    {
+      "name": "string_decrement",
+      "description": "Decrement integer value.\n\n    Args:\n        key: The name of the key\n        amount: Amount to decrement by (default 1)\n\n    Returns:\n        New value or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "amount": {
+            "type": "integer",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "string_length",
+      "description": "Get string length.\n\n    Args:\n        key: The name of the key\n\n    Returns:\n        Length or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "string_set_range",
+      "description": "Overwrite part of string.\n\n    Args:\n        key: The name of the key\n        offset: Position to start overwriting\n        value: String to write\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "offset": {
+            "type": "integer",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "offset",
+          "value"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "server": "document-loader-mcp-server",
+  "tools": [
+    {
+      "name": "read_document",
+      "description": "Extract content from various document formats (PDF, Word, Excel, PowerPoint).",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "file_path": {
+            "type": "string",
+            "description": "Path to the document file to read"
+          },
+          "file_type": {
+            "type": "string",
+            "description": "Type of document: 'pdf', 'docx', 'doc', 'xlsx', 'xls', 'pptx', or 'ppt'"
+          },
+          "timeout_seconds": {
+            "type": "integer",
+            "description": "Timeout in seconds (min: 5, max: 300)"
+          }
+        },
+        "required": [
+          "file_path",
+          "file_type"
+        ]
+      }
+    },
+    {
+      "name": "read_image",
+      "description": "Load an image file and return it to the LLM for viewing and analysis.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "file_path": {
+            "type": "string",
+            "description": "Absolute path to the image file (supports PNG, JPG, JPEG, GIF, BMP, TIFF, WEBP)"
+          },
+          "timeout_seconds": {
+            "type": "integer",
+            "description": "Timeout in seconds (min: 5, max: 300)"
+          }
+        },
+        "required": [
+          "file_path"
+        ]
+      }
+    }
+  ]
+}

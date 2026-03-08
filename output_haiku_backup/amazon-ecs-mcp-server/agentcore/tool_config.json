@@ -1,0 +1,260 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "containerize_app",
+        "description": "Start here if a user wants to run their application locally or deploy an app to the cloud.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "app_path": {
+                "type": "string",
+                "description": "Absolute file path to the web application directory"
+              },
+              "port": {
+                "type": "integer",
+                "description": "Port the application listens on"
+              }
+            },
+            "required": [
+              "app_path",
+              "port"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "build_and_push_image_to_ecr",
+        "description": "Creates ECR infrastructure and builds/pushes a Docker image to ECR.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "app_name": {
+                "type": "string",
+                "description": "Name of the application (used for ECR repository and stack names)"
+              },
+              "app_path": {
+                "type": "string",
+                "description": "Absolute file path to the web application directory containing the Dockerfile"
+              },
+              "tag": {
+                "type": "string",
+                "description": "Optional image tag (if None, uses epoch timestamp)"
+              }
+            },
+            "required": [
+              "app_name",
+              "app_path"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "validate_ecs_express_mode_prerequisites",
+        "description": "Validates prerequisites for ECS Express Mode deployment.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "image_uri": {
+                "type": "string",
+                "description": "Full ECR image URI with tag (e.g., 123456789012.dkr.ecr.us-west-2.amazonaws.com/my-app:tag)"
+              },
+              "execution_role_arn": {
+                "type": "string",
+                "description": "Optional ARN of the ECS task execution role (defaults to ecsTaskExecutionRole)"
+              },
+              "infrastructure_role_arn": {
+                "type": "string",
+                "description": "Optional ARN of the infrastructure role for Express Gateway (defaults to ecsInfrastructureRoleForExpressServices)"
+              }
+            },
+            "required": [
+              "image_uri"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "delete_app",
+        "description": "Deletes a complete Express Mode deployment including service and ECR infrastructure.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "service_arn": {
+                "type": "string",
+                "description": "ARN of the Express Gateway Service to delete"
+              },
+              "app_name": {
+                "type": "string",
+                "description": "Name of the application (used to identify ECR stack to delete)"
+              }
+            },
+            "required": [
+              "service_arn",
+              "app_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "wait_for_service_ready",
+        "description": "Waits for ECS tasks in a service to reach RUNNING status.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "cluster": {
+                "type": "string",
+                "description": "Name of the ECS cluster"
+              },
+              "service_name": {
+                "type": "string",
+                "description": "Name of the ECS service"
+              },
+              "timeout_seconds": {
+                "type": "integer",
+                "description": "Maximum time to wait in seconds (default: 300 = 5 minutes)"
+              }
+            },
+            "required": [
+              "cluster",
+              "service_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "ecs_resource_management",
+        "description": "Execute ECS API operations directly.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "api_operation": {
+                "type": "string",
+                "description": "The ECS API operation to execute (CamelCase)"
+              },
+              "api_params": {
+                "type": "object",
+                "description": "Dictionary of parameters to pass to the API operation"
+              }
+            },
+            "required": [
+              "api_operation"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "ecs_troubleshooting_tool",
+        "description": "ECS troubleshooting tool with multiple diagnostic actions.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "description": ""
+              },
+              "parameters": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "aws_knowledge_aws___read_documentation",
+        "description": "Fetch and convert an AWS documentation page to markdown format.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "start_index": {
+                "type": "integer",
+                "description": "On return output starting at this character index, useful if a previous fetch was truncated and more content is required."
+              },
+              "url": {
+                "type": "string",
+                "description": "URL of the AWS documentation page to read"
+              },
+              "max_length": {
+                "type": "integer",
+                "description": "Maximum number of characters to return."
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "aws_knowledge_aws___recommend",
+        "description": "Get content recommendations for an AWS documentation page.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "URL of the AWS documentation page to get recommendations for"
+              }
+            },
+            "required": [
+              "url"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "aws_knowledge_aws___search_documentation",
+        "description": "# AWS Documentation Search Tool",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "topics": {
+                "type": "array",
+                "description": "List of documentation topics to search. Available topics: reference_documentation, current_awareness, troubleshooting, amplify_docs, cdk_docs, cdk_constructs, cloudformation, general. Can specify multiple topics, up-to 3, to search across them. Use 'general' only if query doesn't match other topics."
+              },
+              "limit": {
+                "type": "integer",
+                "description": "Maximum number of results to return"
+              },
+              "search_phrase": {
+                "type": "string",
+                "description": "Search phrase to use"
+              }
+            },
+            "required": [
+              "search_phrase"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

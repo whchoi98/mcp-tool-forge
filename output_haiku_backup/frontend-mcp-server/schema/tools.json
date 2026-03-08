@@ -1,0 +1,21 @@
+{
+  "server": "frontend-mcp-server",
+  "tools": [
+    {
+      "name": "GetReactDocsByTopic",
+      "description": "Get specific AWS web application UI setup documentation by topic.\n\n    Parameters:\n        topic: The topic of React documentation to retrieve.\n          - \"essential-knowledge\": Essential knowledge for working with React applications.\n          - \"troubleshooting\": Common issues and solutions when generating code.\n\n    Returns:\n        A markdown string containing the requested documentation\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string",
+            "description": "The topic of React documentation to retrieve. Topics include: essential-knowledge, troubleshooting."
+          }
+        },
+        "required": [
+          "topic"
+        ]
+      }
+    }
+  ]
+}

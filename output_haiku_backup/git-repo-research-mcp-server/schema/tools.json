@@ -1,0 +1,130 @@
+{
+  "server": "git-repo-research-mcp-server",
+  "tools": [
+    {
+      "name": "create_research_repository",
+      "description": "Build a FAISS index for a Git repository.\n\n    This tool indexes a Git repository (local or remote) using FAISS and Amazon Bedrock embeddings.\n    The index can then be used for semantic search within the repository.\n\n    Args:\n        ctx: MCP context object used for progress tracking and error reporting\n        repository_path: Path to local repository or URL to remote repository\n        output_path: Where to store the index (optional, uses default if not provided)\n        embedding_model: Which AWS embedding model to use\n        include_patterns: Glob patterns for files to include (optional)\n        exclude_patterns: Glob patterns for files to exclude (optional)\n        chunk_size: Maximum size of each chunk in characters\n        chunk_overlap: Overlap between chunks in characters\n\n    Returns:\n        Information about the created index\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "repository_path": {
+            "type": "string",
+            "description": "Path to local repository or URL to remote repository"
+          },
+          "output_path": {
+            "type": "string",
+            "description": "Where to store the index (optional, uses default if not provided)"
+          },
+          "embedding_model": {
+            "type": "string",
+            "description": "Which AWS embedding model to use"
+          },
+          "include_patterns": {
+            "type": "string",
+            "description": "Glob patterns for files to include (optional). Defaults to common source code and documentation files."
+          },
+          "exclude_patterns": {
+            "type": "string",
+            "description": "Glob patterns for files to exclude (optional). Defaults to common binary files, build artifacts, and VCS directories."
+          },
+          "chunk_size": {
+            "type": "integer",
+            "description": "Maximum size of each chunk in characters"
+          },
+          "chunk_overlap": {
+            "type": "integer",
+            "description": "Overlap between chunks in characters"
+          }
+        },
+        "required": [
+          "repository_path"
+        ]
+      }
+    },
+    {
+      "name": "search_research_repository",
+      "description": "Perform semantic search within an indexed repository.\n\n    This tool searches an indexed repository using semantic search with Amazon Bedrock embeddings.\n    It returns results ranked by relevance to the query.\n\n    Args:\n        ctx: MCP context object used for error reporting\n        index_path: Name of the repository or path to the index to search\n        query: The search query to use for semantic search\n        limit: Maximum number of results to return\n        threshold: Minimum similarity score threshold (0.0 to 1.0)\n\n    Returns:\n        Search results ranked by relevance to the query\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "index_path": {
+            "type": "string",
+            "description": "Name of the repository or path to the index to search"
+          },
+          "query": {
+            "type": "string",
+            "description": "The search query to use for semantic search"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          },
+          "threshold": {
+            "type": "number",
+            "description": "Minimum similarity score threshold (0.0 to 1.0)"
+          }
+        },
+        "required": [
+          "index_path",
+          "query"
+        ]
+      }
+    },
+    {
+      "name": "search_repos_on_github",
+      "description": "Search for GitHub repositories based on keywords, scoped to specific organizations.\n\n    This tool searches for GitHub repositories using the GitHub REST/GraphQL APIs, scoped to specific GitHub\n    organizations (aws-samples, aws-solutions-library-samples, and awslabs).\n\n    Results are filtered to only include repositories with specific licenses (Apache License 2.0,\n    MIT, and MIT No Attribution) and are sorted by stars (descending) and then by updated date.\n\n    For higher rate limits, you can set the GITHUB_TOKEN environment variable with a GitHub\n    personal access token. Without a token, the API is limited to 60 requests per hour, and requests are\n    made with the REST API. With a token, this increases to 5,000 requests per hour, and requests are made\n    with the GraphQL API.\n\n    Args:\n        ctx: MCP context object used for error reporting\n        keywords: List of keywords to search for\n        num_results: Number of results to return\n\n    Returns:\n        List of GitHub repositories matching the search criteria\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "keywords": {
+            "type": "array",
+            "description": "List of keywords to search for GitHub repositories"
+          },
+          "num_results": {
+            "type": "integer",
+            "description": "Number of results to return"
+          }
+        },
+        "required": [
+          "keywords"
+        ]
+      }
+    },
+    {
+      "name": "access_file",
+      "description": "Access file or directory contents.\n\n    This tool provides access to file or directory contents:\n    - If the filepath references a text file, returns the content as a string\n    - If the filepath references a directory, returns an array of files in the directory\n    - If the filepath references a binary image (jpg, png), returns the image data\n\n    For repository files, use the format: repository_name/repository/path/to/file\n    Example: awslabs_mcp/repository/README.md\n\n    For repositories with organization names, both formats are supported:\n    - awslabs_mcp/repository/README.md (with underscore)\n    - awslabs/mcp/repository/README.md (with slash)\n\n    Args:\n        ctx: MCP context object used for error reporting\n        filepath: Path to the file or directory to access\n\n    Returns:\n        File content, directory listing, or image data\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "filepath": {
+            "type": "string",
+            "description": "Path to the file or directory to access"
+          }
+        },
+        "required": [
+          "filepath"
+        ]
+      }
+    },
+    {
+      "name": "delete_research_repository",
+      "description": "Delete an indexed repository.\n\n    This tool deletes an indexed repository and its associated files.\n    It can be identified by repository name or the full path to the index.\n\n    Args:\n        ctx: MCP context object used for error reporting\n        repository_name_or_path: Name of the repository or path to the index to delete\n        index_directory: Directory to look for indices (optional, uses default if not provided)\n\n    Returns:\n        Status of the delete operation\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "repository_name_or_path": {
+            "type": "string",
+            "description": "Name of the repository or path to the index to delete"
+          },
+          "index_directory": {
+            "type": "string",
+            "description": "Directory to look for indices (optional, uses default if not provided)"
+          }
+        },
+        "required": [
+          "repository_name_or_path"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "KendraListIndexesTool",
+        "description": "List all Amazon Kendra indexes in the specified region.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "region": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "KendraQueryTool",
+        "description": "Query Amazon Kendra and retrieve content from the response.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": ""
+              },
+              "region": {
+                "type": "string",
+                "description": ""
+              },
+              "indexId": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "query"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

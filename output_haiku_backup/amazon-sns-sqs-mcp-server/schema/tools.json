@@ -1,0 +1,1110 @@
+{
+  "server": "amazon-sns-sqs-mcp-server",
+  "tools": [
+    {
+      "name": "add_sns_permission",
+      "description": "Execute the AWS Amazon SNS `add_permission` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "ActionName": {
+            "type": "array",
+            "description": ""
+          },
+          "AWSAccountId": {
+            "type": "array",
+            "description": ""
+          },
+          "Label": {
+            "type": "string",
+            "description": ""
+          },
+          "TopicArn": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "ActionName",
+          "AWSAccountId",
+          "Label",
+          "TopicArn"
+        ]
+      }
+    },
+    {
+      "name": "check_if_phone_number_is_opted_out",
+      "description": "Execute the AWS Amazon SNS `check_if_phone_number_is_opted_out` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "phoneNumber": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "phoneNumber"
+        ]
+      }
+    },
+    {
+      "name": "confirm_subscription",
+      "description": "Execute the AWS Amazon SNS `confirm_subscription` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "Token": {
+            "type": "string",
+            "description": ""
+          },
+          "TopicArn": {
+            "type": "string",
+            "description": ""
+          },
+          "AuthenticateOnUnsubscribe": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "Token",
+          "TopicArn"
+        ]
+      }
+    },
+    {
+      "name": "get_data_protection_policy",
+      "description": "Execute the AWS Amazon SNS `get_data_protection_policy` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "ResourceArn": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "ResourceArn"
+        ]
+      }
+    },
+    {
+      "name": "get_endpoint_attributes",
+      "description": "Execute the AWS Amazon SNS `get_endpoint_attributes` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "EndpointArn": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "EndpointArn"
+        ]
+      }
+    },
+    {
+      "name": "get_platform_application_attributes",
+      "description": "Execute the AWS Amazon SNS `get_platform_application_attributes` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "PlatformApplicationArn": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "PlatformApplicationArn"
+        ]
+      }
+    },
+    {
+      "name": "get_subscription_attributes",
+      "description": "Execute the AWS Amazon SNS `get_subscription_attributes` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "SubscriptionArn": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "SubscriptionArn"
+        ]
+      }
+    },
+    {
+      "name": "get_topic_attributes",
+      "description": "Execute the AWS Amazon SNS `get_topic_attributes` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "TopicArn": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "TopicArn"
+        ]
+      }
+    },
+    {
+      "name": "list_endpoints_by_platform_application",
+      "description": "Execute the AWS Amazon SNS `list_endpoints_by_platform_application` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "PlatformApplicationArn": {
+            "type": "string",
+            "description": ""
+          },
+          "NextToken": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "PlatformApplicationArn"
+        ]
+      }
+    },
+    {
+      "name": "list_origination_numbers",
+      "description": "Execute the AWS Amazon SNS `list_origination_numbers` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "NextToken": {
+            "type": "string",
+            "description": ""
+          },
+          "MaxResults": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list_phone_numbers_opted_out",
+      "description": "Execute the AWS Amazon SNS `list_phone_numbers_opted_out` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "nextToken": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list_platform_applications",
+      "description": "Execute the AWS Amazon SNS `list_platform_applications` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "NextToken": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list_subscriptions",
+      "description": "Execute the AWS Amazon SNS `list_subscriptions` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "NextToken": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list_subscriptions_by_topic",
+      "description": "Execute the AWS Amazon SNS `list_subscriptions_by_topic` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "TopicArn": {
+            "type": "string",
+            "description": ""
+          },
+          "NextToken": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "TopicArn"
+        ]
+      }
+    },
+    {
+      "name": "list_tags_for_resource",
+      "description": "Execute the AWS Amazon SNS `list_tags_for_resource` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "ResourceArn": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "ResourceArn"
+        ]
+      }
+    },
+    {
+      "name": "list_topics",
+      "description": "Execute the AWS Amazon SNS `list_topics` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "NextToken": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "opt_in_phone_number",
+      "description": "Execute the AWS Amazon SNS `opt_in_phone_number` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "phoneNumber": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "phoneNumber"
+        ]
+      }
+    },
+    {
+      "name": "publish",
+      "description": "Execute the AWS Amazon SNS `publish` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "Message": {
+            "type": "string",
+            "description": ""
+          },
+          "TopicArn": {
+            "type": "string",
+            "description": ""
+          },
+          "TargetArn": {
+            "type": "string",
+            "description": ""
+          },
+          "PhoneNumber": {
+            "type": "string",
+            "description": ""
+          },
+          "Subject": {
+            "type": "string",
+            "description": ""
+          },
+          "MessageStructure": {
+            "type": "string",
+            "description": ""
+          },
+          "MessageAttributes": {
+            "type": "string",
+            "description": ""
+          },
+          "MessageDeduplicationId": {
+            "type": "string",
+            "description": ""
+          },
+          "MessageGroupId": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "Message"
+        ]
+      }
+    },
+    {
+      "name": "publish_batch",
+      "description": "Execute the AWS Amazon SNS `publish_batch` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "PublishBatchRequestEntries": {
+            "type": "array",
+            "description": ""
+          },
+          "TopicArn": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "PublishBatchRequestEntries",
+          "TopicArn"
+        ]
+      }
+    },
+    {
+      "name": "put_data_protection_policy",
+      "description": "Execute the AWS Amazon SNS `put_data_protection_policy` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "DataProtectionPolicy": {
+            "type": "string",
+            "description": ""
+          },
+          "ResourceArn": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "DataProtectionPolicy",
+          "ResourceArn"
+        ]
+      }
+    },
+    {
+      "name": "set_subscription_attributes",
+      "description": "Execute the AWS Amazon SNS `set_subscription_attributes` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "AttributeName": {
+            "type": "string",
+            "description": ""
+          },
+          "SubscriptionArn": {
+            "type": "string",
+            "description": ""
+          },
+          "AttributeValue": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "AttributeName",
+          "SubscriptionArn"
+        ]
+      }
+    },
+    {
+      "name": "set_topic_attributes",
+      "description": "Execute the AWS Amazon SNS `set_topic_attributes` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "AttributeName": {
+            "type": "string",
+            "description": ""
+          },
+          "TopicArn": {
+            "type": "string",
+            "description": ""
+          },
+          "AttributeValue": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "AttributeName",
+          "TopicArn"
+        ]
+      }
+    },
+    {
+      "name": "subscribe",
+      "description": "Execute AWS SNS Subscribe. Ensure that you set correct permission policies if required.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "Protocol": {
+            "type": "string",
+            "description": ""
+          },
+          "TopicArn": {
+            "type": "string",
+            "description": ""
+          },
+          "Endpoint": {
+            "type": "string",
+            "description": ""
+          },
+          "Attributes": {
+            "type": "string",
+            "description": ""
+          },
+          "ReturnSubscriptionArn": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "Protocol",
+          "TopicArn"
+        ]
+      }
+    },
+    {
+      "name": "unsubscribe",
+      "description": "Execute the AWS Amazon SNS `unsubscribe` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "SubscriptionArn": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "SubscriptionArn"
+        ]
+      }
+    },
+    {
+      "name": "add_sqs_permission",
+      "description": "Execute the AWS Amazon SQS `add_permission` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "Actions": {
+            "type": "array",
+            "description": ""
+          },
+          "AWSAccountIds": {
+            "type": "array",
+            "description": ""
+          },
+          "Label": {
+            "type": "string",
+            "description": ""
+          },
+          "QueueUrl": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "Actions",
+          "AWSAccountIds",
+          "Label",
+          "QueueUrl"
+        ]
+      }
+    },
+    {
+      "name": "cancel_message_move_task",
+      "description": "Execute the AWS Amazon SQS `cancel_message_move_task` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "TaskHandle": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "TaskHandle"
+        ]
+      }
+    },
+    {
+      "name": "change_message_visibility",
+      "description": "Execute the AWS Amazon SQS `change_message_visibility` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "VisibilityTimeout": {
+            "type": "integer",
+            "description": ""
+          },
+          "ReceiptHandle": {
+            "type": "string",
+            "description": ""
+          },
+          "QueueUrl": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "VisibilityTimeout",
+          "ReceiptHandle",
+          "QueueUrl"
+        ]
+      }
+    },
+    {
+      "name": "change_message_visibility_batch",
+      "description": "Execute the AWS Amazon SQS `change_message_visibility_batch` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "Entries": {
+            "type": "array",
+            "description": ""
+          },
+          "QueueUrl": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "Entries",
+          "QueueUrl"
+        ]
+      }
+    },
+    {
+      "name": "delete_message",
+      "description": "Execute the AWS Amazon SQS `delete_message` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "ReceiptHandle": {
+            "type": "string",
+            "description": ""
+          },
+          "QueueUrl": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "ReceiptHandle",
+          "QueueUrl"
+        ]
+      }
+    },
+    {
+      "name": "delete_message_batch",
+      "description": "Execute the AWS Amazon SQS `delete_message_batch` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "Entries": {
+            "type": "array",
+            "description": ""
+          },
+          "QueueUrl": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "Entries",
+          "QueueUrl"
+        ]
+      }
+    },
+    {
+      "name": "get_queue_attributes",
+      "description": "Execute the AWS Amazon SQS `get_queue_attributes` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "QueueUrl": {
+            "type": "string",
+            "description": ""
+          },
+          "AttributeNames": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "QueueUrl"
+        ]
+      }
+    },
+    {
+      "name": "get_queue_url",
+      "description": "Execute the AWS Amazon SQS `get_queue_url` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "QueueName": {
+            "type": "string",
+            "description": ""
+          },
+          "QueueOwnerAWSAccountId": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "QueueName"
+        ]
+      }
+    },
+    {
+      "name": "list_dead_letter_source_queues",
+      "description": "Execute the AWS Amazon SQS `list_dead_letter_source_queues` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "QueueUrl": {
+            "type": "string",
+            "description": ""
+          },
+          "NextToken": {
+            "type": "string",
+            "description": ""
+          },
+          "MaxResults": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "QueueUrl"
+        ]
+      }
+    },
+    {
+      "name": "list_message_move_tasks",
+      "description": "Execute the AWS Amazon SQS `list_message_move_tasks` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "SourceArn": {
+            "type": "string",
+            "description": ""
+          },
+          "MaxResults": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "SourceArn"
+        ]
+      }
+    },
+    {
+      "name": "list_queue_tags",
+      "description": "Execute the AWS Amazon SQS `list_queue_tags` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "QueueUrl": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "QueueUrl"
+        ]
+      }
+    },
+    {
+      "name": "list_queues",
+      "description": "Execute the AWS Amazon SQS `list_queues` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "QueueNamePrefix": {
+            "type": "string",
+            "description": ""
+          },
+          "NextToken": {
+            "type": "string",
+            "description": ""
+          },
+          "MaxResults": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "purge_queue",
+      "description": "Execute the AWS Amazon SQS `purge_queue` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "QueueUrl": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "QueueUrl"
+        ]
+      }
+    },
+    {
+      "name": "receive_message",
+      "description": "Execute the AWS Amazon SQS `receive_message` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "QueueUrl": {
+            "type": "string",
+            "description": ""
+          },
+          "AttributeNames": {
+            "type": "string",
+            "description": ""
+          },
+          "MessageSystemAttributeNames": {
+            "type": "string",
+            "description": ""
+          },
+          "MessageAttributeNames": {
+            "type": "string",
+            "description": ""
+          },
+          "MaxNumberOfMessages": {
+            "type": "string",
+            "description": ""
+          },
+          "VisibilityTimeout": {
+            "type": "string",
+            "description": ""
+          },
+          "WaitTimeSeconds": {
+            "type": "string",
+            "description": ""
+          },
+          "ReceiveRequestAttemptId": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "QueueUrl"
+        ]
+      }
+    },
+    {
+      "name": "remove_sqs_permission",
+      "description": "Execute the AWS Amazon SQS `remove_permission` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "Label": {
+            "type": "string",
+            "description": ""
+          },
+          "QueueUrl": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "Label",
+          "QueueUrl"
+        ]
+      }
+    },
+    {
+      "name": "send_message",
+      "description": "Execute the AWS Amazon SQS `send_message` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "MessageBody": {
+            "type": "string",
+            "description": ""
+          },
+          "QueueUrl": {
+            "type": "string",
+            "description": ""
+          },
+          "DelaySeconds": {
+            "type": "string",
+            "description": ""
+          },
+          "MessageAttributes": {
+            "type": "string",
+            "description": ""
+          },
+          "MessageSystemAttributes": {
+            "type": "string",
+            "description": ""
+          },
+          "MessageDeduplicationId": {
+            "type": "string",
+            "description": ""
+          },
+          "MessageGroupId": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "MessageBody",
+          "QueueUrl"
+        ]
+      }
+    },
+    {
+      "name": "send_message_batch",
+      "description": "Execute the AWS Amazon SQS `send_message_batch` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "Entries": {
+            "type": "array",
+            "description": ""
+          },
+          "QueueUrl": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "Entries",
+          "QueueUrl"
+        ]
+      }
+    },
+    {
+      "name": "set_queue_attributes",
+      "description": "Execute the AWS Amazon SQS `set_queue_attributes` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "Attributes": {
+            "type": "object",
+            "description": ""
+          },
+          "QueueUrl": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "Attributes",
+          "QueueUrl"
+        ]
+      }
+    },
+    {
+      "name": "start_message_move_task",
+      "description": "Execute the AWS Amazon SQS `start_message_move_task` operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "SourceArn": {
+            "type": "string",
+            "description": ""
+          },
+          "DestinationArn": {
+            "type": "string",
+            "description": ""
+          },
+          "MaxNumberOfMessagesPerSecond": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "SourceArn"
+        ]
+      }
+    }
+  ]
+}

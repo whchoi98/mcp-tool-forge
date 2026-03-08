@@ -1,0 +1,74 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "get_graph_status",
+        "description": "Get the status of the currently configured Amazon Neptune graph.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {},
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_graph_schema",
+        "description": "Get the schema for the graph including the vertex and edge labels as well as the",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {},
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "run_opencypher_query",
+        "description": "Executes the provided openCypher against the graph.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": ""
+              },
+              "parameters": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "query"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "run_gremlin_query",
+        "description": "Executes the provided Tinkerpop Gremlin against the graph.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "query"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "server": "amazon-sagemaker-mcp-server",
+  "tools": [
+    {
+      "name": "describe_hp_cluster",
+      "description": "Describe a SageMaker HyperPod cluster.\n\n        Args:\n            ctx: MCP context\n            cluster_name: REQUIRED - Target cluster for describe cluster api\n            region_name: REQUIRED - AWS region name\n            profile_name: AWS profile name (optional)\n\n        ## Fallback Options:\n        - If this tool fails, advise using AWS SageMaker CLI option: `aws sagemaker describe-cluster --cluster-name <name> --region <cluster_region>`\n        - Or as another alternative, advise checking directly in the SageMaker HyperPod console (Amazon SageMaker AI \u2192 HyperPod Clusters \u2192 Cluster Management \u2192 select cluster)\n\n        Returns:\n            describe cluster response\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cluster_name": {
+            "type": "string",
+            "description": "The name of the cluster to describe."
+          },
+          "region_name": {
+            "type": "string",
+            "description": "AWS region name. Default is us-east-1."
+          },
+          "profile_name": {
+            "type": "string",
+            "description": "AWS profile name. If not provided, uses the default profile."
+          }
+        },
+        "required": [
+          "cluster_name",
+          "region_name"
+        ]
+      }
+    },
+    {
+      "name": "update_hp_cluster",
+      "description": "Update a SageMaker HyperPod clusters.\n\n        Notes:\n            - before using this tool, ensure you first have the most recent cluster instance group configurations by first calling the describe_hp_cluster tool first.\n            - modify the instance group configuration based on user's request\n            - important: Use \"InstanceCount\" (NOT \"CurrentCount\" or \"TargetCount\") for desired target count\n            - pass the configuration back in the instance group parameter\n            - IMPORTANT: if user wants to do scheduled updates for their cluster nodes/AMI, also add the ScheduledUpdateConfig configs for the instance group they specified; the scheduled update time can be one-time or recurring based on user provided valid cron experssion;Times are in the UTC-00:00 time zone.\n             - example cron expressions for parameter ScheduleExpression - cron(Minutes Hours Day-of-month Month Day-of-week Year)\n              - one-time update on December 25, 2025 at 2:00 AM UTC: cron(0 2 25 12 ? 2025)\n              - First day of every month at midnight UTC: cron(0 0 1 * ? *)\n              - Every Saturday at 4:30 AM UTC: cron(30 4 ? * SAT *)\n            - example instance groups parameter\n            \"instance_groups\": [\n        \u22ee        {\n        \u22ee          \"OverrideVpcConfig\": {\n        \u22ee            \"SecurityGroupIds\": [\n        \u22ee              \"<>\"\n        \u22ee            ],\n        \u22ee            \"Subnets\": [\n        \u22ee              \"<>\"\n        \u22ee            ]\n        \u22ee          },\n        \u22ee          \"InstanceCount\": <>,\n        \u22ee          \"InstanceGroupName\": \"<>\",\n        \u22ee          \"InstanceStorageConfigs\": [\n        \u22ee            {\n        \u22ee              \"EbsVolumeConfig\": {\n        \u22ee                \"VolumeSizeInGB\": <>\n        \u22ee              }\n        \u22ee            }\n        \u22ee          ],\n        \u22ee          \"LifeCycleConfig\": {\n        \u22ee            \"SourceS3Uri\": \"<>\",\n        \u22ee            \"OnCreate\": \"<>\"\n        \u22ee          },\n        \u22ee          \"InstanceType\": \"<>\",\n        \u22ee          \"ThreadsPerCore\": <>,\n        \u22ee          \"ExecutionRole\": \"<>\"\n        \u22ee        }\n        \u22ee      ],\n\n        ## Fallback Options:\n        - If this tool fails, advise using AWS SageMaker CLI option: `aws sagemaker update-cluster  --region <cluster_region>` with all appropriate parameters\n        - Or as another alternative, advise making updates directly in the SageMaker HyperPod console (Amazon SageMaker AI \u2192 HyperPod Clusters \u2192 Cluster Management \u2192 select cluster \u2192 Edit)\n        - To verify results: use CLI `aws sagemaker describe-cluster --cluster-name <name>` or directly verify in console\n\n        Args:\n            ctx: MCP context\n            cluster_name: REQUIRED: cluster name to update\n            instance_groups: REQUIRED: instance group configurations\n            region_name: REQUIRED - AWS region name\n            profile_name: AWS profile name (optional)\n\n        Returns:\n            update cluster response\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cluster_name": {
+            "type": "string",
+            "description": "The name of the cluster to update."
+          },
+          "instance_groups": {
+            "type": "array",
+            "description": "List of instance groups to update."
+          },
+          "region_name": {
+            "type": "string",
+            "description": "AWS region name. Default is us-east-1."
+          },
+          "profile_name": {
+            "type": "string",
+            "description": "AWS profile name. If not provided, uses the default profile."
+          }
+        },
+        "required": [
+          "cluster_name",
+          "instance_groups",
+          "region_name"
+        ]
+      }
+    },
+    {
+      "name": "manage_hyperpod_cluster_nodes",
+      "description": "Manage SageMaker HyperPod clusters and nodes with both read and write operations.\n\n        This tool provides operations for managing SageMaker HyperPod clusters and nodes, including listing clusters,\n        listing nodes, describing a specific node, updating cluster software, and deleting nodes. It serves as a consolidated\n        interface for all cluster and node-related operations, simplifying the management of HyperPod resources.\n\n        ## Operations\n        - **list_clusters**: List SageMaker HyperPod clusters with options for pagination and filtering\n        - **list_nodes**: List nodes in a SageMaker HyperPod cluster with options for pagination and filtering\n        - **describe_node**: Get detailed information about a specific node in a SageMaker HyperPod cluster\n        - **update_software**: Update the software for a SageMaker HyperPod cluster IMMEDIATELY\n        - **batch_delete**: Delete multiple nodes from a SageMaker HyperPod cluster in a single operation\n\n        ## Response Information\n        The response type varies based on the operation:\n        - list_clusters: Returns ListClustersResponse with a list of clusters\n        - list_nodes: Returns ListClusterNodesResponse with a list of nodes\n        - describe_node: Returns DescribeClusterNodeResponse with detailed node information\n        - update_software: Returns UpdateClusterSoftwareResponse with the cluster ARN\n        - batch_delete: Returns BatchDeleteClusterNodesResponse with details of the deletion operation\n\n        ## Important Notes\n        - ALWAYS show the important notes for operations batch_delete and update_software BEFORE execute the operations\n        - For update_software: (BEFORE executing: ALWAYS ask user whether they want to update immediately or schedule for later; follow \"update_hp_cluster\" tool instructions for scheduled updates)\n            The UpgradeClusterSoftware API call may impact your SageMaker HyperPod cluster uptime and availability. Plan accordingly to mitigate potential disruptions to your workloads\n        - For batch_delete:\n            - BEFORE running the tool, ALWAYS remind user all followings\n            - To safeguard your work, back up your data to Amazon S3 or an FSx for Lustre file system before invoking\n            the API on a worker node group. This will help prevent any potential data loss from the instance root volume.\n            For more information about backup, see Use the backup script provided by SageMaker HyperPod:\n            https://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-hyperpod-backup-restore.html\n            - If you want to invoke this API on an existing cluster, you'll first need to patch the cluster by running\n            the UpdateClusterSoftware API. For more information about patching a cluster, see Update the SageMaker\n            HyperPod platform software of a cluster:\n            https://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-hyperpod-update-software.html\n            - Deleting nodes will permanently remove them from the cluster\n            - This operation cannot be undone\n            - Ensure you have selected the correct nodes before proceeding\n            - This operation requires write access to be enabled for the handler\n\n        ## Usage Tips\n        - Use \"list_clusters\" operation to get an overview of all available clusters in a specified region\n        - Use \"list_nodes\" operation to get an overview of all nodes in a specific cluster\n        - Use \"describe_node\" operation to get detailed information about a specific node\n        - Use \"update_software\" operation to update the software IMMEDIATELY on all nodes or specific instance groups\n        - Use \"batch_delete\" operation to delete multiple nodes in a single request\n        - Specify region_name to operate on a cluster in a specific region\n        - Specify profile_name to use a specific AWS profile with appropriate permissions\n\n        ## Fallback Options:\n        - If this tool fails, advise using AWS SageMaker CLI alternatives:\n            - List clusters: `aws sagemaker list-clusters --region <cluster_region>`\n            - List nodes: `aws sagemaker list-cluster-nodes --cluster-name <name> --region <cluster_region>`\n            - Describe node: `aws sagemaker describe-cluster-node --cluster-name <name> --node-id <id> --region <cluster_region>`\n            - Update software: `aws sagemaker update-cluster-software --cluster-name <name> --region <cluster_region>`\n            - Delete nodes: `aws sagemaker batch-delete-cluster-nodes --cluster-name <name> --node-ids <ids> --region <cluster_region>`\n        - Or, as another alternative: Advise using SageMaker HyperPod console for cluster and node management\n\n        Args:\n            ctx: MCP context\n            operation: Operation to perform (list_clusters, list_nodes, describe_node, update_software, or batch_delete)\n            cluster_name: The name of the cluster (required for all operations except list_clusters)\n            node_id: The ID of the node (required for describe_node operation)\n            node_ids: List of node IDs to delete (required for batch_delete operation)\n            max_results: Maximum number of results to return (for list_clusters and list_nodes operations)\n            next_token: Token for pagination (for list_clusters and list_nodes operations)\n            name_contains: Filter clusters by name (for list_clusters operation)\n            creation_time_after: Filter by creation time after (for list_clusters and list_nodes operations)\n            creation_time_before: Filter by creation time before (for list_clusters and list_nodes operations)\n            instance_group_name_contains: Filter by instance group name (for list_nodes operation)\n            sort_by: Sort field (for list_clusters and list_nodes operations)\n            sort_order: Sort order (for list_clusters and list_nodes operations)\n            training_plan_arn: Filter clusters by training plan ARN (for list_clusters operation)\n            deployment_config: Configuration for the update process (for update_software operation)\n            instance_groups: Specific instance groups to update (for update_software operation)\n            region_name: AWS region name (default: us-east-1)\n            profile_name: AWS profile name (optional)\n\n        Returns:\n            Union[ListClustersResponse, ListClusterNodesResponse, DescribeClusterNodeResponse, UpdateClusterSoftwareResponse, BatchDeleteClusterNodesResponse]:\n            Response specific to the operation performed\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "type": "string",
+            "description": "Operation to perform: list_clusters, list_nodes, describe_node, update_software, or batch_delete. Choose \"list_clusters\" or \"list_nodes\" or \"describe_node\" for read-only operations when write access is disabled."
+          },
+          "cluster_name": {
+            "type": "string",
+            "description": "The name of the cluster. Required for all operations except \"list_clusters\"."
+          },
+          "node_id": {
+            "type": "string",
+            "description": "The ID of the SageMaker HyperPod cluster node. Required for \"describe_node\" operation."
+          },
+          "node_ids": {
+            "type": "string",
+            "description": "The list of node IDs to delete from the cluster. Required for \"batch_delete\" operation."
+          },
+          "max_results": {
+            "type": "string",
+            "description": "The maximum number of results to return in the response. Default: 10. Used for \"list_clusters\" and \"list_nodes\" operations."
+          },
+          "next_token": {
+            "type": "string",
+            "description": "If the response to a previous request was truncated, the response includes a NextToken. To retrieve the next set of results, use the token in the next request. Used for \"list_clusters\" and \"list_nodes\" operations."
+          },
+          "name_contains": {
+            "type": "string",
+            "description": "A filter that returns only clusters whose name contains the specified string. Used for \"list_clusters\" operation."
+          },
+          "creation_time_after": {
+            "type": "string",
+            "description": "Filter for nodes/clusters created after the specified time. Accepts formats: ISO 8601 (e.g., 2014-10-01T20:30:00Z), date only (e.g., 2014-10-01), or Unix time in seconds. Used for \"list_clusters\" and \"list_nodes\" operations."
+          },
+          "creation_time_before": {
+            "type": "string",
+            "description": "Filter for nodes/clusters created before the specified time. Accepts formats: ISO 8601 (e.g., 2014-10-01T20:30:00Z), date only (e.g., 2014-10-01), or Unix time in seconds. Used for \"list_clusters\" and \"list_nodes\" operations."
+          },
+          "instance_group_name_contains": {
+            "type": "string",
+            "description": "Filter for nodes in instance groups whose name contains the specified string. Used for \"list_nodes\" operation."
+          },
+          "sort_by": {
+            "type": "string",
+            "description": "The field to sort results by..."
+          },
+          "sort_order": {
+            "type": "string",
+            "description": "The sort order for results. The default is Ascending. Used for \"list_clusters\" and \"list_nodes\" operations."
+          },
+          "training_plan_arn": {
+            "type": "string",
+            "description": "The Amazon Resource Name (ARN) of the training plan to filter clusters by. Used for \"list_clusters\" operation."
+          },
+          "deployment_config": {
+            "type": "string",
+            "description": "The configuration to use when updating the AMI versions. Used for \"update_software\" operation."
+          },
+          "instance_groups": {
+            "type": "string",
+            "description": "The array of instance groups for which to update AMI versions. Used for \"update_software\" operation."
+          },
+          "region_name": {
+            "type": "string",
+            "description": "AWS region name. Default is us-east-1."
+          },
+          "profile_name": {
+            "type": "string",
+            "description": "AWS profile name. If not provided, uses the default profile."
+          }
+        },
+        "required": [
+          "operation"
+        ]
+      }
+    },
+    {
+      "name": "manage_hyperpod_stacks",
+      "description": "Manage SageMaker HyperPod Cluster through CloudFormation stacks.\n\n        This tool provides operations for managing HyperPod CloudFormation stacks, including creating parameters for cloudformation template,\n        deploying stacks, retrieving hyperpod stack and deployment information, and deleting hyperpod stacks. It serves as the primary\n        mechanism for creating and managing HyperPod clusters through CloudFormation, enabling standardized\n        cluster creation, configuration updates, and resource cleanup.\n\n        ## Notes\n        - Tell user about the working directory which is the current directory. The tool will use directory to store all required files for the user.\n        - After you asked a question, do NOT do anything until you got the user response, do NOT run manage_hyperpod_stacks yet\n        - Use this tool instead of direct AWS CLI commands for creating and managing HyperPod resources.\n        - Use this tool's standardized parameters for creating HyperPod clusters with proper configuration.\n        - DO NOT create HyperPod clusters by generating CloudFormation templates from scratch.\n        - when user asks to create a hyperpod cluster, NEVER ask to check what HyperPod clusters the user currently have\n        - CRITICAL: when user asks to delete a hyperpod cluster, NEVER ask how user's hyperpod cluster was created, just proceed with 'delete' operation. The corresponding Cloudformation stack name should be in this format: \"<HyperPodClusterName>-stack\". If no such stack exists, then the hyperpod cluster might not be created via the MCP tools here.\n          - ALWAYS confirm with user if they do intend to delete the cluster because it cannot be recovered once deleted.\n\n        ## Parameter Collection Process\n            IMPORTANT: ALWAYS first ask for ALL operation-specific REQUIRED parameters from the user BEFORE making any tool calls. NEVER assume or generate parameter values.\n            IMPORTANT: ALWAYS ask one question at a time.\n\n            For 'deploy' operation:\n                - region_name: REQUIRED: ask user to region of deployment. Ensure this argument matches the AvailabilityZoneIds parameter key.\n                    - available regions: us-east-1,us-east-2,us-west-1,us-west-2,eu-central-1,eu-north-1,eu-west-1,eu-west-2,eu-south-2,ap-south-1,ap-southeast-1,ap-southeast-2,ap-southeast-3,ap-southeast-4,ap-northeast-1,sa-east-1,ca-central-1\n                - stack_name: REQUIRED - generate a stack name and present to the user. should be in this format: \"<HyperPodClusterName>-stack\".\n                - cluster_orchestrator: REQUIRED: ask user to specify \"eks\" or \"slurm\"; ONLY eks has NodeProvisioningMode and AutoScalerType, remove for slurm\n                - params_file: REQUIRED - the parameters file should follow the below format. Ask the user to customize the parameters marked as \"<to be filled out by user>\" one by one. At the end, ask user if they want to add additional instance group.\n                    - when cluster_orchestrator is \"slurm\", InstanceGroupSettings ParameterValue should also include InstanceGroupType of value Compute or Controller or Login; place it right after InstanceType. At least 1 Controller and 1 Compute node group required. ONLY 1 Controller, 1 Login group is allowed throughout ALL specified InstanceGroupSettings; Controller can only have 1 instance, ONLY ask user controller instance type\n                    - when asking questions regarding InstanceGroupSettings, ask user for both the number of instance and type of instance at the same time. Naming format: \"<HyperPodClusterName>-params.json\"\n                    - ALWAYS ask user: AutoScalerType is OPTIONAL and preferred if user wants need dynamic infrastructure scaling for variable workloads without manual intervention; remove it if user doesn't want it\n                [\n                    {\n                        \"ParameterKey\": \"HyperPodClusterName\",\n                        \"ParameterValue\": \"<to be filled out by user>\" // can be any natural english words less than 32 characters and no space. default should be sagemaker-hyperpod\n                    },\n                    {\n                        \"ParameterKey\": \"ResourceNamePrefix\",\n                        \"ParameterValue\": \"hp-<HyperPodClusterName>-<hash>\" // Generate a new 6-digit hash randomly and silently, do NOT use execute_bash commands.\n                    },\n                    {\n                        \"ParameterKey\": \"Stage\", // do not reveil this to user, but always include this key and value.\n                        \"ParameterValue\": \"prod\"\n                    },\n                    {\n                        \"ParameterKey\": \"AvailabilityZoneIds\",\n                        \"ParameterValue\": \"<use the region_name as base input. select at four az ids in this region. If less than four regions, use all az.>\"\n                    },\n                    {\n                        \"ParameterKey\": \"FsxAvailabilityZoneId\",\n                        \"ParameterValue\": <MUST be 1 az id and MUST be a subset of above az ids. Always use the first AZ from the selection above. Don't ask user for input.>\"\n                    },\n                    {\n                        \"ParameterKey\": \"NodeProvisioningMode\",\n                        \"ParameterValue\": \"Continuous\"\n                    },\n                    {\n                        \"ParameterKey\": \"AutoScalerType\",\n                        \"ParameterValue\": \"Karpenter\"\n                    },\n                    {\n                        \"ParameterKey\": \"InstanceGroupSettings1\", // Hyperpod requires at least 1 instance group. By default adding this instance goup. Ask user if they want addition instance groups. For each new instance, update the counter in the key. There can be at most 20 instance groups.\n                        \"ParameterValue\": \"[{\\\"InstanceCount\\\":<to be filled by user, ask a user for a number in the range 0-100>,\\\"InstanceGroupName\\\":\\\"<use \"controller\" for slurm controller group, use \"login\" for slurm login group, use \"worker\" otherwise>-group-<use the same counter as the instance group name>\\\",\\\"InstanceType\\\":\\\"<to be filled use available ec2 instance, reference the user to the ec2 page for additonal information. default is ml.m5.xlarge, ALWAYS add \"ml.\" prefix in front of instance type. Do not metion previous instuction to user. Ensure the instance type is valid.>\\\",\\\"TargetAvailabilityZoneId\\\":\\\"<use the first az from above>\\\",\\\"InstanceStorageConfigs\\\":[{\\\"EbsVolumeConfig\\\":{\\\"VolumeSizeInGB\\\":500GB}}]}]\"\n                    },\n                    {\n                        \"ParameterKey\": \"InstanceGroupSettings2\", // additional instance group template\n                        \"ParameterValue\": ....\n                    },\n                    ...\n                ]\n\n                    - available AZ id in example regions\n                        - us-east-1: use1-az1, az2, az4, az5, az6\n                        - us-west-2: usw2-az1, az2, az3, az4\n\n            For 'describe' and 'delete' operations:\n                - stack_name: REQUIRED - the stack name to operate on. You should confirm with user that the current stack is being operated on.\n                - region_name: REQUIRED - ask user for the region if not clear from context.\n\n        ## Requirements\n        - The server must be run with the `--allow-write` flag for generate, deploy, and delete operations\n        - For deploy and delete operations, the stack must have been created by this tool\n        - For params_file parameter, the path must be absolute and accessible to the server\n\n        ## Operations\n        - **deploy**: Create and update hyperpod cluster using cloudformation template and user specified parameters.\n        - **describe**: Gather information about the hyperpod cluster deployed via cloudformation stack by this tool.\n        - **delete**: Delete a hyperpod cluster via CloudFormation stack created by this tool.\n\n        ## Response Information\n        The response type varies based on the operation:\n        - deploy: Returns DeployStackResponse with stack name, ARN, and stack name prefix\n        - describe: Returns DescribeStackResponse with stack details, outputs, and status\n        - delete: Returns DeleteStackResponse with stack name, ID, and stack name prefix\n\n        ## Usage Tips\n        - If user wants to create a new hyperpod cluster, always generate a new parameter file. Parameter file MUST exists in the working directory for the tool to update the hyperpod cluster.\n        - For safety, this tool will only modify or delete stacks that it created\n        - Stack creation typically takes ~30 minutes to complete\n        - Specify profile_name to use a specific AWS profile with appropriate permissions\n\n        ## Fallback Options:\n        - If this tool fails, advise using CloudFormation CLIs: aws cloudformation create-stack/update-stack/describe-stacks/delete-stack with proper params\n        - Alternatively: advise using AWS SageMaker CLIs: aws sagemaker with all appropriate parameters:\n        - Alternatively: Advise using SageMaker HyperPod console for directly creating, updating, deleting the HyperPod cluster\n\n        Args:\n            ctx: MCP context\n            operation: Operation to perform (generate, deploy, describe, or delete)\n            params_file: Absolute path for the CloudFormation template parameters (for deploy operations)\n            stack_name: Name of the CloudFormation stack (for deploy, describe and delete operations)\n            region_name: AWS region name (default: us-east-1)\n            cluster_orchestrator: cluster orchestrator\n            profile_name: AWS profile name (optional)\n\n        Returns:\n            Union[DeployStackResponse, DescribeStackResponse, DeleteStackResponse]:\n            Response specific to the operation performed\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "type": "string",
+            "description": "Operation to perform: deploy, describe, or delete. Choose \"describe\" for read-only operations when write access is disabled."
+          },
+          "region_name": {
+            "type": "string",
+            "description": "AWS region name. Default is us-east-1."
+          },
+          "stack_name": {
+            "type": "string",
+            "description": "Name of the CloudFormation stack (for deploy, describe and delete operations)."
+          },
+          "cluster_orchestrator": {
+            "type": "string",
+            "description": "Cluster orchestrator type. Must be either \"eks\" or \"slurm\". Default is \"eks\"."
+          },
+          "params_file": {
+            "type": "string",
+            "description": "Absolute path for the CloudFormation template parameters(for deploy operations).\n            IMPORTANT: Assistant must provide the full absolute path to the template file, as the MCP client and server might not run from the same location."
+          },
+          "profile_name": {
+            "type": "string",
+            "description": "AWS profile name. If not provided, uses the default profile."
+          }
+        },
+        "required": [
+          "operation",
+          "region_name",
+          "stack_name"
+        ]
+      }
+    }
+  ]
+}

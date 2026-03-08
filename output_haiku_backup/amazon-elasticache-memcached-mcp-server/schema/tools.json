@@ -1,0 +1,411 @@
+{
+  "server": "amazon-elasticache-memcached-mcp-server",
+  "tools": [
+    {
+      "name": "cache_get",
+      "description": "Get a value from the cache.\n\n    Args:\n        key: The key to retrieve\n\n    Returns:\n        Value or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "cache_gets",
+      "description": "Get a value and its CAS token from the cache.\n\n    Args:\n        key: The key to retrieve\n\n    Returns:\n        Value and CAS token or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "cache_get_many",
+      "description": "Get multiple values from the cache.\n\n    Args:\n        keys: List of keys to retrieve\n\n    Returns:\n        Dictionary of key-value pairs or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "keys": {
+            "type": "array",
+            "description": ""
+          }
+        },
+        "required": [
+          "keys"
+        ]
+      }
+    },
+    {
+      "name": "cache_get_multi",
+      "description": "Get multiple values from the cache (alias for get_many).\n\n    Args:\n        keys: List of keys to retrieve\n\n    Returns:\n        Dictionary of key-value pairs or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "keys": {
+            "type": "array",
+            "description": ""
+          }
+        },
+        "required": [
+          "keys"
+        ]
+      }
+    },
+    {
+      "name": "cache_set",
+      "description": "Set a value in the cache.\n\n    Args:\n        key: The key to set\n        value: The value to store\n        expire: Optional expiration time in seconds\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          },
+          "expire": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "cache_cas",
+      "description": "Set a value using CAS (Check And Set).\n\n    Args:\n        key: The key to set\n        value: The value to store\n        cas: CAS token from gets()\n        expire: Optional expiration time in seconds\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          },
+          "cas": {
+            "type": "integer",
+            "description": ""
+          },
+          "expire": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "value",
+          "cas"
+        ]
+      }
+    },
+    {
+      "name": "cache_set_many",
+      "description": "Set multiple values in the cache.\n\n    Args:\n        mapping: Dictionary of key-value pairs\n        expire: Optional expiration time in seconds\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "mapping": {
+            "type": "object",
+            "description": ""
+          },
+          "expire": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "mapping"
+        ]
+      }
+    },
+    {
+      "name": "cache_set_multi",
+      "description": "Set multiple values in the cache (alias for set_many).\n\n    Args:\n        mapping: Dictionary of key-value pairs\n        expire: Optional expiration time in seconds\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "mapping": {
+            "type": "object",
+            "description": ""
+          },
+          "expire": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "mapping"
+        ]
+      }
+    },
+    {
+      "name": "cache_add",
+      "description": "Add a value to the cache only if the key doesn't exist.\n\n    Args:\n        key: The key to add\n        value: The value to store\n        expire: Optional expiration time in seconds\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          },
+          "expire": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "cache_replace",
+      "description": "Replace a value in the cache only if the key exists.\n\n    Args:\n        key: The key to replace\n        value: The new value\n        expire: Optional expiration time in seconds\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          },
+          "expire": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "cache_append",
+      "description": "Append a string to an existing value.\n\n    Args:\n        key: The key to append to\n        value: String to append\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "cache_prepend",
+      "description": "Prepend a string to an existing value.\n\n    Args:\n        key: The key to prepend to\n        value: String to prepend\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "cache_delete",
+      "description": "Delete a value from the cache.\n\n    Args:\n        key: The key to delete\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "cache_delete_many",
+      "description": "Delete multiple values from the cache.\n\n    Args:\n        keys: List of keys to delete\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "keys": {
+            "type": "array",
+            "description": ""
+          }
+        },
+        "required": [
+          "keys"
+        ]
+      }
+    },
+    {
+      "name": "cache_delete_multi",
+      "description": "Delete multiple values from the cache (alias for delete_many).\n\n    Args:\n        keys: List of keys to delete\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "keys": {
+            "type": "array",
+            "description": ""
+          }
+        },
+        "required": [
+          "keys"
+        ]
+      }
+    },
+    {
+      "name": "cache_incr",
+      "description": "Increment a counter in the cache.\n\n    Args:\n        key: The key to increment\n        value: Amount to increment by (default 1)\n\n    Returns:\n        New value or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "integer",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "cache_decr",
+      "description": "Decrement a counter in the cache.\n\n    Args:\n        key: The key to decrement\n        value: Amount to decrement by (default 1)\n\n    Returns:\n        New value or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "value": {
+            "type": "integer",
+            "description": ""
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "cache_touch",
+      "description": "Update the expiration time for a key.\n\n    Args:\n        key: The key to update\n        expire: New expiration time in seconds\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": ""
+          },
+          "expire": {
+            "type": "integer",
+            "description": ""
+          }
+        },
+        "required": [
+          "key",
+          "expire"
+        ]
+      }
+    },
+    {
+      "name": "cache_stats",
+      "description": "Get cache statistics.\n\n    Args:\n        args: Optional list of stats to retrieve\n\n    Returns:\n        Statistics or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "args": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "cache_flush_all",
+      "description": "Flush all cache entries.\n\n    Args:\n        delay: Optional delay in seconds before flushing\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "delay": {
+            "type": "integer",
+            "description": ""
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "cache_quit",
+      "description": "Close the connection to the cache server.\n\n    Returns:\n        Success message or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "cache_version",
+      "description": "Get the version of the cache server.\n\n    Returns:\n        Version string or error message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    }
+  ]
+}

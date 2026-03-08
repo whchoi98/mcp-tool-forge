@@ -1,0 +1,76 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "generate_diagram",
+        "description": "Generate a diagram from Python code using the diagrams package.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "description": "Python code using the diagrams package DSL. The runtime already imports everything needed so you can start immediately using `with Diagram(`"
+              },
+              "filename": {
+                "type": "string",
+                "description": "The filename to save the diagram to. If not provided, a random name will be generated."
+              },
+              "timeout": {
+                "type": "integer",
+                "description": "The timeout for diagram generation in seconds. Default is 90 seconds."
+              },
+              "workspace_dir": {
+                "type": "string",
+                "description": "The user's current workspace directory. CRITICAL: Client must always send the current workspace directory when calling this tool! If provided, diagrams will be saved to a 'generated-diagrams' subdirectory."
+              }
+            },
+            "required": [
+              "code"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_diagram_examples",
+        "description": "Get example code for different types of diagrams.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "diagram_type": {
+                "type": "string",
+                "description": "Type of diagram example to return. Options: aws, sequence, flow, class, k8s, onprem, custom, all"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_icons",
+        "description": "List available icons from the diagrams package, with optional filtering.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "provider_filter": {
+                "type": "string",
+                "description": "Filter icons by provider name (e.g., \"aws\", \"gcp\", \"k8s\")"
+              },
+              "service_filter": {
+                "type": "string",
+                "description": "Filter icons by service name (e.g., \"compute\", \"database\", \"network\")"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    }
+  ]
+}

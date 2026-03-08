@@ -1,0 +1,102 @@
+{
+  "server": "finch-mcp-server",
+  "tools": [
+    {
+      "name": "finch_build_container_image",
+      "description": "Build a container image using Finch.\n\n    This tool builds a Docker image using the specified Dockerfile and context directory.\n    It supports a range of build options including tags, platforms, and more.\n    If the Dockerfile contains references to ECR repositories, it verifies that\n    ecr login cred helper is properly configured before proceeding with the build.\n\n    Note: for ecr-login to work server needs access to AWS credentials/profile which are configured\n    in the server mcp configuration file.\n\n    Returns:\n        Result: An object containing:\n            - status (str): \"success\" if the operation succeeded, \"error\" otherwise\n            - message (str): A descriptive message about the result of the operation\n\n    Example response:\n        Result(status=\"success\", message=\"Successfully built image from /path/to/Dockerfile\")\n\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "dockerfile_path": {
+            "type": "string",
+            "description": "Absolute path to the Dockerfile"
+          },
+          "context_path": {
+            "type": "string",
+            "description": "Absolute path to the build context directory"
+          },
+          "tags": {
+            "type": "string",
+            "description": "List of tags to apply to the image (e.g., ['myimage:latest', 'myimage:v1'])"
+          },
+          "platforms": {
+            "type": "string",
+            "description": "List of target platforms (e.g., ['linux/amd64', 'linux/arm64'])"
+          },
+          "target": {
+            "type": "string",
+            "description": "Target build stage to build"
+          },
+          "no_cache": {
+            "type": "string",
+            "description": "Whether to disable cache"
+          },
+          "pull": {
+            "type": "string",
+            "description": "Whether to always pull base images"
+          },
+          "build_contexts": {
+            "type": "string",
+            "description": "List of additional build contexts"
+          },
+          "outputs": {
+            "type": "string",
+            "description": "Output destination"
+          },
+          "cache_from": {
+            "type": "string",
+            "description": "List of external cache sources"
+          },
+          "quiet": {
+            "type": "string",
+            "description": "Whether to suppress build output"
+          },
+          "progress": {
+            "type": "string",
+            "description": "Type of progress output"
+          }
+        },
+        "required": [
+          "dockerfile_path",
+          "context_path"
+        ]
+      }
+    },
+    {
+      "name": "finch_push_image",
+      "description": "Push a container image to a repository using finch, replacing the tag with the image hash.\n\n    If the image URL is an ECR repository, it verifies that ECR login cred helper is configured.\n    This tool  gets the image hash, creates a new tag using the hash, and pushes the image with\n    the hash tag to the repository. If the image URL is an ECR repository, it verifies that\n    ECR login is properly configured before proceeding with the push.\n\n    The tool expects the image to be already built and available locally. It uses\n    'finch image inspect' to get the hash, 'finch image tag' to create a new tag,\n    and 'finch image push' to perform the actual push operation.\n\n    When the server is in read-only mode (which is the default unless --enable-aws-resource-write\n    is specified), this tool will return an error when pushing to ECR repositories.\n\n    Returns:\n        Result: An object containing:\n            - status (str): \"success\" if the operation succeeded, \"error\" otherwise\n            - message (str): A descriptive message about the result of the operation\n\n    Example response:\n        Result(status=\"success\", message=\"Successfully pushed image 123456789012.dkr.ecr.us-west-2.amazonaws.com/my-repo:abcdef123456 to ECR.\")\n\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "type": "string",
+            "description": "The full image name to push, including the repository URL and tag"
+          }
+        },
+        "required": [
+          "image"
+        ]
+      }
+    },
+    {
+      "name": "finch_create_ecr_repo",
+      "description": "Check if an ECR repository exists and create it if it doesn't.\n\n    This tool checks if the specified ECR repository exists using boto3.\n    If the repository doesn't exist, it creates a new one with the given name.\n    The tool requires appropriate AWS credentials configured.\n\n    When the server is in read-only mode (which is the default unless --enable-aws-resource-write\n    is specified), this tool will return an error and will not create any repositories.\n\n    Returns:\n        Result: An object containing:\n            - status (str): \"success\" if the operation succeeded, \"error\" otherwise\n            - message (str): A descriptive message about the result of the operation\n\n    Example response:\n        Result(status=\"success\", message=\"Successfully created ECR repository 'my-app'.\",\n               repository_uri=\"123456789012.dkr.ecr.us-west-2.amazonaws.com/my-app\",\n               exists=False)\n\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "repository_name": {
+            "type": "string",
+            "description": "The name of the repository to check or create in ECR"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region for the ECR repository. If not provided, uses the default region from AWS configuration"
+          }
+        },
+        "required": [
+          "repository_name"
+        ]
+      }
+    }
+  ]
+}

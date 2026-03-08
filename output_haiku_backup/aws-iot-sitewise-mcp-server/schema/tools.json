@@ -1,0 +1,1122 @@
+{
+  "server": "aws-iot-sitewise-mcp-server",
+  "tools": [
+    {
+      "name": "get_sitewise_server_mode",
+      "description": "Get the current SiteWise server mode and available capabilities.\n\n    This tool helps users understand what operations are available\n    and provides guidance for enabling write operations if needed.\n\n    Returns:\n        Dictionary containing server mode information and capabilities\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "describe_asset",
+      "description": "Retrieve information about an asset.\n\n    Args:\n        asset_id: The ID of the asset. Accepts UUID format (12345678-1234-1234-1234-123456789012)\n                 or external ID format (externalId:my-external-id). Use list_assets to get the\n                 correct ID if you only have the asset name.\n        region: AWS region (default: us-east-1)\n        exclude_properties: Whether to exclude asset properties from the             response\n\n    Returns:\n        Dictionary containing asset information\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "asset_id": {
+            "type": "string",
+            "description": "The ID of the asset (UUID format: 12345678-1234-1234-1234-123456789012 or external ID format: externalId:my-external-id)"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          },
+          "exclude_properties": {
+            "type": "boolean",
+            "description": "Whether to exclude asset properties from the response"
+          }
+        },
+        "required": [
+          "asset_id"
+        ]
+      }
+    },
+    {
+      "name": "list_assets",
+      "description": "Retrieve a paginated list of asset summaries.\n\n    Args:\n        region: AWS region (default: us-east-1)\n        next_token: The token to be used for the next set of paginated results\n        max_results: The maximum number of results to return (1-250, default: 50)\n        asset_model_id: The ID of the asset model by which to filter the list of assets\n        filter_type: The filter for the requested list of assets (ALL, TOP_LEVEL)\n\n    Returns:\n        Dictionary containing list of assets\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "The token to be used for the next set of paginated results"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "The maximum number of results to return (1-250)"
+          },
+          "asset_model_id": {
+            "type": "string",
+            "description": "The ID of the asset model by which to filter the list of assets"
+          },
+          "filter_type": {
+            "type": "string",
+            "description": "Filter assets by ALL or TOP_LEVEL"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list_associated_assets",
+      "description": "Retrieve a paginated list of associated assets.\n\n    Args:\n        asset_id: The ID of the asset to query. Accepts UUID format (12345678-1234-1234-1234-123456789012)\n                 or external ID format (externalId:my-external-id). Use list_assets to get the\n                 correct ID if you only have the asset name.\n        region: AWS region (default: us-east-1)\n        hierarchy_id: The ID of the hierarchy by which child assets are             associated\n        traversal_direction: The direction to list associated assets (\n            PARENT,\n            CHILD)         next_token: The token to be used for the next set of                                                 paginated results\n        max_results: The maximum number of results to return (\n            1-250,\n            default: 50)\n\n    Returns:\n        Dictionary containing list of associated assets\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "asset_id": {
+            "type": "string",
+            "description": "The ID of the asset to query (UUID format: 12345678-1234-1234-1234-123456789012 or external ID format: externalId:my-external-id)"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          },
+          "hierarchy_id": {
+            "type": "string",
+            "description": "The ID of the hierarchy by which child assets are associated"
+          },
+          "traversal_direction": {
+            "type": "string",
+            "description": "The direction to list associated assets (PARENT, CHILD)"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "The token to be used for the next set of paginated results"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "The maximum number of results to return (1-250)"
+          }
+        },
+        "required": [
+          "asset_id"
+        ]
+      }
+    },
+    {
+      "name": "describe_asset_model",
+      "description": "Retrieve information about an asset model.\n\n    Args:\n        asset_model_id: The ID of the asset model. Accepts UUID format (12345678-1234-1234-1234-123456789012)\n                       or external ID format (externalId:my-external-id). Use list_asset_models to get the\n                       correct ID if you only have the asset model name.\n        region: AWS region (default: us-east-1)\n        exclude_properties: Whether to exclude asset model properties\n        asset_model_version: The version of the asset model (LATEST, ACTIVE)\n\n    Returns:\n        Dictionary containing asset model information\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "asset_model_id": {
+            "type": "string",
+            "description": "The ID of the asset model (UUID format: 12345678-1234-1234-1234-123456789012 or external ID format: externalId:my-external-id)"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          },
+          "exclude_properties": {
+            "type": "boolean",
+            "description": "Whether to exclude asset model properties"
+          },
+          "asset_model_version": {
+            "type": "string",
+            "description": "The version of the asset model (LATEST, ACTIVE)"
+          }
+        },
+        "required": [
+          "asset_model_id"
+        ]
+      }
+    },
+    {
+      "name": "list_asset_models",
+      "description": "Retrieve a paginated list of summaries for all asset models.\n\n    Args:\n        region: AWS region (default: us-east-1)\n        next_token: The token to be used for the next set of paginated results\n        max_results: The maximum number of results to return (1-250, default: 50)\n        asset_model_types: The type of asset model (ASSET_MODEL, COMPONENT_MODEL)\n\n    Returns:\n        Dictionary containing list of asset models\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "The token to be used for the next set of paginated results"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "The maximum number of results to return (1-250)"
+          },
+          "asset_model_types": {
+            "type": "string",
+            "description": "The type of asset model (ASSET_MODEL, COMPONENT_MODEL)"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list_asset_model_properties",
+      "description": "Retrieve a paginated list of properties associated with an asset model.\n\n    Args:\n        asset_model_id: The ID of the asset model. Accepts UUID format (12345678-1234-1234-1234-123456789012)\n                       or external ID format (externalId:my-external-id). Use list_asset_models to get the\n                       correct ID if you only have the asset model name.\n        region: AWS region (default: us-east-1)\n        next_token: The token to be used for the next set of paginated results\n        max_results: The maximum number of results to return (\n            1-250,\n            default: 50)         asset_model_version: The version of the asset model (\n                LATEST,\n                ACTIVE)\n        filter_type: Filters the requested list of asset model properties (\n            ALL,\n            BASE)\n\n    Returns:\n        Dictionary containing list of asset model properties\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "asset_model_id": {
+            "type": "string",
+            "description": "The ID of the asset model (UUID format: 12345678-1234-1234-1234-123456789012 or external ID format: externalId:my-external-id)"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "The token to be used for the next set of paginated results"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "The maximum number of results to return (1-250)"
+          },
+          "asset_model_version": {
+            "type": "string",
+            "description": "The version of the asset model (LATEST, ACTIVE)"
+          },
+          "filter_type": {
+            "type": "string",
+            "description": "Filter properties by type (ALL, BASE)"
+          }
+        },
+        "required": [
+          "asset_model_id"
+        ]
+      }
+    },
+    {
+      "name": "get_asset_property_value",
+      "description": "Get the current value for the given asset property.\n\n    Args:\n        asset_id: The ID of the asset\n        property_id: The ID of the asset property\n        property_alias: The alias that identifies the property\n        region: AWS region (default: us-east-1)\n\n    Returns:\n        Dictionary containing current property value\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "asset_id": {
+            "type": "string",
+            "description": "The ID of the asset"
+          },
+          "property_id": {
+            "type": "string",
+            "description": "The ID of the asset property"
+          },
+          "property_alias": {
+            "type": "string",
+            "description": "The alias that identifies the property"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "get_asset_property_value_history",
+      "description": "Get the history of an asset property's values.\n\n    Args:\n        asset_id: The ID of the asset\n        property_id: The ID of the asset property\n        property_alias: The alias that identifies the property\n        start_date: The exclusive start of the range (ISO 8601 format)\n        end_date: The inclusive end of the range (ISO 8601 format)\n        qualities: The quality by which to filter asset data (GOOD, BAD, UNCERTAIN)\n        time_ordering: The chronological sorting order of the requested information             (ASCENDING, DESCENDING)\n        next_token: The token to be used for the next set of paginated results\n        max_results: The maximum number of results to return (1-4000, default: 100)\n        region: AWS region (default: us-east-1)\n\n    Returns:\n        Dictionary containing property value history\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "asset_id": {
+            "type": "string",
+            "description": "The ID of the asset"
+          },
+          "property_id": {
+            "type": "string",
+            "description": "The ID of the asset property"
+          },
+          "property_alias": {
+            "type": "string",
+            "description": "The alias that identifies the property"
+          },
+          "start_date": {
+            "type": "string",
+            "description": "The exclusive start of the range (ISO 8601 format)"
+          },
+          "end_date": {
+            "type": "string",
+            "description": "The inclusive end of the range (ISO 8601 format)"
+          },
+          "qualities": {
+            "type": "string",
+            "description": "The quality by which to filter asset data (GOOD, BAD, UNCERTAIN)"
+          },
+          "time_ordering": {
+            "type": "string",
+            "description": "The chronological sorting order (ASCENDING, DESCENDING)"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "The token to be used for the next set of paginated results"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "The maximum number of results to return (1-4000)"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "get_asset_property_aggregates",
+      "description": "Get aggregated values for an asset property.\n\n    Args:\n        asset_id: The ID of the asset\n        property_id: The ID of the asset property\n        property_alias: The alias that identifies the property\n        aggregate_types: The data aggregating function (AVERAGE, COUNT, MAXIMUM,             MINIMUM, SUM, STANDARD_DEVIATION)\n        resolution: The time interval over which to aggregate data\n        start_date: The exclusive start of the range (ISO 8601 format)\n        end_date: The inclusive end of the range (ISO 8601 format)\n        qualities: The quality by which to filter asset data (GOOD, BAD, UNCERTAIN)\n        time_ordering: The chronological sorting order of the requested information             (ASCENDING, DESCENDING)\n        next_token: The token to be used for the next set of paginated results\n        max_results: The maximum number of results to return (1-4000, default: 100)\n        region: AWS region (default: us-east-1)\n\n    Returns:\n        Dictionary containing property aggregates\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "asset_id": {
+            "type": "string",
+            "description": "The ID of the asset"
+          },
+          "property_id": {
+            "type": "string",
+            "description": "The ID of the asset property"
+          },
+          "property_alias": {
+            "type": "string",
+            "description": "The alias that identifies the property"
+          },
+          "aggregate_types": {
+            "type": "string",
+            "description": "The data aggregating function (AVERAGE, COUNT, MAXIMUM, MINIMUM, SUM, STANDARD_DEVIATION)"
+          },
+          "resolution": {
+            "type": "string",
+            "description": "The time interval over which to aggregate data"
+          },
+          "start_date": {
+            "type": "string",
+            "description": "The exclusive start of the range (ISO 8601 format)"
+          },
+          "end_date": {
+            "type": "string",
+            "description": "The inclusive end of the range (ISO 8601 format)"
+          },
+          "qualities": {
+            "type": "string",
+            "description": "The quality by which to filter asset data (GOOD, BAD, UNCERTAIN)"
+          },
+          "time_ordering": {
+            "type": "string",
+            "description": "The chronological sorting order (ASCENDING, DESCENDING)"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "The token to be used for the next set of paginated results"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "The maximum number of results to return (1-4000)"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "get_interpl_asset_property_values",
+      "description": "Get interpolated values for an asset property for a specified time interval.\n\n    Args:\n        asset_id: The ID of the asset\n        property_id: The ID of the asset property\n        property_alias: The alias that identifies the property\n        start_time_in_seconds: The exclusive start of the range (Unix epoch             time in seconds)\n        end_time_in_seconds: The inclusive end of the range (Unix epoch time             in seconds)\n        quality: The quality of the asset property value (GOOD, BAD, UNCERTAIN)\n        interval_in_seconds: The time interval in seconds over which to             interpolate data\n        next_token: The token to be used for the next set of paginated results\n        max_results: The maximum number of results to return (1-4000, default: 100)\n        interpolation_type: The interpolation type (LINEAR_INTERPOLATION,             LOCF_INTERPOLATION)\n        interval_window_in_seconds: The query interval for the window\n        region: AWS region (default: us-east-1)\n\n    Returns:\n        Dictionary containing interpolated property values\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "asset_id": {
+            "type": "string",
+            "description": "The ID of the asset"
+          },
+          "property_id": {
+            "type": "string",
+            "description": "The ID of the asset property"
+          },
+          "property_alias": {
+            "type": "string",
+            "description": "The alias that identifies the property"
+          },
+          "start_time_in_seconds": {
+            "type": "string",
+            "description": "The exclusive start of the range (Unix epoch time in seconds)"
+          },
+          "end_time_in_seconds": {
+            "type": "string",
+            "description": "The inclusive end of the range (Unix epoch time in seconds)"
+          },
+          "quality": {
+            "type": "string",
+            "description": "The quality of the asset property value (GOOD, BAD, UNCERTAIN)"
+          },
+          "interval_in_seconds": {
+            "type": "integer",
+            "description": "The time interval in seconds over which to interpolate data"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "The token to be used for the next set of paginated results"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "The maximum number of results to return (1-250)"
+          },
+          "interpolation_type": {
+            "type": "string",
+            "description": "The interpolation type (LINEAR_INTERPOLATION, LOCF_INTERPOLATION)"
+          },
+          "interval_window_in_seconds": {
+            "type": "string",
+            "description": "The query interval for interpolated values"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "batch_get_asset_property_value",
+      "description": "Get the current values for multiple asset properties.\n\n    Args:\n        entries: The list of asset property identifiers for the batch get request\n        next_token: The token to be used for the next set of paginated results\n        region: AWS region (default: us-east-1)\n\n    Returns:\n        Dictionary containing batch get response\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "entries": {
+            "type": "array",
+            "description": "The list of asset property identifiers for the batch get request"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "The token to be used for the next set of paginated results"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "entries"
+        ]
+      }
+    },
+    {
+      "name": "batch_get_asset_property_value_hist",
+      "description": "Get the historical values for multiple asset properties.\n\n    Args:\n        entries: The list of asset property historical value entries for the             batch get request\n        next_token: The token to be used for the next set of paginated results\n        max_results: The maximum number of results to return (1-4000, default: 100)\n        region: AWS region (default: us-east-1)\n\n    Returns:\n        Dictionary containing batch get history response\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "entries": {
+            "type": "array",
+            "description": "The list of asset property historical value entries for the batch get request"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "The token to be used for the next set of paginated results"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "The maximum number of results to return (1-4000)"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "entries"
+        ]
+      }
+    },
+    {
+      "name": "batch_get_asset_property_aggregates",
+      "description": "Get aggregated values for multiple asset properties.\n\n    Args:\n        entries: The list of asset property aggregate entries for the batch get request\n        next_token: The token to be used for the next set of paginated results\n        max_results: The maximum number of results to return (1-4000, default: 100)\n        region: AWS region (default: us-east-1)\n\n    Returns:\n        Dictionary containing batch get aggregates response\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "entries": {
+            "type": "array",
+            "description": "The list of asset property aggregate entries for the batch get request"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "The token to be used for the next set of paginated results"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "The maximum number of results to return (1-4000)"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "entries"
+        ]
+      }
+    },
+    {
+      "name": "list_bulk_import_jobs",
+      "description": "List bulk import jobs in AWS IoT SiteWise.\n\n    This function retrieves a paginated list of bulk import job summaries with optional filtering\n    by job status. Each job summary includes basic information like job ID, name, status, and timestamps.\n\n    Args:\n        filter: Optional filter to apply to the list. Valid values:\n            - ALL: List all jobs (default)\n            - PENDING: Jobs waiting to start\n            - RUNNING: Jobs currently executing\n            - CANCELLED: Jobs that were cancelled\n            - FAILED: Jobs that failed\n            - COMPLETED_WITH_FAILURES: Jobs completed but with some failures\n            - COMPLETED: Jobs that completed successfully\n        next_token: Token for paginated results\n        max_results: Maximum number of results to return (1-250, default: 25)\n        region: AWS region (default: us-east-1)\n\n    Returns:\n        Dictionary containing:\n        - success: Boolean indicating operation success\n        - job_summaries: List of job summary objects\n        - next_token: Token for next page (if applicable)\n\n    Example:\n        # List all bulk import jobs\n        result = list_bulk_import_jobs()\n\n        # List only running jobs\n        result = list_bulk_import_jobs(filter=\"RUNNING\")\n\n        # List with pagination\n        result = list_bulk_import_jobs(max_results=10, next_token=\"...\")\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "filter": {
+            "type": "string",
+            "description": "Filter to apply to the list of bulk import jobs. Valid values: ALL, PENDING, RUNNING, CANCELLED, FAILED, COMPLETED_WITH_FAILURES, COMPLETED"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "The token to be used for the next set of paginated results"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "The maximum number of results to return (1-250)"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "describe_bulk_import_job",
+      "description": "Get detailed information about a specific bulk import job in AWS IoT SiteWise.\n\n    This function retrieves comprehensive details about a bulk import job including its configuration,\n    status, progress, error information, and execution statistics.\n\n    Args:\n        job_id: The unique identifier of the bulk import job (UUID format)\n        region: AWS region (default: us-east-1)\n\n    Returns:\n        Dictionary containing:\n        - success: Boolean indicating operation success\n        - job_id: The job identifier\n        - job_name: The job name\n        - job_status: Current status of the job\n        - job_role_arn: IAM role ARN used by the job\n        - files: List of input files\n        - error_report_location: S3 location for error reports\n        - job_configuration: Job configuration details\n        - job_creation_date: When the job was created\n        - job_last_update_date: When the job was last updated\n        - adaptive_ingestion: Whether adaptive ingestion is enabled\n        - delete_files_after_import: Whether files are deleted after import\n        - Additional fields based on job status and execution\n\n    Example:\n        # Get details for a specific job\n        result = describe_bulk_import_job(\n            job_id=\"12345678-1234-1234-1234-123456789012\"\n        )\n\n        if result['success']:\n            print(f\"Job Status: {result['job_status']}\")\n            print(f\"Job Name: {result['job_name']}\")\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "description": "The ID of the bulk import job to describe (UUID format)"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "job_id"
+        ]
+      }
+    },
+    {
+      "name": "execute_query",
+      "description": "Execute comprehensive SQL queries against AWS IoT SiteWise data using the executeQuery API.\n\n    The AWS IoT SiteWise query language supports SQL capabilities including:\n    - Views: asset, asset_property, raw_time_series,         latest_value_time_series, precomputed_aggregates\n    - SQL clauses: SELECT, FROM, WHERE, GROUP BY, ORDER BY, HAVING, LIMIT\n    - Functions: Aggregation, date/time, string, mathematical, conditional\n    - Operators: Comparison, logical, arithmetic, pattern matching (LIKE)\n    - JOIN operations: JOIN, LEFT JOIN,\n        UNION (prefer implicit joins for performance)\n\n    Available Views and Schema (From Official AWS Documentation):\n\n    ASSET VIEW: Contains information about the asset and model derivation\n    - asset_id (string), asset_name (string), asset_description (string)\n    - asset_model_id (string), parent_asset_id (string),\n        asset_external_id (string)\n    - asset_external_model_id (string), hierarchy_id (string)\n\n    ASSET_PROPERTY VIEW: Contains information about the asset property's structure\n    - asset_id (string), property_id (string), property_name (string),\n        property_alias (string)\n    - property_external_id (string), asset_composite_model_id (string),\n        property_type (string)\n    - property_data_type (string), int_attribute_value (integer),\n        double_attribute_value (double)\n    - boolean_attribute_value (boolean), string_attribute_value (string)\n\n    RAW_TIME_SERIES VIEW: Contains the historical data of the time series\n    - asset_id (string), property_id (string), property_alias (string),\n        event_timestamp (timestamp)\n    - quality (string), boolean_value (boolean), int_value (integer),\n        double_value (double), string_value (string)\n\n    LATEST_VALUE_TIME_SERIES VIEW: Contains the latest value of the time series\n    - asset_id (string), property_id (string), property_alias (string),\n        event_timestamp (timestamp)\n    - quality (string), boolean_value (boolean), int_value (integer),\n        double_value (double), string_value (string)\n\n    PRECOMPUTED_AGGREGATES VIEW: Contains automatically computed         aggregated asset property values\n    - asset_id (string), property_id (string), property_alias (string),\n        event_timestamp (timestamp)\n    - quality (string), resolution (string), sum_value (double),\n        count_value (integer)\n    - average_value (double), maximum_value (double),\n        minimum_value (double), stdev_value (double)\n\n    Complete SQL Function Reference (From AWS IoT SiteWise User Guide):\n\n    DATE/TIME FUNCTIONS:\n    - DATE_ADD(\n        unit,\n        value,\n        date): Add time to date (e.g.,\n        DATE_ADD(DAY, 7, event_timestamp))    - DATE_SUB(\n        unit,\n        value,\n        date): Subtract time from date (e.g.,\n        DATE_SUB(\n            YEAR,\n            2,\n            event_timestamp))    - TIMESTAMP_ADD(\n                unit,\n                value,\n                timestamp): Add time to timestamp\n    - TIMESTAMP_SUB(unit, value, timestamp): Subtract time from timestamp\n    - NOW(\n        ): Current timestamp (supported,\n        but use TIMESTAMP_ADD/SUB for math operations)    -             TIMESTAMP literals: Use TIMESTAMP '2023-01-01 00:00:00' for specific dates\n    - CAST(expression AS TIMESTAMP): Convert string to timestamp\n\n    Note: NOW() IS supported. When doing math on NOW() or         any timestamp, use TIMESTAMP_ADD/TIMESTAMP_SUB functions rather than             +/- operators.\n\n    TYPE CONVERSION FUNCTIONS:\n    - TO_DATE(integer): Convert epoch milliseconds to date\n    - TO_DATE(expression, format): Convert string to date with format\n    - TO_TIMESTAMP(double): Convert epoch seconds to timestamp\n    - TO_TIMESTAMP(string, format): Convert string to timestamp with format\n    - TO_TIME(int): Convert epoch milliseconds to time\n    - TO_TIME(string, format): Convert string to time with format\n    - CAST(expression AS data_type): Convert between BOOLEAN, INTEGER,\n        TIMESTAMP, DATE, STRING, etc.\n\n    AGGREGATE FUNCTIONS:\n    - AVG(expression): Average value\n    - COUNT(expression): Count rows (COUNT(*) is supported)\n    - MAX(expression): Maximum value\n    - MIN(expression): Minimum value\n    - SUM(expression): Sum values\n    - STDDEV(expression): Standard deviation\n    - GROUP BY expression: Group results\n    - HAVING boolean-expression: Filter grouped results\n\n    IMPORTANT LIMITATIONS:\n    - Window functions, CTEs (WITH clauses), DISTINCT, SELECT *, and         ILIKE are NOT supported\n\n    SUPPORTED FEATURES:\n    - CASE statements (CASE WHEN...THEN...ELSE...END pattern) ARE supported\n    - COUNT(*) IS supported (only SELECT * is blocked)\n    - Use implicit JOINs for better performance when possible\n\n    Args:\n        query_statement: The SQL query statement to execute (max 64KB)\n        region: AWS region (default: us-east-1)\n        next_token: Token for paginated results\n        max_results: Maximum results to return (1-4000, default: 100)\n\n    Returns:\n        Dictionary containing:\n        - success: Boolean indicating query success\n        - columns: List of column definitions\n        - rows: List of result rows\n        - next_token: Token for next page (if applicable)\n        - query_statistics: Execution statistics\n        - query_status: Query execution status\n\n    Example Queries (Using Correct View and Column Names):\n\n    Basic Asset Discovery:\n        \"SELECT asset_id, asset_name, asset_model_id FROM asset\"\n\n    Metadata Filtering:\n        \"SELECT a.asset_name, p.property_name FROM asset a, asset_property p             WHERE a.asset_id = p.asset_id AND a.asset_name LIKE 'Windmill%'\"\n\n    Value Filtering with Time Range:\n        \"SELECT a.asset_name, r.int_value FROM asset a, raw_time_series r\n         WHERE a.asset_id = r.asset_id\n         AND r.int_value > 30\n         AND r.event_timestamp > TIMESTAMP '2022-01-05 12:15:00'\n         AND r.event_timestamp < TIMESTAMP '2022-01-05 12:20:00'\"\n\n    Aggregation with Grouping:\n        \"SELECT MAX(d.int_value) AS max_int_value, d.asset_id\n         FROM raw_time_series AS d\n         GROUP BY d.asset_id\n         HAVING MAX(d.int_value) > 5\"\n\n    Date/Time Manipulation:\n        \"SELECT r.asset_id, r.int_value,\n         DATE_ADD(DAY, 7, r.event_timestamp) AS date_in_future,\n         DATE_SUB(YEAR, 2, r.event_timestamp) AS date_in_past,\n         TIMESTAMP_ADD(DAY, 2, r.event_timestamp) AS timestamp_in_future,\n         TIMESTAMP_SUB(DAY, 2, r.event_timestamp) AS timestamp_in_past\n         FROM raw_time_series AS r\"\n\n    Type Conversion Examples:\n        \"SELECT r.asset_id, TO_DATE(r.event_timestamp) AS date_value,\n         TO_TIME(r.event_timestamp) AS time_value\n         FROM raw_time_series AS r\"\n\n    Attribute Property Filtering (For Attribute Properties Only -         Note: Only one attribute value type can be non-null per property):\n        \"SELECT p.property_name,\n         CASE\n             WHEN p.string_attribute_value IS NOT NULL THEN p.string_attribute_value\n             WHEN p.double_attribute_value IS NOT NULL THEN                  CAST(p.double_attribute_value AS STRING)\n             ELSE 'NULL'\n         END as attribute_value\n         FROM asset_property p\n         WHERE p.property_type = 'attribute'\n         AND (p.string_attribute_value LIKE 'my-property-%' OR              p.double_attribute_value > 100.0)\"\n\n    Precomputed Aggregates (Include quality and resolution filters):\n        \"SELECT asset_id, property_id, average_value, event_timestamp\n         FROM precomputed_aggregates\n         WHERE quality = 'GOOD'\n         AND resolution = '1h'\n         AND event_timestamp BETWEEN TIMESTAMP '2023-01-01 00:00:00' AND              TIMESTAMP '2023-01-02 00:00:00'\"\n\n    Implicit JOIN for Better Performance:\n        \"SELECT a.asset_name, p.property_name, r.double_value\n         FROM asset a, asset_property p, raw_time_series r\n         WHERE a.asset_id = p.asset_id\n         AND p.property_id = r.property_id\n         AND r.quality = 'GOOD'\"\n\n    Data Quality Analysis:\n        \"SELECT asset_id, property_alias,\n         SUM(CASE WHEN quality = 'GOOD' THEN 1 ELSE 0 END) as good_readings,\n         SUM(CASE WHEN quality = 'BAD' THEN 1 ELSE 0 END) as bad_readings,\n         ROUND(\n             SUM(CASE WHEN quality = 'GOOD' THEN 1 ELSE 0 END) * 100.0 / COUNT(*),\n\n             2) as quality_percent         FROM raw_time_series WHERE                  event_timestamp >= TIMESTAMP '2023-01-01 00:00:00'\n         GROUP BY asset_id, property_alias HAVING COUNT(*) > 10\"\n\n    CASE Statement and COUNT(*) Examples:\n        \"SELECT asset_id, COUNT(*) as total_records,\n         CASE WHEN COUNT(*) = 0 THEN 'No Data' ELSE 'Has Data' END as data_status\n         FROM raw_time_series GROUP BY asset_id\"\n\n    Query Optimization Guidelines (From AWS Documentation):\n\n    1. METADATA FILTERS -         Use WHERE clause with these operators for metadata fields:\n       - Equals (=), Not equals (!=), LIKE, IN, AND, OR\n       - Use literals on right side of operators for better performance\n\n    2. RAW DATA FILTERS - Always filter on event_timestamp using:\n       - Equals (\n           =), Greater than (>), Less than (<), Greater/Less than or                equals (>=,\n           <=)       - BETWEEN, AND operators\n       - Avoid != and OR operators as they don't limit data scan effectively\n\n    3. PRECOMPUTED AGGREGATES - Always specify:\n       - Quality filter (quality = 'GOOD') to reduce data scanned\n       - Resolution filter (1m, 15m, 1h, 1d) to avoid full table scan\n\n    4. JOIN OPTIMIZATION:\n       - Use implicit JOINs instead of explicit JOIN keyword when possible\n       - Push metadata filters into subqueries for better performance\n       - Apply filters on individual JOINed tables to minimize data scanned\n\n    5. PERFORMANCE TIPS:\n       - Use LIMIT clause to reduce data scanned for some queries\n       - Set page size to maximum 20000 for large queries\n       - Use attribute value columns (\n           double_attribute_value,\n           etc.) for better performance than latest_value_time_series       -                Filter on asset_id, property_id for indexed access\n       - Always include quality = 'GOOD' filters for reliable data\n\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query_statement": {
+            "type": "string",
+            "description": "SQL query statement to execute against AWS IoT SiteWise data"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "The token to be used for the next set of paginated results"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "The maximum number of results to return (1-10000)"
+          }
+        },
+        "required": [
+          "query_statement"
+        ]
+      }
+    },
+    {
+      "name": "describe_gateway",
+      "description": "Retrieve information about a gateway.\n\n    Args:\n        gateway_id: The ID of the gateway device\n        region: AWS region (default: us-east-1)\n\n    Returns:\n        Dictionary containing gateway information\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "gateway_id": {
+            "type": "string",
+            "description": "The ID of the gateway device"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "gateway_id"
+        ]
+      }
+    },
+    {
+      "name": "list_gateways",
+      "description": "Retrieve a paginated list of gateways.\n\n    Args:\n        region: AWS region (default: us-east-1)\n        next_token: The token to be used for the next set of paginated results\n        max_results: The maximum number of results to return (\n            1-250,\n            default: 50)\n\n    Returns:\n        Dictionary containing list of gateways\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "The token to be used for the next set of paginated results"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "The maximum number of results to return (1-250)"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "describe_gateway_capability_config",
+      "description": "Retrieve information about a gateway capability configuration.\n\n    Args:\n        gateway_id: The ID of the gateway that defines the capability             configuration\n        capability_namespace: The namespace of the capability configuration\n        region: AWS region (default: us-east-1)\n\n    Returns:\n        Dictionary containing capability configuration information\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "gateway_id": {
+            "type": "string",
+            "description": "The ID of the gateway that defines the capability configuration"
+          },
+          "capability_namespace": {
+            "type": "string",
+            "description": "The namespace of the capability configuration"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "gateway_id",
+          "capability_namespace"
+        ]
+      }
+    },
+    {
+      "name": "list_time_series",
+      "description": "Retrieve a paginated list of time series (data streams).\n\n    Args:\n        region: AWS region (default: us-east-1)\n        next_token: The token to be used for the next set of paginated results\n        max_results: The maximum number of results to return (\n            1-250,\n            default: 50)         asset_id: The ID of the asset in which the asset                                                                 property was created\n        alias_prefix: The alias prefix of the time series\n        time_series_type: The type of the time series (\n            ASSOCIATED,\n            DISASSOCIATED)\n\n    Returns:\n        Dictionary containing list of time series\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "The token to be used for the next set of paginated results"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "The maximum number of results to return (1-250)"
+          },
+          "asset_id": {
+            "type": "string",
+            "description": "The ID of the asset in which the asset property was created"
+          },
+          "alias_prefix": {
+            "type": "string",
+            "description": "The alias prefix of the time series"
+          },
+          "time_series_type": {
+            "type": "string",
+            "description": "The type of the time series (ASSOCIATED, DISASSOCIATED)"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "describe_time_series",
+      "description": "Retrieve information about a time series (data stream).\n\n    Args:\n        alias: The alias that identifies the time series\n        asset_id: The ID of the asset in which the asset property was created\n        property_id: The ID of the asset property\n        region: AWS region (default: us-east-1)\n\n    Returns:\n        Dictionary containing time series information\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "alias": {
+            "type": "string",
+            "description": "The alias that identifies the time series"
+          },
+          "asset_id": {
+            "type": "string",
+            "description": "The ID of the asset in which the asset property was created"
+          },
+          "property_id": {
+            "type": "string",
+            "description": "The ID of the asset property"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "describe_default_encryption_config",
+      "description": "Retrieve information about the default encryption configuration for your AWS account.\n\n    Args:\n        region: AWS region (default: us-east-1)\n\n    Returns:\n        Dictionary containing default encryption configuration\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "describe_logging_options",
+      "description": "Retrieve the current AWS IoT SiteWise logging options.\n\n    Args:\n        region: AWS region (default: us-east-1)\n\n    Returns:\n        Dictionary containing logging options\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "describe_storage_configuration",
+      "description": "Retrieve information about the storage configuration for your AWS account.\n\n    Args:\n        region: AWS region (default: us-east-1)\n\n    Returns:\n        Dictionary containing storage configuration\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "create_bulk_import_schema",
+      "description": "Construct and validate a bulk import schema.\n\n    Args:\n        asset_models: List of asset model definitions. Each must include:\n            - assetModelName: string\n            - assetModelExternalId: string (required for asset references)\n            - assetModelProperties: list with name, externalId, dataType, type\n            - assetModelHierarchies: list with name, externalId, childAssetModelExternalId\n        assets: List of asset definitions. Each must include:\n            - assetName: string\n            - assetExternalId: string\n            - assetModelExternalId: string (must match an asset model)\n            - assetProperties: list with externalId (matching model property), alias\n            - assetHierarchies: list with externalId (matching model hierarchy), childAssetExternalId\n\n    Returns:\n        dict: Validated JSON structure for AWS IoT SiteWise bulk import.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "asset_models": {
+            "type": "string",
+            "description": ""
+          },
+          "assets": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "get_metadata_transfer_job",
+      "description": "Get details of a metadata transfer job.\n\n    Args:\n        metadata_transfer_job_id: The ID of the metadata transfer job to retrieve\n        region: AWS region (default: us-east-1)\n\n    Returns:\n        Dictionary containing job details\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "metadata_transfer_job_id": {
+            "type": "string",
+            "description": "The metadata transfer job ID to retrieve"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          }
+        },
+        "required": [
+          "metadata_transfer_job_id"
+        ]
+      }
+    },
+    {
+      "name": "list_metadata_transfer_jobs",
+      "description": "List metadata transfer jobs.\n\n    Args:\n        source_type: Filter by source type (s3, iotsitewise) - REQUIRED\n        destination_type: Filter by destination type (s3, iotsitewise) - REQUIRED\n        region: AWS region (default: us-east-1)\n        max_results: Maximum number of results to return (1-200, default: 50)\n        next_token: Token for pagination\n\n    Returns:\n        Dictionary containing list of metadata transfer jobs\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "source_type": {
+            "type": "string",
+            "description": "Filter by source type (s3, iotsitewise) - REQUIRED"
+          },
+          "destination_type": {
+            "type": "string",
+            "description": "Filter by destination type (s3, iotsitewise) - REQUIRED"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return (1-200)"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination"
+          }
+        },
+        "required": [
+          "source_type",
+          "destination_type"
+        ]
+      }
+    },
+    {
+      "name": "list_computation_models",
+      "description": "List computation models in AWS IoT SiteWise.\n\n    Retrieves a paginated list of computation models in your AWS account.\n    You can filter by computation model type and control pagination.\n\n    Args:\n        region: AWS region (default: us-east-1)\n        computation_model_type: Optional filter by computation model type (e.g., 'ANOMALY_DETECTION')\n        max_results: Optional maximum number of results to return (1-250, default: AWS default)\n        next_token: Optional token for pagination to get the next set of results\n\n    Returns:\n        Dictionary containing the list of computation models and pagination info.\n\n    Example:\n        # List all computation models\n        result = list_computation_models()\n\n        # List only anomaly detection models with pagination\n        result = list_computation_models(\n            computation_model_type='ANOMALY_DETECTION',\n            max_results=50\n        )\n\n        # Get next page of results\n        result = list_computation_models(next_token=previous_result['nextToken'])\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": ""
+          },
+          "computation_model_type": {
+            "type": "string",
+            "description": ""
+          },
+          "max_results": {
+            "type": "string",
+            "description": ""
+          },
+          "next_token": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "describe_computation_model",
+      "description": "Describe a computation model in AWS IoT SiteWise.\n\n    Retrieves detailed information about a specific computation model, including\n    its configuration, data bindings, status, and metadata.\n\n    Args:\n        computation_model_id: The ID of the computation model to describe (required, must be in UUID format)\n        region: AWS region (default: us-east-1)\n        computation_model_version: Optional version of the computation model\n                                 (LATEST, ACTIVE, or specific version number)\n\n    Returns:\n        Dictionary containing the computation model details.\n\n    Example:\n        # Describe the latest version of a computation model\n        result = describe_computation_model('12345678-1234-1234-1234-123456789012')\n\n        # Describe a specific version\n        result = describe_computation_model(\n            computation_model_id='12345678-1234-1234-1234-123456789012',\n            computation_model_version='1'\n        )\n\n        # Describe the active version\n        result = describe_computation_model(\n            computation_model_id='12345678-1234-1234-1234-123456789012',\n            computation_model_version='ACTIVE'\n        )\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "computation_model_id": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": ""
+          },
+          "computation_model_version": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "computation_model_id"
+        ]
+      }
+    },
+    {
+      "name": "describe_computation_model_execution_summary",
+      "description": "Describe a computation model execution summary in AWS IoT SiteWise.\n\n    This tool intelligently determines whether to use resolve parameters based on the\n    computation model configuration:\n    - For Asset Model Level Configuration: Uses resolve parameters if provided to get execution summary for specific assets\n    - For Asset Level Configuration: Ignores resolve parameters as they're not needed (already tied to specific assets)\n\n    **Smart Optimization**: If you know the configuration type, provide it via the `configuration_type`\n    parameter to avoid an additional API call to describe_computation_model for type detection.\n\n    Args:\n        computation_model_id: The ID of the computation model (required, must be in UUID format)\n        region: AWS region (default: us-east-1)\n        resolve_to_resource_id: Optional ID of the resolved resource (only used for asset model level configurations)\n        resolve_to_resource_type: Optional type of the resolved resource (ASSET, only used for asset model level configurations)\n        configuration_type: Optional configuration type hint to avoid auto-detection API call.\n                          Use 'asset_model_level' or 'asset model level configuration' for Asset Model Level,\n                          or 'asset_level' or 'asset level configuration' for Asset Level.\n                          If not provided, the function will auto-detect by calling describe_computation_model.\n\n    Returns:\n        Dictionary containing the computation model execution summary and configuration type information.\n\n    Example:\n        # Auto-detect configuration type (makes additional API call)\n        result = describe_computation_model_execution_summary(\n            '12345678-1234-1234-1234-123456789012'\n        )\n\n        # Optimized: Provide known configuration type to skip auto-detection\n        result = describe_computation_model_execution_summary(\n            computation_model_id='12345678-1234-1234-1234-123456789012',\n            configuration_type='asset_model_level'\n        )\n\n        # Asset model level configuration resolved to a specific asset\n        result = describe_computation_model_execution_summary(\n            computation_model_id='12345678-1234-1234-1234-123456789012',\n            resolve_to_resource_id='87654321-4321-4321-4321-210987654321',\n            resolve_to_resource_type='ASSET',\n            configuration_type='asset_model_level'  # Skip auto-detection for better performance\n        )\n\n        # Asset level configuration (resolve parameters will be ignored)\n        result = describe_computation_model_execution_summary(\n            computation_model_id='12345678-1234-1234-1234-123456789012',\n            configuration_type='asset_level'  # Skip auto-detection for better performance\n        )\n\n    Performance Tips:\n        - Use configuration_type parameter when you know the computation model type to avoid extra API calls\n        - For Asset Model Level configurations, consider providing resolve parameters for specific asset context\n        - For Asset Level configurations, resolve parameters are automatically ignored (already tied to specific assets)\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "computation_model_id": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": ""
+          },
+          "resolve_to_resource_id": {
+            "type": "string",
+            "description": ""
+          },
+          "resolve_to_resource_type": {
+            "type": "string",
+            "description": ""
+          },
+          "configuration_type": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "computation_model_id"
+        ]
+      }
+    },
+    {
+      "name": "list_computation_model_data_binding_usages",
+      "description": "Find computation models that use a given resource in data binding.\n\n    This API helps you find computation models which are bound to a given resource:\n    - Asset model (fetch all computation models where any of this asset model's properties are bound)\n    - Asset (fetch all computation models where any of this asset's properties are bound)\n    - Asset model property (fetch all computation models where this property is bound)\n    - Asset property (fetch all computation models where this property is bound)\n\n    Args:\n        data_binding_value_filter: Filter to specify which resource to search for (required)\n        region: AWS region (default: us-east-1)\n        max_results: Optional maximum number of results to return (1-250)\n        next_token: Optional token for pagination to get the next set of results\n\n    Returns:\n        Dictionary containing the list of computation models that use the specified resource.\n\n    Filter Examples:\n        # Find computation models using any property from a specific asset\n        data_binding_value_filter = {\n            \"asset\": {\n                \"assetId\": \"12345678-1234-1234-1234-123456789012\"\n            }\n        }\n\n        # Find computation models using any property from a specific asset model\n        data_binding_value_filter = {\n            \"assetModel\": {\n                \"assetModelId\": \"12345678-1234-1234-1234-123456789012\"\n            }\n        }\n\n        # Find computation models using a specific asset property\n        data_binding_value_filter = {\n            \"assetProperty\": {\n                \"assetId\": \"12345678-1234-1234-1234-123456789012\",\n                \"propertyId\": \"87654321-4321-4321-4321-210987654321\"\n            }\n        }\n\n        # Find computation models using a specific asset model property\n        data_binding_value_filter = {\n            \"assetModelProperty\": {\n                \"assetModelId\": \"12345678-1234-1234-1234-123456789012\",\n                \"propertyId\": \"87654321-4321-4321-4321-210987654321\"\n            }\n        }\n\n    Usage Examples:\n        # Find all computation models using properties from a specific asset\n        result = list_computation_model_data_binding_usages(\n            data_binding_value_filter={\n                \"asset\": {\"assetId\": \"12345678-1234-1234-1234-123456789012\"}\n            }\n        )\n\n        # Find computation models using a specific asset property with pagination\n        result = list_computation_model_data_binding_usages(\n            data_binding_value_filter={\n                \"assetProperty\": {\n                    \"assetId\": \"12345678-1234-1234-1234-123456789012\",\n                    \"propertyId\": \"87654321-4321-4321-4321-210987654321\"\n                }\n            },\n            max_results=50\n        )\n\n    Use Cases:\n        - Check if an asset property is already bound to a computation model before binding it elsewhere\n        - Find all computation models that depend on a specific asset or asset model\n        - Audit which computation models are using properties from a particular asset\n        - Identify dependencies before deleting or modifying assets/properties\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "data_binding_value_filter": {
+            "type": "object",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": ""
+          },
+          "max_results": {
+            "type": "string",
+            "description": ""
+          },
+          "next_token": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "data_binding_value_filter"
+        ]
+      }
+    },
+    {
+      "name": "list_computation_model_resolve_to_resources",
+      "description": "List computation model resolve to resources in AWS IoT SiteWise.\n\n    Retrieves a paginated list of resources that a computation model resolves to.\n    This shows the specific assets or other resources that are associated with\n    the computation model through resolve-to relationships.\n\n    Args:\n        computation_model_id: The ID of the computation model (required, must be in UUID format)\n        region: AWS region (default: us-east-1)\n        max_results: Optional maximum number of results to return (1-250)\n        next_token: Optional token for pagination to get the next set of results\n\n    Returns:\n        Dictionary containing the list of resolve-to resources and pagination info.\n\n    Example:\n        # List all resolve-to resources for a computation model\n        result = list_computation_model_resolve_to_resources(\n            computation_model_id='12345678-1234-1234-1234-123456789012'\n        )\n\n        # List resolve-to resources with pagination\n        result = list_computation_model_resolve_to_resources(\n            computation_model_id='12345678-1234-1234-1234-123456789012',\n            max_results=50\n        )\n\n        # Get next page of results\n        result = list_computation_model_resolve_to_resources(\n            computation_model_id='12345678-1234-1234-1234-123456789012',\n            next_token=previous_result['nextToken']\n        )\n\n        # The response includes:\n        # - success: Boolean indicating if the operation succeeded\n        # - computationModelResolveToResourceSummaries: List of resources the computation model resolves to\n        # - nextToken: Token for pagination (if more results available)\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "computation_model_id": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": ""
+          },
+          "max_results": {
+            "type": "string",
+            "description": ""
+          },
+          "next_token": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "computation_model_id"
+        ]
+      }
+    },
+    {
+      "name": "list_actions",
+      "description": "List actions for a specific target resource in AWS IoT SiteWise.\n\n    Retrieves a paginated list of actions associated with a specific target resource.\n    You can filter by resolved resource and control pagination.\n\n    Args:\n        target_resource_id: The ID of the target resource (required)\n        target_resource_type: The type of resource - ASSET or COMPUTATION_MODEL (required)\n        region: AWS region (default: us-east-1)\n        max_results: Optional maximum number of results to return (1-250)\n        next_token: Optional token for pagination to get the next set of results\n        resolve_to_resource_id: Optional ID of the resolved resource\n        resolve_to_resource_type: Optional type of the resolved resource (ASSET)\n\n    Returns:\n        Dictionary containing the list of actions and pagination info.\n\n    Example:\n        # List all actions for a computation model\n        result = list_actions(\n            target_resource_id='12345678-1234-1234-1234-123456789012',\n            target_resource_type='COMPUTATION_MODEL'\n        )\n\n        # List actions for an asset with pagination\n        result = list_actions(\n            target_resource_id='87654321-4321-4321-4321-210987654321',\n            target_resource_type='ASSET',\n            max_results=50\n        )\n\n        # List actions resolved to a specific asset\n        result = list_actions(\n            target_resource_id='12345678-1234-1234-1234-123456789012',\n            target_resource_type='COMPUTATION_MODEL',\n            resolve_to_resource_id='11111111-1111-1111-1111-111111111111',\n            resolve_to_resource_type='ASSET'\n        )\n\n        # Get next page of results\n        result = list_actions(\n            target_resource_id='12345678-1234-1234-1234-123456789012',\n            target_resource_type='COMPUTATION_MODEL',\n            next_token=previous_result['nextToken']\n        )\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "target_resource_id": {
+            "type": "string",
+            "description": ""
+          },
+          "target_resource_type": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": ""
+          },
+          "max_results": {
+            "type": "string",
+            "description": ""
+          },
+          "next_token": {
+            "type": "string",
+            "description": ""
+          },
+          "resolve_to_resource_id": {
+            "type": "string",
+            "description": ""
+          },
+          "resolve_to_resource_type": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "target_resource_id",
+          "target_resource_type"
+        ]
+      }
+    },
+    {
+      "name": "describe_action",
+      "description": "Describe an action in AWS IoT SiteWise.\n\n    Retrieves detailed information about a specific action, including\n    its definition, payload, target resource, execution time, and resolution details.\n\n    Args:\n        action_id: The ID of the action to describe (required)\n        region: AWS region (default: us-east-1)\n\n    Returns:\n        Dictionary containing the action details.\n\n    Example:\n        # Describe a specific action\n        result = describe_action('12345678-1234-1234-1234-123456789012')\n\n        # The response includes:\n        # - actionId: The ID of the action\n        # - actionDefinitionId: The ID of the action definition\n        # - actionPayload: The JSON payload of the action\n        # - targetResource: The resource the action was taken on\n        # - resolveTo: The detailed resource this action resolves to (if applicable)\n        # - executionTime: The time the action was executed\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "action_id"
+        ]
+      }
+    },
+    {
+      "name": "list_executions",
+      "description": "List executions for a specific target resource in AWS IoT SiteWise.\n\n    Retrieves a paginated list of executions that occurred after performing execute actions\n    on the specified target resource. This shows the progress status, error information,\n    and execution details for training actions, inference schedules, and other action types.\n\n    Args:\n        target_resource_id: The ID of the target resource to list executions for (required, must be in UUID format)\n        target_resource_type: The type of resource - ASSET or COMPUTATION_MODEL (required)\n        region: AWS region (default: us-east-1)\n        action_type: Optional type of action executed to filter results\n        max_results: Optional maximum number of results to return (1-250)\n        next_token: Optional token for pagination to get the next set of results\n        resolve_to_resource_id: Optional ID of the resolved resource\n        resolve_to_resource_type: Optional type of the resolved resource (ASSET)\n\n    Returns:\n        Dictionary containing the list of executions and pagination info.\n\n    Example:\n        # List all executions for a computation model\n        result = list_executions(\n            target_resource_id='12345678-1234-1234-1234-123456789012',\n            target_resource_type='COMPUTATION_MODEL'\n        )\n\n        # List executions for an asset with pagination\n        result = list_executions(\n            target_resource_id='87654321-4321-4321-4321-210987654321',\n            target_resource_type='ASSET',\n            max_results=50\n        )\n\n        # List executions filtered by action type\n        result = list_executions(\n            target_resource_id='12345678-1234-1234-1234-123456789012',\n            target_resource_type='COMPUTATION_MODEL',\n            action_type='AWS/ANOMALY_DETECTION_TRAINING'\n        )\n\n        # List executions resolved to a specific asset\n        result = list_executions(\n            target_resource_id='12345678-1234-1234-1234-123456789012',\n            target_resource_type='COMPUTATION_MODEL',\n            resolve_to_resource_id='11111111-1111-1111-1111-111111111111',\n            resolve_to_resource_type='ASSET'\n        )\n\n        # Get next page of results\n        result = list_executions(\n            target_resource_id='12345678-1234-1234-1234-123456789012',\n            target_resource_type='COMPUTATION_MODEL',\n            next_token=previous_result['nextToken']\n        )\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "target_resource_id": {
+            "type": "string",
+            "description": ""
+          },
+          "target_resource_type": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": ""
+          },
+          "action_type": {
+            "type": "string",
+            "description": ""
+          },
+          "max_results": {
+            "type": "string",
+            "description": ""
+          },
+          "next_token": {
+            "type": "string",
+            "description": ""
+          },
+          "resolve_to_resource_id": {
+            "type": "string",
+            "description": ""
+          },
+          "resolve_to_resource_type": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "target_resource_id",
+          "target_resource_type"
+        ]
+      }
+    },
+    {
+      "name": "describe_execution",
+      "description": "Describe an execution in AWS IoT SiteWise.\n\n    Retrieves detailed information about a specific execution, including execution details,\n    status, timestamps, target resource information, and execution results. This provides\n    comprehensive information about the execution process.\n\n    Args:\n        execution_id: The ID of the execution to describe (required)\n        region: AWS region (default: us-east-1)\n\n    Returns:\n        Dictionary containing the execution details.\n\n    Example:\n        # Describe a specific execution\n        result = describe_execution('87654321-4321-4321-4321-210987654321')\n\n        # The response includes:\n        # - executionId: The ID of the execution\n        # - actionType: The type of action executed\n        # - executionStatus: Current status with state information\n        # - executionStartTime: When the execution started (Unix timestamp)\n        # - executionEndTime: When the execution completed (Unix timestamp, if finished)\n        # - executionDetails: Detailed information about the execution (key-value pairs)\n        # - executionResult: The result of the execution (key-value pairs)\n        # - targetResource: The resource the action was taken on\n        # - resolveTo: The detailed resource this execution resolves to (if applicable)\n        # - executionEntityVersion: Entity version used for the execution\n        # - targetResourceVersion: Version of the target resource\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "execution_id": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "execution_id"
+        ]
+      }
+    },
+    {
+      "name": "convert_unix_timestamp",
+      "description": "Convert Unix epoch timestamp to human-readable format.\n\n    This tool provides accurate timestamp conversion to prevent AI agents from\n    making conversion errors when interpreting Unix timestamps from API responses.\n\n    Args:\n        timestamp: Unix epoch timestamp (seconds since 1970-01-01)\n        format_string: Python strftime format string for output formatting\n        timezone: Timezone for conversion (currently only supports UTC)\n\n    Returns:\n        Dictionary containing conversion results and metadata\n\n    Example:\n        # Convert a single timestamp\n        result = convert_unix_timestamp(1727740800)\n        # Returns: {\n        #   \"success\": True,\n        #   \"timestamp\": 1727740800,\n        #   \"formatted\": \"October 01, 2024 at 00:00:00 UTC\",\n        #   \"iso_format\": \"2024-10-01T00:00:00+00:00\",\n        #   \"year\": 2024,\n        #   \"month\": 10,\n        #   \"day\": 1\n        # }\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "description": ""
+          },
+          "format_string": {
+            "type": "string",
+            "description": ""
+          },
+          "timezone": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "timestamp"
+        ]
+      }
+    },
+    {
+      "name": "convert_multiple_timestamps",
+      "description": "Convert multiple Unix epoch timestamps to human-readable format.\n\n    This tool converts multiple timestamps at once, useful for processing\n    API responses that contain several timestamp fields.\n\n    Args:\n        timestamps: Dictionary of timestamp names and values\n        format_string: Python strftime format string for output formatting\n\n    Returns:\n        Dictionary containing conversion results for all timestamps\n\n    Example:\n        # Convert multiple timestamps\n        result = convert_multiple_timestamps({\n            \"lastTrainedAt\": \"1761805552\",\n            \"lastTrainedStartTime\": \"1759276800\",\n            \"lastTrainedEndTime\": \"1760659200\"\n        })\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "timestamps": {
+            "type": "object",
+            "description": ""
+          },
+          "format_string": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "timestamps"
+        ]
+      }
+    },
+    {
+      "name": "create_timestamp_range",
+      "description": "Create a formatted timestamp range from start and end timestamps.\n\n    This tool formats a range of timestamps for display, useful for showing\n    training periods, evaluation periods, or other time ranges.\n\n    Args:\n        start_timestamp: Start Unix epoch timestamp\n        end_timestamp: End Unix epoch timestamp\n        format_string: Python strftime format string for output formatting\n\n    Returns:\n        Dictionary containing formatted range and individual conversions\n\n    Example:\n        # Create a training period range\n        result = create_timestamp_range(1727740800, 1729123200)\n        # Returns formatted range like \"October 01, 2024 - October 17, 2024\"\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "start_timestamp": {
+            "type": "string",
+            "description": ""
+          },
+          "end_timestamp": {
+            "type": "string",
+            "description": ""
+          },
+          "format_string": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "start_timestamp",
+          "end_timestamp"
+        ]
+      }
+    },
+    {
+      "name": "get_current_timestamp",
+      "description": "Get the current Unix timestamp and formatted time.\n\n    This tool provides the current timestamp in both Unix epoch format\n    and human-readable format, useful for reference when working with timestamps.\n\n    Returns:\n        Dictionary containing current timestamp information\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    }
+  ]
+}

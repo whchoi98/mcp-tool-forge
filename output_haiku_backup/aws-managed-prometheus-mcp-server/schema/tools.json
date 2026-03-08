@@ -1,0 +1,142 @@
+{
+  "server": "aws-managed-prometheus-mcp-server",
+  "tools": [
+    {
+      "name": "ExecuteQuery",
+      "description": "Execute a PromQL query against Amazon Managed Prometheus.\n\n    ## Usage\n    - Use this tool to execute a PromQL query at a specific instant in time\n    - The query will return the current value of the specified metrics\n    - For time series data over a range, use execute_range_query instead\n    - If workspace_id is not known, use GetAvailableWorkspaces tool first to find available workspaces and ASK THE USER to choose one\n    - Uses DescribeWorkspace API to get the exact workspace URL\n    - No manual URL construction is performed\n\n    ## Example\n    Input:\n      workspace_id: \"ws-12345678-abcd-1234-efgh-123456789012\"\n      query: \"up\"\n      region: \"us-east-1\"\n\n    Output:\n      {\n        \"resultType\": \"vector\",\n        \"result\": [\n          {\n            \"metric\": {\"__name__\": \"up\", \"instance\": \"localhost:9090\", \"job\": \"prometheus\"},\n            \"value\": [1680307200, \"1\"]\n          },\n          {\n            \"metric\": {\"__name__\": \"up\", \"instance\": \"localhost:9100\", \"job\": \"node\"},\n            \"value\": [1680307200, \"1\"]\n          }\n        ]\n      }\n\n    Example queries:\n    - `up` - Shows which targets are up\n    - `rate(node_cpu_seconds_total{mode=\"system\"}[1m])` - CPU usage rate\n    - `sum by(instance) (rate(node_network_receive_bytes_total[5m]))` - Network receive rate by instance\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "description": "The Prometheus workspace ID to use (e.g., ws-12345678-abcd-1234-efgh-123456789012). Optional if a URL is configured via command line arguments."
+          },
+          "query": {
+            "type": "string",
+            "description": "The PromQL query to execute"
+          },
+          "time": {
+            "type": "string",
+            "description": "Optional timestamp for query evaluation (RFC3339 or Unix timestamp)"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region (defaults to current region)"
+          },
+          "profile": {
+            "type": "string",
+            "description": "AWS profile to use (defaults to None)"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    },
+    {
+      "name": "ExecuteRangeQuery",
+      "description": "Execute a range query and return the result.\n\n    ## Usage\n    - Use this tool to execute a PromQL query over a time range\n    - The query will return a series of values for the specified time range\n    - Useful for generating time series data for graphs or trend analysis\n    - If workspace_id is not known, use GetAvailableWorkspaces tool first to find available workspaces and ASK THE USER to choose one\n    - Uses DescribeWorkspace API to get the exact workspace URL\n    - No manual URL construction is performed\n\n    ## Example\n    Input:\n      workspace_id: \"ws-12345678-abcd-1234-efgh-123456789012\"\n      query: \"rate(node_cpu_seconds_total{mode=\\\"system\\\"}[5m])\"\n      start: \"2023-04-01T00:00:00Z\"\n      end: \"2023-04-01T01:00:00Z\"\n      step: \"5m\"\n\n    Output:\n      {\n        \"resultType\": \"matrix\",\n        \"result\": [\n          {\n            \"metric\": {\"__name__\": \"rate\", \"mode\": \"system\", \"instance\": \"localhost:9100\"},\n            \"values\": [[1680307200, \"0.01\"], [1680307500, \"0.012\"], ...]\n          }\n        ]\n      }\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "description": "The Prometheus workspace ID to use (e.g., ws-12345678-abcd-1234-efgh-123456789012). Optional if a URL is configured via command line arguments."
+          },
+          "query": {
+            "type": "string",
+            "description": "The PromQL query to execute"
+          },
+          "start": {
+            "type": "string",
+            "description": "Start timestamp (RFC3339 or Unix timestamp)"
+          },
+          "end": {
+            "type": "string",
+            "description": "End timestamp (RFC3339 or Unix timestamp)"
+          },
+          "step": {
+            "type": "string",
+            "description": "Query resolution step width (duration format, e.g. '15s', '1m', '1h')"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region (defaults to current region)"
+          },
+          "profile": {
+            "type": "string",
+            "description": "AWS profile to use (defaults to None)"
+          }
+        },
+        "required": [
+          "query",
+          "start",
+          "end",
+          "step"
+        ]
+      }
+    },
+    {
+      "name": "ListMetrics",
+      "description": "Get a list of all metric names.\n\n    ## Usage\n    - Use this tool to discover available metrics in the Prometheus server\n    - Returns a sorted list of all metric names\n    - Useful for exploration before crafting specific queries\n    - If workspace_id is not known, use GetAvailableWorkspaces tool first to find available workspaces and ASK THE USER to choose one\n\n    ## Example\n    Input:\n      workspace_id: \"ws-12345678-abcd-1234-efgh-123456789012\"\n      region: \"us-east-1\"\n\n    Output:\n      {\n        \"metrics\": [\n          \"go_gc_duration_seconds\",\n          \"go_goroutines\",\n          \"http_requests_total\",\n          ...\n        ]\n      }\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "description": "The Prometheus workspace ID to use (e.g., ws-12345678-abcd-1234-efgh-123456789012). Optional if a URL is configured via command line arguments."
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region (defaults to current region)"
+          },
+          "profile": {
+            "type": "string",
+            "description": "AWS profile to use (defaults to None)"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "GetServerInfo",
+      "description": "Get information about the Prometheus server configuration.\n\n    ## Usage\n    - Use this tool to retrieve the current server configuration\n    - Returns details about the Prometheus URL, AWS region, profile, and service name\n    - Useful for debugging connection issues\n    - If workspace_id is not known, use GetAvailableWorkspaces tool first to find available workspaces and ASK THE USER to choose one\n    - Uses DescribeWorkspace API to get the exact workspace URL\n    - No manual URL construction is performed\n\n    ## Example\n    Input:\n      workspace_id: \"ws-12345678-abcd-1234-efgh-123456789012\"\n      region: \"us-east-1\"\n\n    Output:\n      {\n        \"prometheus_url\": \"https://aps-workspaces.us-east-1.amazonaws.com/workspaces/ws-12345678-abcd-1234-efgh-123456789012\",\n        \"aws_region\": \"us-east-1\",\n        \"aws_profile\": \"default\",\n        \"service_name\": \"aps\"\n      }\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "description": "The Prometheus workspace ID to use (e.g., ws-12345678-abcd-1234-efgh-123456789012). Optional if a URL is configured via command line arguments."
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region (defaults to current region)"
+          },
+          "profile": {
+            "type": "string",
+            "description": "AWS profile to use (defaults to None)"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "GetAvailableWorkspaces",
+      "description": "List all available Prometheus workspaces in the specified region.\n\n    ## Usage\n    - Use this tool to see all available Prometheus workspaces\n    - Shows workspace ID, alias, status, and URL for active workspaces\n    - IMPORTANT: When multiple workspaces are available, present them to the user and ask them to choose one\n    - DO NOT automatically select a workspace; always ask the user to choose when multiple options exist\n    - Uses DescribeWorkspace API to get the exact URL for each workspace\n    - No manual URL construction is performed\n\n    ## Example\n    Input:\n      region: \"us-east-1\"\n\n    Output:\n      {\n        \"workspaces\": [\n          {\n            \"workspace_id\": \"ws-12345678-abcd-1234-efgh-123456789012\",\n            \"alias\": \"production\",\n            \"status\": \"ACTIVE\",\n            \"prometheus_url\": \"https://aps-workspaces.us-east-1.amazonaws.com/workspaces/ws-12345678-abcd-1234-efgh-123456789012\",\n            \"is_configured\": true\n          },\n          {\n            \"workspace_id\": \"ws-87654321-dcba-4321-hgfe-210987654321\",\n            \"alias\": \"development\",\n            \"status\": \"ACTIVE\",\n            \"prometheus_url\": \"https://aps-workspaces.us-east-1.amazonaws.com/workspaces/ws-87654321-dcba-4321-hgfe-210987654321\",\n            \"is_configured\": false\n          }\n        ],\n        \"count\": 2,\n        \"region\": \"us-east-1\",\n        \"requires_user_selection\": true,\n        \"configured_workspace_id\": \"ws-12345678-abcd-1234-efgh-123456789012\"\n      }\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "AWS region (defaults to current region)"
+          },
+          "profile": {
+            "type": "string",
+            "description": "AWS profile to use (defaults to None)"
+          }
+        },
+        "required": []
+      }
+    }
+  ]
+}

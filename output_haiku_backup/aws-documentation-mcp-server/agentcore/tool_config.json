@@ -1,0 +1,88 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "read_documentation",
+        "description": "Fetch and convert an AWS documentation page to markdown format.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "URL of the AWS documentation page to read"
+              },
+              "max_length": {
+                "type": "integer",
+                "description": "Maximum number of characters to return."
+              },
+              "start_index": {
+                "type": "integer",
+                "description": "On return output starting at this character index, useful if a previous fetch was truncated and more content is required."
+              }
+            },
+            "required": [
+              "url"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "search_documentation",
+        "description": "Search AWS documentation using the official AWS Documentation Search API.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "search_phrase": {
+                "type": "string",
+                "description": "Search phrase to use"
+              },
+              "search_intent": {
+                "type": "string",
+                "description": "For the search_phrase parameter, describe the search intent of the user. CRITICAL: Do not include any PII or customer data, describe only the AWS-related intent for search."
+              },
+              "limit": {
+                "type": "integer",
+                "description": "Maximum number of results to return"
+              },
+              "product_types": {
+                "type": "string",
+                "description": "Filter results by AWS product/service (e.g., [\"Amazon Simple Storage Service\"])"
+              },
+              "guide_types": {
+                "type": "string",
+                "description": "Filter results by guide type (e.g., [\"User Guide\", \"API Reference\", \"Developer Guide\"])"
+              }
+            },
+            "required": [
+              "search_phrase"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "recommend",
+        "description": "Get content recommendations for an AWS documentation page.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "URL of the AWS documentation page to get recommendations for"
+              }
+            },
+            "required": [
+              "url"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

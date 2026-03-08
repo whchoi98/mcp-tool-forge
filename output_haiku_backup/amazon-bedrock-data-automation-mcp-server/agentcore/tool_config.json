@@ -1,0 +1,61 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "getprojects",
+        "description": "Get a list of data automation projects.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {},
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "getprojectdetails",
+        "description": "Get details of a data automation project.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "projectArn": {
+                "type": "string",
+                "description": "The ARN of the project"
+              }
+            },
+            "required": [
+              "projectArn"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "analyzeasset",
+        "description": "Analyze an asset using a data automation project.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "assetPath": {
+                "type": "string",
+                "description": "The path to the asset"
+              },
+              "projectArn": {
+                "type": "string",
+                "description": "The ARN of the project. Uses default public project if not provided"
+              }
+            },
+            "required": [
+              "assetPath"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

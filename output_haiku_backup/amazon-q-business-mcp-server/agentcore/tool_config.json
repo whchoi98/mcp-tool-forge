@@ -1,0 +1,24 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "QBusinessQueryTool",
+        "description": "MCP tool to query Amazon Q Business and return a formatted response.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "User query, question or request to the Amazon Q Business application"
+              }
+            },
+            "required": [
+              "query"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

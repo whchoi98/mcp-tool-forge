@@ -1,0 +1,65 @@
+{
+  "server": "aws-diagram-mcp-server",
+  "tools": [
+    {
+      "name": "generate_diagram",
+      "description": "Generate a diagram from Python code using the diagrams package.\n\n    This tool accepts Python code as a string that uses the diagrams package DSL\n    and generates a PNG diagram without displaying it. The code is executed with\n    show=False to prevent automatic display.\n\n    USAGE INSTRUCTIONS:\n    Never import. Start writing code immediately with `with Diagram(` and use the icons you found with list_icons.\n    1. First use get_diagram_examples to understand the syntax and capabilities\n    2. Then use list_icons to discover all available icons. These are the only icons you can work with.\n    3. You MUST use icon names exactly as they are in the list_icons response, case-sensitive.\n    4. Write your diagram code following python diagrams examples. Do not import any additional icons or packages, the runtime already imports everything needed.\n    5. Submit your code to this tool to generate the diagram\n    6. The tool returns the path to the generated PNG file\n    7. For complex diagrams, consider using Clusters to organize components\n    8. Diagrams should start with a user or end device on the left, with data flowing to the right.\n\n    CODE REQUIREMENTS:\n    - Must include a Diagram() definition with appropriate parameters\n    - Can use any of the supported diagram components (AWS, K8s, etc.)\n    - Can include custom styling with Edge attributes (color, style)\n    - Can use Cluster to group related components\n    - Can use custom icons with the Custom class\n\n    COMMON PATTERNS:\n    - Basic: provider.service(\"label\")\n    - Connections: service1 >> service2 >> service3\n    - Grouping: with Cluster(\"name\"): [components]\n    - Styling: service1 >> Edge(color=\"red\", style=\"dashed\") >> service2\n\n    IMPORTANT FOR CLINE: Always send the current workspace directory when calling this tool!\n    The workspace_dir parameter should be set to the directory where the user is currently working\n    so that diagrams are saved to a location accessible to the user.\n\n    Supported diagram types:\n    - AWS architecture diagrams\n    - Sequence diagrams\n    - Flow diagrams\n    - Class diagrams\n    - Kubernetes diagrams\n    - On-premises diagrams\n    - Custom diagrams with custom nodes\n\n    Returns:\n        Dictionary with the path to the generated diagram and status information\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Python code using the diagrams package DSL. The runtime already imports everything needed so you can start immediately using `with Diagram(`"
+          },
+          "filename": {
+            "type": "string",
+            "description": "The filename to save the diagram to. If not provided, a random name will be generated."
+          },
+          "timeout": {
+            "type": "integer",
+            "description": "The timeout for diagram generation in seconds. Default is 90 seconds."
+          },
+          "workspace_dir": {
+            "type": "string",
+            "description": "The user's current workspace directory. CRITICAL: Client must always send the current workspace directory when calling this tool! If provided, diagrams will be saved to a 'generated-diagrams' subdirectory."
+          }
+        },
+        "required": [
+          "code"
+        ]
+      }
+    },
+    {
+      "name": "get_diagram_examples",
+      "description": "Get example code for different types of diagrams.\n\n    This tool provides ready-to-use example code for various diagram types.\n    Use these examples to understand the syntax and capabilities of the diagrams package\n    before creating your own custom diagrams.\n\n    USAGE INSTRUCTIONS:\n    1. Select the diagram type you're interested in (or 'all' to see all examples)\n    2. Study the returned examples to understand the structure and syntax\n    3. Use these examples as templates for your own diagrams\n    4. When ready, modify an example or write your own code and use generate_diagram\n\n    EXAMPLE CATEGORIES:\n    - aws: AWS cloud architecture diagrams (basic services, grouped workers, clustered web services, Bedrock)\n    - sequence: Process and interaction flow diagrams\n    - flow: Decision trees and workflow diagrams\n    - class: Object relationship and inheritance diagrams\n    - k8s: Kubernetes architecture diagrams\n    - onprem: On-premises infrastructure diagrams\n    - custom: Custom diagrams with custom icons\n    - all: All available examples across categories\n\n    Each example demonstrates different features of the diagrams package:\n    - Basic connections between components\n    - Grouping with Clusters\n    - Advanced styling with Edge attributes\n    - Different layout directions\n    - Multiple component instances\n    - Custom icons and nodes\n\n    Parameters:\n        diagram_type (str): Type of diagram example to return. Options: aws, sequence, flow, class, k8s, onprem, custom, all\n\n    Returns:\n        Dictionary with example code for the requested diagram type(s), organized by example name\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "diagram_type": {
+            "type": "string",
+            "description": "Type of diagram example to return. Options: aws, sequence, flow, class, k8s, onprem, custom, all"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list_icons",
+      "description": "List available icons from the diagrams package, with optional filtering.\n\n    This tool dynamically inspects the diagrams package to find available\n    providers, services, and icons that can be used in diagrams.\n\n    USAGE INSTRUCTIONS:\n    1. Call without filters to get a list of available providers\n    2. Call with provider_filter to get all services and icons for that provider\n    3. Call with both provider_filter and service_filter to get icons for a specific service\n\n    Example workflow:\n    - First call: list_icons() \u2192 Returns all available providers\n    - Second call: list_icons(provider_filter=\"aws\") \u2192 Returns all AWS services and icons\n    - Third call: list_icons(provider_filter=\"aws\", service_filter=\"compute\") \u2192 Returns AWS compute icons\n\n    This approach is more efficient than loading all icons at once, especially when you only need\n    icons from specific providers or services.\n\n    Returns:\n        Dictionary with available providers, services, and icons organized hierarchically\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "provider_filter": {
+            "type": "string",
+            "description": "Filter icons by provider name (e.g., \"aws\", \"gcp\", \"k8s\")"
+          },
+          "service_filter": {
+            "type": "string",
+            "description": "Filter icons by service name (e.g., \"compute\", \"database\", \"network\")"
+          }
+        },
+        "required": []
+      }
+    }
+  ]
+}

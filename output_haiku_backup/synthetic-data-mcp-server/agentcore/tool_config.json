@@ -1,0 +1,84 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "get_data_gen_instructions",
+        "description": "Get instructions for generating synthetic data based on a business description.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "business_description": {
+                "type": "string",
+                "description": "A detailed description of the business domain and use case. The more specific and comprehensive the description, the better the data generation instructions will be."
+              }
+            },
+            "required": [
+              "business_description"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "validate_and_save_data",
+        "description": "Validate JSON Lines data and save it as CSV files.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "input_data": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "input_data"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "load_to_storage",
+        "description": "Load data to one or more storage targets.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "input_data": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "input_data"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "execute_pandas_code",
+        "description": "Execute pandas code to generate synthetic data and save it as CSV files.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "input_data": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "input_data"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "create_research_repository",
+        "description": "Build a FAISS index for a Git repository.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "repository_path": {
+                "type": "string",
+                "description": "Path to local repository or URL to remote repository"
+              },
+              "output_path": {
+                "type": "string",
+                "description": "Where to store the index (optional, uses default if not provided)"
+              },
+              "embedding_model": {
+                "type": "string",
+                "description": "Which AWS embedding model to use"
+              },
+              "include_patterns": {
+                "type": "string",
+                "description": "Glob patterns for files to include (optional). Defaults to common source code and documentation files."
+              },
+              "exclude_patterns": {
+                "type": "string",
+                "description": "Glob patterns for files to exclude (optional). Defaults to common binary files, build artifacts, and VCS directories."
+              },
+              "chunk_size": {
+                "type": "integer",
+                "description": "Maximum size of each chunk in characters"
+              },
+              "chunk_overlap": {
+                "type": "integer",
+                "description": "Overlap between chunks in characters"
+              }
+            },
+            "required": [
+              "repository_path"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "search_research_repository",
+        "description": "Perform semantic search within an indexed repository.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "index_path": {
+                "type": "string",
+                "description": "Name of the repository or path to the index to search"
+              },
+              "query": {
+                "type": "string",
+                "description": "The search query to use for semantic search"
+              },
+              "limit": {
+                "type": "integer",
+                "description": "Maximum number of results to return"
+              },
+              "threshold": {
+                "type": "number",
+                "description": "Minimum similarity score threshold (0.0 to 1.0)"
+              }
+            },
+            "required": [
+              "index_path",
+              "query"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "search_repos_on_github",
+        "description": "Search for GitHub repositories based on keywords, scoped to specific organizations.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "keywords": {
+                "type": "array",
+                "description": "List of keywords to search for GitHub repositories"
+              },
+              "num_results": {
+                "type": "integer",
+                "description": "Number of results to return"
+              }
+            },
+            "required": [
+              "keywords"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "access_file",
+        "description": "Access file or directory contents.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "filepath": {
+                "type": "string",
+                "description": "Path to the file or directory to access"
+              }
+            },
+            "required": [
+              "filepath"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "delete_research_repository",
+        "description": "Delete an indexed repository.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "repository_name_or_path": {
+                "type": "string",
+                "description": "Name of the repository or path to the index to delete"
+              },
+              "index_directory": {
+                "type": "string",
+                "description": "Directory to look for indices (optional, uses default if not provided)"
+              }
+            },
+            "required": [
+              "repository_name_or_path"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,315 @@
+{
+  "server": "healthlake-mcp-server",
+  "tools": [
+    {
+      "name": "list_datastores",
+      "description": "List all HealthLake datastores in the account",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "filter": {
+            "type": "string",
+            "description": "Filter datastores by status (CREATING, ACTIVE, DELETING, DELETED)"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "get_datastore_details",
+      "description": "Get detailed information about a specific HealthLake datastore",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "HealthLake datastore ID"
+          }
+        },
+        "required": [
+          "datastore_id"
+        ]
+      }
+    },
+    {
+      "name": "create_fhir_resource",
+      "description": "Create a new FHIR resource in HealthLake",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "HealthLake datastore ID"
+          },
+          "resource_type": {
+            "type": "string",
+            "description": "FHIR resource type"
+          },
+          "resource_data": {
+            "type": "object",
+            "description": "FHIR resource data as JSON object"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "resource_type",
+          "resource_data"
+        ]
+      }
+    },
+    {
+      "name": "read_fhir_resource",
+      "description": "Get a specific FHIR resource by ID",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "HealthLake datastore ID"
+          },
+          "resource_type": {
+            "type": "string",
+            "description": "FHIR resource type"
+          },
+          "resource_id": {
+            "type": "string",
+            "description": "FHIR resource ID"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "resource_type",
+          "resource_id"
+        ]
+      }
+    },
+    {
+      "name": "update_fhir_resource",
+      "description": "Update an existing FHIR resource in HealthLake",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "HealthLake datastore ID"
+          },
+          "resource_type": {
+            "type": "string",
+            "description": "FHIR resource type"
+          },
+          "resource_id": {
+            "type": "string",
+            "description": "FHIR resource ID"
+          },
+          "resource_data": {
+            "type": "object",
+            "description": "Updated FHIR resource data as JSON object"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "resource_type",
+          "resource_id",
+          "resource_data"
+        ]
+      }
+    },
+    {
+      "name": "delete_fhir_resource",
+      "description": "Delete a FHIR resource from HealthLake",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "HealthLake datastore ID"
+          },
+          "resource_type": {
+            "type": "string",
+            "description": "FHIR resource type"
+          },
+          "resource_id": {
+            "type": "string",
+            "description": "FHIR resource ID"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "resource_type",
+          "resource_id"
+        ]
+      }
+    },
+    {
+      "name": "search_fhir_resources",
+      "description": "Search for FHIR resources in HealthLake datastore with advanced search capabilities. Returns up to 100 results per call. If pagination.has_next is true, call this tool again with the next_token to get more results.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "HealthLake datastore ID"
+          },
+          "resource_type": {
+            "type": "string",
+            "description": "FHIR resource type (e.g., Patient, Observation, Condition)"
+          },
+          "search_params": {
+            "type": "object",
+            "description": "Basic FHIR search parameters. Supports modifiers (e.g., 'name:contains'), prefixes (e.g., 'birthdate': 'ge1990-01-01'), and simple chaining (e.g., 'subject:Patient')"
+          },
+          "chained_params": {
+            "type": "object",
+            "description": "Advanced chained search parameters. Key format: 'param.chain' or 'param:TargetType.chain' (e.g., {'subject.name': 'Smith', 'general-practitioner:Practitioner.name': 'Johnson'})"
+          },
+          "include_params": {
+            "type": "array",
+            "description": "Include related resources in the response. Format: 'ResourceType:parameter' or 'ResourceType:parameter:target-type' (e.g., ['Patient:general-practitioner', 'Observation:subject:Patient'])"
+          },
+          "revinclude_params": {
+            "type": "array",
+            "description": "Include resources that reference the found resources. Format: 'ResourceType:parameter' (e.g., ['Observation:subject', 'Condition:subject'])"
+          },
+          "count": {
+            "type": "integer",
+            "description": "Maximum number of results to return (1-100, default: 100)"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Pagination token for retrieving the next page of results. Use the complete URL from a previous response's pagination.next_token field. When provided, other search parameters are ignored."
+          }
+        },
+        "required": [
+          "datastore_id",
+          "resource_type"
+        ]
+      }
+    },
+    {
+      "name": "patient_everything",
+      "description": "Retrieve all resources related to a specific patient using the FHIR $patient-everything operation",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "HealthLake datastore ID"
+          },
+          "patient_id": {
+            "type": "string",
+            "description": "Patient resource ID"
+          },
+          "start": {
+            "type": "string",
+            "description": "Start date for filtering resources (YYYY-MM-DD format)"
+          },
+          "end": {
+            "type": "string",
+            "description": "End date for filtering resources (YYYY-MM-DD format)"
+          },
+          "count": {
+            "type": "integer",
+            "description": "Maximum number of results to return (1-100, default: 100)"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Pagination token for retrieving the next page of results. Use the complete URL from a previous response's pagination.next_token field."
+          }
+        },
+        "required": [
+          "datastore_id",
+          "patient_id"
+        ]
+      }
+    },
+    {
+      "name": "start_fhir_import_job",
+      "description": "Start a FHIR import job to load data into HealthLake",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "HealthLake datastore ID"
+          },
+          "input_data_config": {
+            "type": "object",
+            "description": "Input data configuration"
+          },
+          "job_output_data_config": {
+            "type": "object",
+            "description": "Output data configuration (required for import jobs)"
+          },
+          "data_access_role_arn": {
+            "type": "string",
+            "description": "IAM role ARN for data access"
+          },
+          "job_name": {
+            "type": "string",
+            "description": "Name for the import job"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "input_data_config",
+          "job_output_data_config",
+          "data_access_role_arn"
+        ]
+      }
+    },
+    {
+      "name": "start_fhir_export_job",
+      "description": "Start a FHIR export job to export data from HealthLake",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "HealthLake datastore ID"
+          },
+          "output_data_config": {
+            "type": "object",
+            "description": "Output data configuration"
+          },
+          "data_access_role_arn": {
+            "type": "string",
+            "description": "IAM role ARN for data access"
+          },
+          "job_name": {
+            "type": "string",
+            "description": "Name for the export job"
+          }
+        },
+        "required": [
+          "datastore_id",
+          "output_data_config",
+          "data_access_role_arn"
+        ]
+      }
+    },
+    {
+      "name": "list_fhir_jobs",
+      "description": "List FHIR import/export jobs",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "datastore_id": {
+            "type": "string",
+            "description": "HealthLake datastore ID"
+          },
+          "job_status": {
+            "type": "string",
+            "description": "Filter jobs by status"
+          },
+          "job_type": {
+            "type": "string",
+            "description": "Type of job to list"
+          }
+        },
+        "required": [
+          "datastore_id"
+        ]
+      }
+    }
+  ]
+}

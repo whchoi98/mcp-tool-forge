@@ -1,0 +1,235 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "dynamodb_data_modeling",
+        "description": "Retrieves the complete DynamoDB Data Modeling Expert prompt.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {},
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "dynamodb_data_model_schema_converter",
+        "description": "Retrieves the DynamoDB Data Model Schema Converter Expert prompt.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "generate_usage_data": {
+                "type": "boolean",
+                "description": "Set to False if user only wants schema.json without usage examples/sample data. Set to True (default) to generate both schema.json and usage_data.json with realistic sample data for code generation"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "dynamodb_data_model_schema_validator",
+        "description": "Validates a schema.json file - the structured JSON representation of your DynamoDB data model.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "schema_path": {
+                "type": "string",
+                "description": "Absolute path to the schema.json file to validate"
+              },
+              "usage_data_path": {
+                "type": "string",
+                "description": "Optional absolute path to the usage_data.json file to validate alongside the schema"
+              }
+            },
+            "required": [
+              "schema_path"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "source_db_analyzer",
+        "description": "Analyzes source database to extract schema and access patterns for DynamoDB modeling.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "source_db_type": {
+                "type": "string",
+                "description": "Database type: 'mysql', 'postgresql', or 'sqlserver'"
+              },
+              "database_name": {
+                "type": "string",
+                "description": "Database name to analyze. REQUIRED for self_service. Env: MYSQL_DATABASE."
+              },
+              "execution_mode": {
+                "type": "string",
+                "description": "'self_service': generates SQL for user to run, then parses results. 'managed' (MySQL only): RDS Data API-based access (aws_cluster_arn) or Connection-based access (hostname+port)."
+              },
+              "queries_file_path": {
+                "type": "string",
+                "description": "[self_service] Output path for generated SQL queries (Step 1)."
+              },
+              "query_result_file_path": {
+                "type": "string",
+                "description": "[self_service] Path to query results file for parsing (Step 2)."
+              },
+              "pattern_analysis_days": {
+                "type": "string",
+                "description": "Days of query logs to analyze. Default: 30."
+              },
+              "max_query_results": {
+                "type": "string",
+                "description": "Max rows per query. Default: 500. Env: MYSQL_MAX_QUERY_RESULTS."
+              },
+              "aws_cluster_arn": {
+                "type": "string",
+                "description": "[managed/RDS Data API-based] Aurora cluster ARN. Use this OR hostname, not both. Env: MYSQL_CLUSTER_ARN."
+              },
+              "aws_secret_arn": {
+                "type": "string",
+                "description": "[managed] Secrets Manager ARN for DB credentials. REQUIRED. Env: MYSQL_SECRET_ARN."
+              },
+              "aws_region": {
+                "type": "string",
+                "description": "[managed] AWS region. REQUIRED. Env: AWS_REGION."
+              },
+              "hostname": {
+                "type": "string",
+                "description": "[managed/connection-based] MySQL hostname. Use this OR aws_cluster_arn, not both. Env: MYSQL_HOSTNAME."
+              },
+              "port": {
+                "type": "string",
+                "description": "[managed/connection-based] MySQL port. Default: 3306. Env: MYSQL_PORT."
+              },
+              "output_dir": {
+                "type": "string",
+                "description": "Absolute path for output folder. Must exist and be writable. REQUIRED."
+              }
+            },
+            "required": [
+              "source_db_type",
+              "output_dir"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "dynamodb_data_model_validation",
+        "description": "Validates and tests DynamoDB data models against DynamoDB Local.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "workspace_dir": {
+                "type": "string",
+                "description": "Absolute path of the workspace directory"
+              }
+            },
+            "required": [
+              "workspace_dir"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "compute_performances_and_costs",
+        "description": "Calculate DynamoDB capacity units and monthly costs from access patterns.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "access_pattern_list": {
+                "type": "array",
+                "description": "List of access patterns with operation details (required)"
+              },
+              "table_list": {
+                "type": "array",
+                "description": "List of table definitions for storage cost calculation (required)"
+              },
+              "workspace_dir": {
+                "type": "string",
+                "description": "Absolute path of the workspace directory (required). Cost analysis will be appended to dynamodb_data_model.md"
+              }
+            },
+            "required": [
+              "access_pattern_list",
+              "table_list",
+              "workspace_dir"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "generate_resources",
+        "description": "Generates resources from a DynamoDB data model JSON file (dynamodb_data_model.json).",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "dynamodb_data_model_json_file": {
+                "type": "string",
+                "description": "Absolute path to the dynamodb_data_model.json file. Resources will be generated in the same directory."
+              },
+              "resource_type": {
+                "type": "string",
+                "description": "Type of resource to generate: 'cdk' for CDK app"
+              }
+            },
+            "required": [
+              "dynamodb_data_model_json_file",
+              "resource_type"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "generate_data_access_layer",
+        "description": "Generate Python code for a data access layer to interact with your DynamoDB tables.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "schema_path": {
+                "type": "string",
+                "description": "Path to the schema JSON file"
+              },
+              "language": {
+                "type": "string",
+                "description": "Target programming language (python)"
+              },
+              "generate_sample_usage": {
+                "type": "boolean",
+                "description": "Generate usage examples and test cases"
+              },
+              "usage_data_path": {
+                "type": "string",
+                "description": "Path to usage_data.json file for realistic sample data (optional)"
+              }
+            },
+            "required": [
+              "schema_path"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

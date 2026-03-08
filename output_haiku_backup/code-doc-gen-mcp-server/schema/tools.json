@@ -1,0 +1,79 @@
+{
+  "server": "code-doc-gen-mcp-server",
+  "tools": [
+    {
+      "name": "prepare_repository",
+      "description": "Prepare repository for the MCP client's analysis.\n\n    DEPRECATION WARNING: This MCP server is deprecated and will be archived.\n    See https://github.com/awslabs/mcp/issues/2004 for details.\n\n    This tool:\n    1. Extracts directory structure from the repository\n    2. Returns an EMPTY ProjectAnalysis for you to fill out\n    3. Provides directory structure in file_structure[\"directory_structure\"]\n    4. Provides repository statistics in file_structure[\"statistics\"] (file count, character count, etc.)\n\n    You should:\n    1. Review the directory structure in file_structure[\"directory_structure\"]\n    2. Use read_file to examine key files you identify from the structure\n    3. Fill out the empty fields in ProjectAnalysis based on your analysis\n    4. Set has_infrastructure_as_code=True if you detect CDK, Terraform, or other infrastructure as code\n    5. Use create_context to create a DocumentationContext from your analysis\n    6. Use the DocumentationContext with plan_documentation\n\n    NOTE: This tool does NOT analyze the code - that's your job!\n    The tool only extracts the directory structure and statistics to help you identify important files.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "project_root": {
+            "type": "string",
+            "description": "Path to the code repository"
+          }
+        },
+        "required": [
+          "project_root"
+        ]
+      }
+    },
+    {
+      "name": "create_context",
+      "description": "Create a DocumentationContext from a ProjectAnalysis.\n\n    DEPRECATION WARNING: This MCP server is deprecated and will be archived.\n    See https://github.com/awslabs/mcp/issues/2004 for details.\n\n    This tool simplifies the creation of a DocumentationContext for use with\n    plan_documentation and generate_documentation tools.\n\n    Args:\n        project_root: Path to the code repository\n        analysis: Completed ProjectAnalysis from prepare_repository\n        ctx: Optional MCP context for logging and progress reporting\n\n    Returns:\n        A DocumentationContext ready for use with other tools\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "project_root": {
+            "type": "string",
+            "description": "Path to the code repository"
+          },
+          "analysis": {
+            "type": "string",
+            "description": "Completed ProjectAnalysis from prepare_repository"
+          }
+        },
+        "required": [
+          "project_root",
+          "analysis"
+        ]
+      }
+    },
+    {
+      "name": "plan_documentation",
+      "description": "Third step: Create documentation plan using analysis.\n\n    DEPRECATION WARNING: This MCP server is deprecated and will be archived.\n    See https://github.com/awslabs/mcp/issues/2004 for details.\n\n    Using your analysis from prepare_repository and the DocumentationContext from create_context:\n    1. Review the ProjectAnalysis in doc_context containing:\n       - Project type and purpose\n       - Key features and capabilities\n       - Programming languages and dependencies\n       - APIs and interfaces\n    2. Determine what documentation types are needed\n    3. Create appropriate documentation structure\n    4. Return documentation plan\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "doc_context": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "doc_context"
+        ]
+      }
+    },
+    {
+      "name": "generate_documentation",
+      "description": "Final step: Generate documentation content.\n\n    DEPRECATION WARNING: This MCP server is deprecated and will be archived.\n    See https://github.com/awslabs/mcp/issues/2004 for details.\n\n    Using your analysis and documentation plan:\n    1. Generate document structures with empty sections\n    2. YOU (MCP Client) MUST then:\n       - Write detailed content for each section\n       - Include relevant code examples and explanations\n       - Fill in ALL empty sections with comprehensive content\n       - Cover all aspects:\n         * Project setup and installation\n         * Architecture and design\n         * Features and capabilities\n         * APIs and interfaces (if any)\n         * Dependencies and requirements\n    3. Return document structures for you to fill with content\n\n    IMPORTANT: When you receive the generated documents, it is YOUR responsibility\n    to write comprehensive content for each section. Do not leave sections empty\n    or wait for further instructions - YOU must fill them in!\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "plan": {
+            "type": "string",
+            "description": ""
+          },
+          "doc_context": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "plan",
+          "doc_context"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,460 @@
+{
+  "server": "amazon-documentdb-mcp-server",
+  "tools": [
+    {
+      "name": "connect",
+      "description": "Connect to an AWS DocumentDB cluster.\n\n    This tool establishes and validates a connection to DocumentDB.\n    The returned connection_id can be used with other tools instead of providing\n    the full connection string each time.\n\n    Returns:\n        Dict[str, Any]: Connection details including connection_id and available databases\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "connection_string": {
+            "type": "string",
+            "description": "DocumentDB connection string. Example: \"mongodb://user:pass@docdb-cluster.cluster-xyz.us-west-2.docdb.amazonaws.com:27017/?tls=true&tlsCAFile=global-bundle.pem\""
+          }
+        },
+        "required": [
+          "connection_string"
+        ]
+      }
+    },
+    {
+      "name": "disconnect",
+      "description": "Close a connection to DocumentDB.\n\n    This tool closes a previously established connection to DocumentDB.\n\n    Returns:\n        Dict[str, Any]: Confirmation of successful disconnection\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "connection_id": {
+            "type": "string",
+            "description": "The connection ID returned by the connect tool"
+          }
+        },
+        "required": [
+          "connection_id"
+        ]
+      }
+    },
+    {
+      "name": "find",
+      "description": "Run a query against a DocumentDB collection.\n\n    This tool queries documents from a specified collection based on a filter.\n\n    Returns:\n        List[Dict[str, Any]]: List of matching documents\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "connection_id": {
+            "type": "string",
+            "description": "The connection ID returned by the connect tool"
+          },
+          "database": {
+            "type": "string",
+            "description": "Name of the database"
+          },
+          "collection": {
+            "type": "string",
+            "description": "Name of the collection"
+          },
+          "query": {
+            "type": "object",
+            "description": "Query filter (e.g., {\"name\": \"example\"})"
+          },
+          "projection": {
+            "type": "string",
+            "description": "Fields to include/exclude (e.g., {\"_id\": 0, \"name\": 1})"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of documents to return (default: 10)"
+          }
+        },
+        "required": [
+          "connection_id",
+          "database",
+          "collection",
+          "query"
+        ]
+      }
+    },
+    {
+      "name": "aggregate",
+      "description": "Run an aggregation pipeline against a DocumentDB collection.\n\n    This tool executes a DocumentDB aggregation pipeline on a specified collection.\n\n    Returns:\n        List[Dict[str, Any]]: List of aggregation results\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "connection_id": {
+            "type": "string",
+            "description": "The connection ID returned by the connect tool"
+          },
+          "database": {
+            "type": "string",
+            "description": "Name of the database"
+          },
+          "collection": {
+            "type": "string",
+            "description": "Name of the collection"
+          },
+          "pipeline": {
+            "type": "array",
+            "description": "DocumentDB aggregation pipeline"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of documents to return (default: 10)"
+          }
+        },
+        "required": [
+          "connection_id",
+          "database",
+          "collection",
+          "pipeline"
+        ]
+      }
+    },
+    {
+      "name": "insert",
+      "description": "Insert one or more documents into a DocumentDB collection.\n\n    This tool inserts new documents into a specified collection.\n\n    Returns:\n        Dict[str, Any]: Insert operation results including document IDs\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "connection_id": {
+            "type": "string",
+            "description": "The connection ID returned by the connect tool"
+          },
+          "database": {
+            "type": "string",
+            "description": "Name of the database"
+          },
+          "collection": {
+            "type": "string",
+            "description": "Name of the collection"
+          },
+          "documents": {
+            "type": "string",
+            "description": "Document or list of documents to insert"
+          }
+        },
+        "required": [
+          "connection_id",
+          "database",
+          "collection",
+          "documents"
+        ]
+      }
+    },
+    {
+      "name": "update",
+      "description": "Update documents in a DocumentDB collection.\n\n    This tool updates existing documents that match a specified filter.\n\n    Returns:\n        Dict[str, Any]: Update operation results\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "connection_id": {
+            "type": "string",
+            "description": "The connection ID returned by the connect tool"
+          },
+          "database": {
+            "type": "string",
+            "description": "Name of the database"
+          },
+          "collection": {
+            "type": "string",
+            "description": "Name of the collection"
+          },
+          "filter": {
+            "type": "object",
+            "description": "Filter to select documents to update"
+          },
+          "update": {
+            "type": "object",
+            "description": "Update operations to apply. It should either include DocumentDB operators like $set, or an entire document if the entire document needs to be replaced."
+          },
+          "upsert": {
+            "type": "boolean",
+            "description": "Whether to create a new document if no match is found (default: False)"
+          },
+          "many": {
+            "type": "boolean",
+            "description": "Whether to update multiple documents (default: False)"
+          }
+        },
+        "required": [
+          "connection_id",
+          "database",
+          "collection",
+          "filter",
+          "update"
+        ]
+      }
+    },
+    {
+      "name": "delete",
+      "description": "Delete documents from a DocumentDB collection.\n\n    This tool deletes documents that match a specified filter.\n\n    Returns:\n        Dict[str, Any]: Delete operation results\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "connection_id": {
+            "type": "string",
+            "description": "The connection ID returned by the connect tool"
+          },
+          "database": {
+            "type": "string",
+            "description": "Name of the database"
+          },
+          "collection": {
+            "type": "string",
+            "description": "Name of the collection"
+          },
+          "filter": {
+            "type": "object",
+            "description": "Filter to select documents to delete"
+          },
+          "many": {
+            "type": "boolean",
+            "description": "Whether to delete multiple documents (default: False)"
+          }
+        },
+        "required": [
+          "connection_id",
+          "database",
+          "collection",
+          "filter"
+        ]
+      }
+    },
+    {
+      "name": "listDatabases",
+      "description": "List all available databases in the DocumentDB cluster.\n\n    This tool returns the names of all accessible databases in the connected cluster.\n\n    Returns:\n        Dict[str, Any]: List of database names\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "connection_id": {
+            "type": "string",
+            "description": "The connection ID returned by the connect tool"
+          }
+        },
+        "required": [
+          "connection_id"
+        ]
+      }
+    },
+    {
+      "name": "createCollection",
+      "description": "Create a new collection in a DocumentDB database.\n\n    This tool creates a new collection in the specified database.\n\n    Returns:\n        Dict[str, Any]: Status of collection creation\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "connection_id": {
+            "type": "string",
+            "description": "The connection ID returned by the connect tool"
+          },
+          "database": {
+            "type": "string",
+            "description": "Name of the database"
+          },
+          "collection": {
+            "type": "string",
+            "description": "Name of the collection to create"
+          }
+        },
+        "required": [
+          "connection_id",
+          "database",
+          "collection"
+        ]
+      }
+    },
+    {
+      "name": "listCollections",
+      "description": "List collections in a DocumentDB database.\n\n    This tool returns the names of all collections in a specified database.\n\n    Returns:\n        List[str]: List of collection names\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "connection_id": {
+            "type": "string",
+            "description": "The connection ID returned by the connect tool"
+          },
+          "database": {
+            "type": "string",
+            "description": "Name of the database"
+          }
+        },
+        "required": [
+          "connection_id",
+          "database"
+        ]
+      }
+    },
+    {
+      "name": "dropCollection",
+      "description": "Drop a collection from a DocumentDB database.\n\n    This tool completely removes a collection and all its documents from the specified database.\n    This operation cannot be undone, so use it with caution.\n\n    Returns:\n        Dict[str, Any]: Status of the drop operation\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "connection_id": {
+            "type": "string",
+            "description": "The connection ID returned by the connect tool"
+          },
+          "database": {
+            "type": "string",
+            "description": "Name of the database"
+          },
+          "collection": {
+            "type": "string",
+            "description": "Name of the collection to drop"
+          }
+        },
+        "required": [
+          "connection_id",
+          "database",
+          "collection"
+        ]
+      }
+    },
+    {
+      "name": "countDocuments",
+      "description": "Count documents in a DocumentDB collection.\n\n    This tool counts the number of documents in a collection that match the provided filter.\n    If no filter is provided, it counts all documents.\n\n    Returns:\n        Dict[str, Any]: Count result\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "connection_id": {
+            "type": "string",
+            "description": "The connection ID returned by the connect tool"
+          },
+          "database": {
+            "type": "string",
+            "description": "Name of the database"
+          },
+          "collection": {
+            "type": "string",
+            "description": "Name of the collection"
+          },
+          "filter": {
+            "type": "string",
+            "description": "Query filter to count specific documents"
+          }
+        },
+        "required": [
+          "connection_id",
+          "database",
+          "collection"
+        ]
+      }
+    },
+    {
+      "name": "getDatabaseStats",
+      "description": "Get statistics about a DocumentDB database.\n\n    This tool retrieves statistics about the specified database,\n    including storage information and collection data.\n\n    Returns:\n        Dict[str, Any]: Database statistics\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "connection_id": {
+            "type": "string",
+            "description": "The connection ID returned by the connect tool"
+          },
+          "database": {
+            "type": "string",
+            "description": "Name of the database"
+          }
+        },
+        "required": [
+          "connection_id",
+          "database"
+        ]
+      }
+    },
+    {
+      "name": "getCollectionStats",
+      "description": "Get statistics about a DocumentDB collection.\n\n    This tool retrieves detailed statistics about the specified collection,\n    including size, document count, and storage information.\n\n    Returns:\n        Dict[str, Any]: Collection statistics\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "connection_id": {
+            "type": "string",
+            "description": "The connection ID returned by the connect tool"
+          },
+          "database": {
+            "type": "string",
+            "description": "Name of the database"
+          },
+          "collection": {
+            "type": "string",
+            "description": "Name of the collection"
+          }
+        },
+        "required": [
+          "connection_id",
+          "database",
+          "collection"
+        ]
+      }
+    },
+    {
+      "name": "analyzeSchema",
+      "description": "Analyze the schema of a collection by sampling documents.\n\n    This tool samples documents from a collection and provides information about\n    the document structure and field coverage across the sampled documents.\n\n    Returns:\n        Dict[str, Any]: Schema analysis results including field coverage\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "connection_id": {
+            "type": "string",
+            "description": "The connection ID returned by the connect tool"
+          },
+          "database": {
+            "type": "string",
+            "description": "Name of the database"
+          },
+          "collection": {
+            "type": "string",
+            "description": "Name of the collection to analyze"
+          },
+          "sample_size": {
+            "type": "integer",
+            "description": "Number of documents to sample (default: 100)"
+          }
+        },
+        "required": [
+          "connection_id",
+          "database",
+          "collection"
+        ]
+      }
+    },
+    {
+      "name": "explainOperation",
+      "description": "Get an explanation of how an operation will be executed.\n\n    This tool returns the execution plan for a query or aggregation operation,\n    helping you understand how DocumentDB will process your operations.\n\n    Returns:\n        Dict[str, Any]: Operation explanation\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "connection_id": {
+            "type": "string",
+            "description": "The connection ID returned by the connect tool"
+          },
+          "database": {
+            "type": "string",
+            "description": "Name of the database"
+          },
+          "collection": {
+            "type": "string",
+            "description": "Name of the collection"
+          },
+          "operation_type": {
+            "type": "string",
+            "description": "Type of operation to explain (find, aggregate)"
+          },
+          "query": {
+            "type": "string",
+            "description": "Query for find operations"
+          },
+          "pipeline": {
+            "type": "string",
+            "description": "Pipeline for DocumentDB aggregation operations"
+          },
+          "verbosity": {
+            "type": "string",
+            "description": "Explanation verbosity level (queryPlanner, executionStats)"
+          }
+        },
+        "required": [
+          "connection_id",
+          "database",
+          "collection",
+          "operation_type"
+        ]
+      }
+    }
+  ]
+}

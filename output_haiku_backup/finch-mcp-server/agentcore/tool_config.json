@@ -1,0 +1,113 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "finch_build_container_image",
+        "description": "Build a container image using Finch.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "dockerfile_path": {
+                "type": "string",
+                "description": "Absolute path to the Dockerfile"
+              },
+              "context_path": {
+                "type": "string",
+                "description": "Absolute path to the build context directory"
+              },
+              "tags": {
+                "type": "string",
+                "description": "List of tags to apply to the image (e.g., ['myimage:latest', 'myimage:v1'])"
+              },
+              "platforms": {
+                "type": "string",
+                "description": "List of target platforms (e.g., ['linux/amd64', 'linux/arm64'])"
+              },
+              "target": {
+                "type": "string",
+                "description": "Target build stage to build"
+              },
+              "no_cache": {
+                "type": "string",
+                "description": "Whether to disable cache"
+              },
+              "pull": {
+                "type": "string",
+                "description": "Whether to always pull base images"
+              },
+              "build_contexts": {
+                "type": "string",
+                "description": "List of additional build contexts"
+              },
+              "outputs": {
+                "type": "string",
+                "description": "Output destination"
+              },
+              "cache_from": {
+                "type": "string",
+                "description": "List of external cache sources"
+              },
+              "quiet": {
+                "type": "string",
+                "description": "Whether to suppress build output"
+              },
+              "progress": {
+                "type": "string",
+                "description": "Type of progress output"
+              }
+            },
+            "required": [
+              "dockerfile_path",
+              "context_path"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "finch_push_image",
+        "description": "Push a container image to a repository using finch, replacing the tag with the image hash.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "image": {
+                "type": "string",
+                "description": "The full image name to push, including the repository URL and tag"
+              }
+            },
+            "required": [
+              "image"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "finch_create_ecr_repo",
+        "description": "Check if an ECR repository exists and create it if it doesn't.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "repository_name": {
+                "type": "string",
+                "description": "The name of the repository to check or create in ECR"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region for the ECR repository. If not provided, uses the default region from AWS configuration"
+              }
+            },
+            "required": [
+              "repository_name"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

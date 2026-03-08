@@ -1,0 +1,86 @@
+---
+name: CreateAHOWorkflow
+description: Create a new HealthOmics workflow.
+
+    Args:
+        ctx: MCP context for error reporting
+        name: Name of the workflow
+        definition_zip_base64: Base64-encoded workflow definition ZIP file. Cannot be used together with definition_uri or definition_repository
+        description: Optional description of the workflow
+        parameter_template: Optional parameter template for the workflow
+        container_registry_map: Optional container registry map with registryMappings (upstreamRegistryUrl, ecrRepositoryPrefix, upstreamRepositoryPrefix, ecrAccountId) and imageMappings (sourceImage, destinationImage) arrays
+        container_registry_map_uri: Optional S3 URI pointing to a JSON file containing container registry mappings. Cannot be used together with container_registry_map
+        definition_uri: S3 URI of the workflow definition ZIP file. Cannot be used together with definition_zip_base64 or definition_repository
+        path_to_main: Path to the main file in the workflow definition ZIP file. Not required if there is a top level main.wdl, main.cwl or main.nf files in the workflow package. Not required if there is only a single top level workflow file.
+        readme: README documentation - can be markdown content, local .md file path, or S3 URI (s3://bucket/key)
+        definition_repository: Git repository configuration with connection_arn, full_repository_id, source_reference, and optional exclude_file_patterns
+        parameter_template_path: Path to parameter template JSON file within the repository (only valid with definition_repository)
+        readme_path: Path to README markdown file within the repository (only valid with definition_repository)
+
+    Returns:
+        Dictionary containing the created workflow information or error dict
+    
+---
+
+# Createahoworkflow
+
+Create a new HealthOmics workflow.
+
+    Args:
+        ctx: MCP context for error reporting
+        name: Name of the workflow
+        definition_zip_base64: Base64-encoded workflow definition ZIP file. Cannot be used together with definition_uri or definition_repository
+        description: Optional description of the workflow
+        parameter_template: Optional parameter template for the workflow
+        container_registry_map: Optional container registry map with registryMappings (upstreamRegistryUrl, ecrRepositoryPrefix, upstreamRepositoryPrefix, ecrAccountId) and imageMappings (sourceImage, destinationImage) arrays
+        container_registry_map_uri: Optional S3 URI pointing to a JSON file containing container registry mappings. Cannot be used together with container_registry_map
+        definition_uri: S3 URI of the workflow definition ZIP file. Cannot be used together with definition_zip_base64 or definition_repository
+        path_to_main: Path to the main file in the workflow definition ZIP file. Not required if there is a top level main.wdl, main.cwl or main.nf files in the workflow package. Not required if there is only a single top level workflow file.
+        readme: README documentation - can be markdown content, local .md file path, or S3 URI (s3://bucket/key)
+        definition_repository: Git repository configuration with connection_arn, full_repository_id, source_reference, and optional exclude_file_patterns
+        parameter_template_path: Path to parameter template JSON file within the repository (only valid with definition_repository)
+        readme_path: Path to README markdown file within the repository (only valid with definition_repository)
+
+    Returns:
+        Dictionary containing the created workflow information or error dict
+    
+
+## Parameters
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `name` | string | Yes | Name of the workflow |
+| `definition_zip_base64` | string | No | Base64-encoded workflow definition ZIP file. Cannot be used together with definition_uri or definition_repository |
+| `description` | string | No | Optional description of the workflow |
+| `parameter_template` | string | No | Optional parameter template for the workflow |
+| `container_registry_map` | string | No | Optional container registry map with registryMappings (upstreamRegistryUrl, ecrRepositoryPrefix, upstreamRepositoryPrefix, ecrAccountId) and imageMappings (sourceImage, destinationImage) arrays |
+| `container_registry_map_uri` | string | No | Optional S3 URI pointing to a JSON file containing container registry mappings. Cannot be used together with container_registry_map |
+| `definition_uri` | string | No | S3 URI of the workflow definition ZIP file. Cannot be used together with definition_zip_base64 or definition_repository |
+| `path_to_main` | string | No | Path to the main file in the workflow definition ZIP file. Not required if there is a top level main.wdl, main.cwl or main.nf files in the workflow package. Not required if there is only a single top level workflow file. |
+| `readme` | string | No | README documentation: markdown content, local .md file path, or S3 URI (s3://bucket/key) |
+| `definition_repository` | string | No | Git repository configuration with connection_arn, full_repository_id, source_reference (type and value), and optional exclude_file_patterns. Cannot be used together with definition_zip_base64 or definition_uri |
+| `parameter_template_path` | string | No | Path to parameter template JSON file within the repository (only valid with definition_repository) |
+| `readme_path` | string | No | Path to README markdown file within the repository (only valid with definition_repository) |
+
+## AWS CLI
+
+```bash
+aws omics create-workflow --name <name> --description <description> --definition-zip <definition_zip_base64> --definition-uri <definition_uri> --parameter-template <parameter_template> --workflow-type <path_to_main>
+```
+
+## boto3
+
+```python
+import boto3
+
+client = boto3.client('omics')
+response = client.create_workflow(
+    Name=name,
+    Description=description,
+    DefinitionZip=definition_zip_base64,
+    DefinitionUri=definition_uri,
+    ParameterTemplate=parameter_template,
+    WorkflowType=path_to_main,
+    StorageCapacity=container_registry_map,
+)
+```

@@ -1,0 +1,193 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "describe_hp_cluster",
+        "description": "Describe a SageMaker HyperPod cluster.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "cluster_name": {
+                "type": "string",
+                "description": "The name of the cluster to describe."
+              },
+              "region_name": {
+                "type": "string",
+                "description": "AWS region name. Default is us-east-1."
+              },
+              "profile_name": {
+                "type": "string",
+                "description": "AWS profile name. If not provided, uses the default profile."
+              }
+            },
+            "required": [
+              "cluster_name",
+              "region_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "update_hp_cluster",
+        "description": "Update a SageMaker HyperPod clusters.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "cluster_name": {
+                "type": "string",
+                "description": "The name of the cluster to update."
+              },
+              "instance_groups": {
+                "type": "array",
+                "description": "List of instance groups to update."
+              },
+              "region_name": {
+                "type": "string",
+                "description": "AWS region name. Default is us-east-1."
+              },
+              "profile_name": {
+                "type": "string",
+                "description": "AWS profile name. If not provided, uses the default profile."
+              }
+            },
+            "required": [
+              "cluster_name",
+              "instance_groups",
+              "region_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "manage_hyperpod_cluster_nodes",
+        "description": "Manage SageMaker HyperPod clusters and nodes with both read and write operations.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "operation": {
+                "type": "string",
+                "description": "Operation to perform: list_clusters, list_nodes, describe_node, update_software, or batch_delete. Choose \"list_clusters\" or \"list_nodes\" or \"describe_node\" for read-only operations when write access is disabled."
+              },
+              "cluster_name": {
+                "type": "string",
+                "description": "The name of the cluster. Required for all operations except \"list_clusters\"."
+              },
+              "node_id": {
+                "type": "string",
+                "description": "The ID of the SageMaker HyperPod cluster node. Required for \"describe_node\" operation."
+              },
+              "node_ids": {
+                "type": "string",
+                "description": "The list of node IDs to delete from the cluster. Required for \"batch_delete\" operation."
+              },
+              "max_results": {
+                "type": "string",
+                "description": "The maximum number of results to return in the response. Default: 10. Used for \"list_clusters\" and \"list_nodes\" operations."
+              },
+              "next_token": {
+                "type": "string",
+                "description": "If the response to a previous request was truncated, the response includes a NextToken. To retrieve the next set of results, use the token in the next request. Used for \"list_clusters\" and \"list_nodes\" operations."
+              },
+              "name_contains": {
+                "type": "string",
+                "description": "A filter that returns only clusters whose name contains the specified string. Used for \"list_clusters\" operation."
+              },
+              "creation_time_after": {
+                "type": "string",
+                "description": "Filter for nodes/clusters created after the specified time. Accepts formats: ISO 8601 (e.g., 2014-10-01T20:30:00Z), date only (e.g., 2014-10-01), or Unix time in seconds. Used for \"list_clusters\" and \"list_nodes\" operations."
+              },
+              "creation_time_before": {
+                "type": "string",
+                "description": "Filter for nodes/clusters created before the specified time. Accepts formats: ISO 8601 (e.g., 2014-10-01T20:30:00Z), date only (e.g., 2014-10-01), or Unix time in seconds. Used for \"list_clusters\" and \"list_nodes\" operations."
+              },
+              "instance_group_name_contains": {
+                "type": "string",
+                "description": "Filter for nodes in instance groups whose name contains the specified string. Used for \"list_nodes\" operation."
+              },
+              "sort_by": {
+                "type": "string",
+                "description": "The field to sort results by..."
+              },
+              "sort_order": {
+                "type": "string",
+                "description": "The sort order for results. The default is Ascending. Used for \"list_clusters\" and \"list_nodes\" operations."
+              },
+              "training_plan_arn": {
+                "type": "string",
+                "description": "The Amazon Resource Name (ARN) of the training plan to filter clusters by. Used for \"list_clusters\" operation."
+              },
+              "deployment_config": {
+                "type": "string",
+                "description": "The configuration to use when updating the AMI versions. Used for \"update_software\" operation."
+              },
+              "instance_groups": {
+                "type": "string",
+                "description": "The array of instance groups for which to update AMI versions. Used for \"update_software\" operation."
+              },
+              "region_name": {
+                "type": "string",
+                "description": "AWS region name. Default is us-east-1."
+              },
+              "profile_name": {
+                "type": "string",
+                "description": "AWS profile name. If not provided, uses the default profile."
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "manage_hyperpod_stacks",
+        "description": "Manage SageMaker HyperPod Cluster through CloudFormation stacks.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "operation": {
+                "type": "string",
+                "description": "Operation to perform: deploy, describe, or delete. Choose \"describe\" for read-only operations when write access is disabled."
+              },
+              "region_name": {
+                "type": "string",
+                "description": "AWS region name. Default is us-east-1."
+              },
+              "stack_name": {
+                "type": "string",
+                "description": "Name of the CloudFormation stack (for deploy, describe and delete operations)."
+              },
+              "cluster_orchestrator": {
+                "type": "string",
+                "description": "Cluster orchestrator type. Must be either \"eks\" or \"slurm\". Default is \"eks\"."
+              },
+              "params_file": {
+                "type": "string",
+                "description": "Absolute path for the CloudFormation template parameters(for deploy operations).\n            IMPORTANT: Assistant must provide the full absolute path to the template file, as the MCP client and server might not run from the same location."
+              },
+              "profile_name": {
+                "type": "string",
+                "description": "AWS profile name. If not provided, uses the default profile."
+              }
+            },
+            "required": [
+              "operation",
+              "region_name",
+              "stack_name"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

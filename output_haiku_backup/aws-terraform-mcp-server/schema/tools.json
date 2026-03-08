@@ -1,0 +1,199 @@
+{
+  "server": "aws-terraform-mcp-server",
+  "tools": [
+    {
+      "name": "ExecuteTerraformCommand",
+      "description": "Execute Terraform workflow commands against an AWS account.\n\n    This tool runs Terraform commands (init, plan, validate, apply, destroy) in the\n    specified working directory, with optional variables and region settings.\n\n    Parameters:\n        command: Terraform command to execute\n        working_directory: Directory containing Terraform files\n        variables: Terraform variables to pass\n        aws_region: AWS region to use\n        strip_ansi: Whether to strip ANSI color codes from output\n\n    Returns:\n        A TerraformExecutionResult object containing command output and status\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "type": "string",
+            "description": "Terraform command to execute"
+          },
+          "working_directory": {
+            "type": "string",
+            "description": "Directory containing Terraform files"
+          },
+          "variables": {
+            "type": "string",
+            "description": "Terraform variables to pass"
+          },
+          "aws_region": {
+            "type": "string",
+            "description": "AWS region to use"
+          },
+          "strip_ansi": {
+            "type": "boolean",
+            "description": "Whether to strip ANSI color codes from output"
+          }
+        },
+        "required": [
+          "command",
+          "working_directory"
+        ]
+      }
+    },
+    {
+      "name": "ExecuteTerragruntCommand",
+      "description": "Execute Terragrunt workflow commands against an AWS account.\n\n    This tool runs Terragrunt commands (init, plan, validate, apply, destroy, run-all) in the\n    specified working directory, with optional variables and region settings. Terragrunt extends\n    Terraform's functionality by providing features like remote state management, dependencies\n    between modules, and the ability to execute Terraform commands on multiple modules at once.\n\n    Parameters:\n        command: Terragrunt command to execute\n        working_directory: Directory containing Terragrunt files\n        variables: Terraform variables to pass\n        aws_region: AWS region to use\n        strip_ansi: Whether to strip ANSI color codes from output\n        include_dirs: Directories to include in a multi-module run\n        exclude_dirs: Directories to exclude from a multi-module run\n        run_all: Run command on all modules in subdirectories\n        terragrunt_config: Path to a custom terragrunt config file (not valid with run-all)\n\n    Returns:\n        A TerragruntExecutionResult object containing command output and status\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "type": "string",
+            "description": "Terragrunt command to execute"
+          },
+          "working_directory": {
+            "type": "string",
+            "description": "Directory containing Terragrunt files"
+          },
+          "variables": {
+            "type": "string",
+            "description": "Terraform variables to pass"
+          },
+          "aws_region": {
+            "type": "string",
+            "description": "AWS region to use"
+          },
+          "strip_ansi": {
+            "type": "boolean",
+            "description": "Whether to strip ANSI color codes from output"
+          },
+          "include_dirs": {
+            "type": "string",
+            "description": "Directories to include in a multi-module run"
+          },
+          "exclude_dirs": {
+            "type": "string",
+            "description": "Directories to exclude from a multi-module run"
+          },
+          "run_all": {
+            "type": "boolean",
+            "description": "Run command on all modules in subdirectories"
+          },
+          "terragrunt_config": {
+            "type": "string",
+            "description": "Path to a custom terragrunt config file (not valid with run-all)"
+          }
+        },
+        "required": [
+          "command",
+          "working_directory"
+        ]
+      }
+    },
+    {
+      "name": "SearchAwsProviderDocs",
+      "description": "Search AWS provider documentation for resources and attributes.\n\n    This tool searches the Terraform AWS provider documentation for information about\n    a specific asset in the AWS Provider Documentation, assets can be either resources or data sources. It retrieves comprehensive details including descriptions, example code snippets, argument references, and attribute references.\n\n    Use the 'asset_type' parameter to specify if you are looking for information about provider resources, data sources, or both. Valid values are 'resource', 'data_source' or 'both'.\n\n    The tool will automatically handle prefixes - you can search for either 'aws_s3_bucket' or 's3_bucket'.\n\n    Examples:\n        - To get documentation for an S3 bucket resource:\n          search_aws_provider_docs(asset_name='aws_s3_bucket')\n\n        - To search only for data sources:\n          search_aws_provider_docs(asset_name='aws_ami', asset_type='data_source')\n\n        - To search for both resource and data source documentation of a given name:\n          search_aws_provider_docs(asset_name='aws_instance', asset_type='both')\n\n    Parameters:\n        asset_name: Name of the service (asset) to look for (e.g., 'aws_s3_bucket', 'aws_lambda_function')\n        asset_type: Type of documentation to search - 'resource' (default), 'data_source', or 'both'\n\n    Returns:\n        A list of matching documentation entries with details including:\n        - Resource name and description\n        - URL to the official documentation\n        - Example code snippets\n        - Arguments with descriptions\n        - Attributes with descriptions\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "asset_name": {
+            "type": "string",
+            "description": "Name of the AWS service (asset) to look for (e.g., \"aws_s3_bucket\", \"aws_lambda_function\")"
+          },
+          "asset_type": {
+            "type": "string",
+            "description": "Type of documentation to search - 'resource' (default), 'data_source', or 'both'"
+          }
+        },
+        "required": [
+          "asset_name"
+        ]
+      }
+    },
+    {
+      "name": "SearchAwsccProviderDocs",
+      "description": "Search AWSCC provider documentation for resources and attributes.\n\n    The AWSCC provider is based on the AWS Cloud Control API\n    and provides a more consistent interface to AWS resources compared to the standard AWS provider.\n\n    This tool searches the Terraform AWSCC provider documentation for information about\n    a specific asset in the AWSCC Provider Documentation, assets can be either resources or data sources. It retrieves comprehensive details including descriptions, example code snippets, and schema references.\n\n    Use the 'asset_type' parameter to specify if you are looking for information about provider resources, data sources, or both. Valid values are 'resource', 'data_source' or 'both'.\n\n    The tool will automatically handle prefixes - you can search for either 'awscc_s3_bucket' or 's3_bucket'.\n\n    Examples:\n        - To get documentation for an S3 bucket resource:\n          search_awscc_provider_docs(asset_name='awscc_s3_bucket')\n          search_awscc_provider_docs(asset_name='awscc_s3_bucket', asset_type='resource')\n\n        - To search only for data sources:\n          search_aws_provider_docs(asset_name='awscc_appsync_api', kind='data_source')\n\n        - To search for both resource and data source documentation of a given name:\n          search_aws_provider_docs(asset_name='awscc_appsync_api', kind='both')\n\n        - Search of a resource without the prefix:\n          search_awscc_provider_docs(resource_type='ec2_instance')\n\n    Parameters:\n        asset_name: Name of the AWSCC Provider resource or data source to look for (e.g., 'awscc_s3_bucket', 'awscc_lambda_function')\n        asset_type: Type of documentation to search - 'resource' (default), 'data_source', or 'both'. Some resources and data sources share the same name\n\n    Returns:\n        A list of matching documentation entries with details including:\n        - Resource name and description\n        - URL to the official documentation\n        - Example code snippets\n        - Schema information (required, optional, read-only, and nested structures attributes)\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "asset_name": {
+            "type": "string",
+            "description": "Name of the AWSCC service (asset) to look for (e.g., awscc_s3_bucket, awscc_lambda_function)"
+          },
+          "asset_type": {
+            "type": "string",
+            "description": "Type of documentation to search - 'resource' (default), 'data_source', or 'both'"
+          }
+        },
+        "required": [
+          "asset_name"
+        ]
+      }
+    },
+    {
+      "name": "SearchSpecificAwsIaModules",
+      "description": "Search for specific AWS-IA Terraform modules.\n\n    This tool checks for information about four specific AWS-IA modules:\n    - aws-ia/bedrock/aws - Amazon Bedrock module for generative AI applications\n    - aws-ia/opensearch-serverless/aws - OpenSearch Serverless collection for vector search\n    - aws-ia/sagemaker-endpoint/aws - SageMaker endpoint deployment module\n    - aws-ia/serverless-streamlit-app/aws - Serverless Streamlit application deployment\n\n    It returns detailed information about these modules, including their README content,\n    variables.tf content, and submodules when available.\n\n    The search is performed across module names, descriptions, README content, and variable\n    definitions. This allows you to find modules based on their functionality or specific\n    configuration options.\n\n    Examples:\n        - To get information about all four modules:\n          search_specific_aws_ia_modules()\n\n        - To find modules related to Bedrock:\n          search_specific_aws_ia_modules(query='bedrock')\n\n        - To find modules related to vector search:\n          search_specific_aws_ia_modules(query='vector search')\n\n        - To find modules with specific configuration options:\n          search_specific_aws_ia_modules(query='endpoint_name')\n\n    Parameters:\n        query: Optional search term to filter modules (empty returns all four modules)\n\n    Returns:\n        A list of matching modules with their details, including:\n        - Basic module information (name, namespace, version)\n        - Module documentation (README content)\n        - Input and output parameter counts\n        - Variables from variables.tf with descriptions and default values\n        - Submodules information\n        - Version details and release information\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Optional search term to filter modules (empty returns all four modules)"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    },
+    {
+      "name": "RunCheckovScan",
+      "description": "Run Checkov security scan on Terraform code.\n\n    This tool runs Checkov to scan Terraform code for security and compliance issues,\n    identifying potential vulnerabilities and misconfigurations according to best practices.\n\n    Checkov (https://www.checkov.io/) is an open-source static code analysis tool that\n    can detect hundreds of security and compliance issues in infrastructure-as-code.\n\n    Parameters:\n        working_directory: Directory containing Terraform files to scan\n        framework: Framework to scan (default: terraform)\n        check_ids: Optional list of specific check IDs to run\n        skip_check_ids: Optional list of check IDs to skip\n        output_format: Format for scan results (default: json)\n\n    Returns:\n        A CheckovScanResult object containing scan results and identified vulnerabilities\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "working_directory": {
+            "type": "string",
+            "description": "Directory containing Terraform files"
+          },
+          "framework": {
+            "type": "string",
+            "description": "Framework to scan (terraform, cloudformation, etc.)"
+          },
+          "check_ids": {
+            "type": "string",
+            "description": "Specific check IDs to run"
+          },
+          "skip_check_ids": {
+            "type": "string",
+            "description": "Check IDs to skip"
+          },
+          "output_format": {
+            "type": "string",
+            "description": "Output format (json, cli, etc.)"
+          }
+        },
+        "required": [
+          "working_directory"
+        ]
+      }
+    },
+    {
+      "name": "SearchUserProvidedModule",
+      "description": "Search for a user-provided Terraform registry module and understand its inputs, outputs, and usage.\n\n    This tool takes a Terraform registry module URL and analyzes its input variables,\n    output variables, README, and other details to provide comprehensive information\n    about the module.\n\n    The module URL should be in the format \"namespace/name/provider\" (e.g., \"hashicorp/consul/aws\")\n    or \"registry.terraform.io/namespace/name/provider\".\n\n    Examples:\n        - To search for the HashiCorp Consul module:\n          search_user_provided_module(module_url='hashicorp/consul/aws')\n\n        - To search for a specific version of a module:\n          search_user_provided_module(module_url='terraform-aws-modules/vpc/aws', version='3.14.0')\n\n        - To search for a module with specific variables:\n          search_user_provided_module(\n              module_url='terraform-aws-modules/eks/aws',\n              variables={'cluster_name': 'my-cluster', 'vpc_id': 'vpc-12345'}\n          )\n\n    Parameters:\n        module_url: URL or identifier of the Terraform module (e.g., \"hashicorp/consul/aws\")\n        version: Optional specific version of the module to analyze\n        variables: Optional dictionary of variables to use when analyzing the module\n\n    Returns:\n        A SearchUserProvidedModuleResult object containing module information\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "module_url": {
+            "type": "string",
+            "description": "URL or identifier of the Terraform module (e.g., \"hashicorp/consul/aws\")"
+          },
+          "version": {
+            "type": "string",
+            "description": "Specific version of the module to analyze"
+          },
+          "variables": {
+            "type": "string",
+            "description": "Variables to use when analyzing the module"
+          }
+        },
+        "required": [
+          "module_url"
+        ]
+      }
+    }
+  ]
+}

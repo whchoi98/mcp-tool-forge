@@ -1,0 +1,576 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "get_cloudwatch_logs",
+        "description": "Get logs from CloudWatch for a specific resource.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "resource_type": {
+                "type": "string",
+                "description": "Resource type to search logs for. Valid values: \"pod\", \"node\", \"container\". This determines how logs are filtered."
+              },
+              "cluster_name": {
+                "type": "string",
+                "description": "Name of the EKS cluster where the resource is located. Used to construct the CloudWatch log group name."
+              },
+              "log_type": {
+                "type": "string",
+                "description": "Log type to query. Options:\n            - \"application\": Container/application logs\n            - \"host\": Node-level system logs\n            - \"performance\": Performance metrics logs\n            - \"control-plane\": EKS control plane logs\n            - Or provide a custom CloudWatch log group name directly"
+              },
+              "resource_name": {
+                "type": "string",
+                "description": "Resource name to search for in log messages (e.g., pod name, node name, container name). Used to filter logs for the specific resource."
+              },
+              "minutes": {
+                "type": "integer",
+                "description": "Number of minutes to look back for logs. Default: 15. Ignored if start_time is provided. Use smaller values for recent issues, larger values for historical analysis."
+              },
+              "start_time": {
+                "type": "string",
+                "description": "Start time in ISO format (e.g., \"2023-01-01T00:00:00Z\"). If provided, overrides the minutes parameter. IMPORTANT: Use this for precise time ranges."
+              },
+              "end_time": {
+                "type": "string",
+                "description": "End time in ISO format (e.g., \"2023-01-01T01:00:00Z\"). If not provided, defaults to current time. IMPORTANT: Use with start_time for precise time ranges."
+              },
+              "limit": {
+                "type": "integer",
+                "description": "Maximum number of log entries to return. Use lower values (10-50) for faster queries, higher values (100-1000) for more comprehensive results. IMPORTANT: Higher values may impact performance."
+              },
+              "filter_pattern": {
+                "type": "string",
+                "description": "Additional CloudWatch Logs filter pattern to apply. Uses CloudWatch Logs Insights syntax (e.g., \"ERROR\", \"field=value\"). IMPORTANT: Use this to narrow down results for specific issues."
+              },
+              "fields": {
+                "type": "string",
+                "description": "Custom fields to include in the query results (defaults to \"@timestamp, @message\"). Use CloudWatch Logs Insights field syntax. IMPORTANT: Only specify if you need fields beyond the default timestamp and message."
+              }
+            },
+            "required": [
+              "resource_type",
+              "cluster_name",
+              "log_type"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_cloudwatch_metrics",
+        "description": "Get metrics from CloudWatch for a specific resource.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "cluster_name": {
+                "type": "string",
+                "description": "Name of the EKS cluster to get metrics for."
+              },
+              "metric_name": {
+                "type": "string",
+                "description": "Metric name to retrieve. Common examples:\n            - cpu_usage_total: Total CPU usage\n            - memory_rss: Resident Set Size memory usage\n            - network_rx_bytes: Network bytes received\n            - network_tx_bytes: Network bytes transmitted"
+              },
+              "namespace": {
+                "type": "string",
+                "description": "CloudWatch namespace where the metric is stored. Common values:\n            - \"ContainerInsights\": For container metrics\n            - \"AWS/EC2\": For EC2 instance metrics\n            - \"AWS/EKS\": For EKS control plane metrics"
+              },
+              "dimensions": {
+                "type": "object",
+                "description": "Dimensions to use for the CloudWatch metric query. Must include appropriate dimensions for the resource type and metric (e.g., ClusterName, PodName, Namespace)."
+              },
+              "minutes": {
+                "type": "integer",
+                "description": "Number of minutes to look back for metrics. Default: 15. Ignored if start_time is provided. IMPORTANT: Choose a time range appropriate for the metric resolution."
+              },
+              "start_time": {
+                "type": "string",
+                "description": "Start time in ISO format (e.g., \"2023-01-01T00:00:00Z\"). If provided, overrides the minutes parameter. IMPORTANT: Use this for precise historical analysis."
+              },
+              "end_time": {
+                "type": "string",
+                "description": "End time in ISO format (e.g., \"2023-01-01T01:00:00Z\"). If not provided, defaults to current time. IMPORTANT: Use with start_time for precise time ranges."
+              },
+              "limit": {
+                "type": "integer",
+                "description": "Maximum number of data points to return. Higher values (100-1000) provide more granular data but may impact performance. IMPORTANT: Balance between granularity and performance."
+              },
+              "period": {
+                "type": "integer",
+                "description": "Period in seconds for the metric data points. Default: 60 (1 minute). Lower values (1-60) provide higher resolution but may be less available. IMPORTANT: Match to your monitoring needs."
+              },
+              "stat": {
+                "type": "string",
+                "description": "Statistic to use for the metric aggregation:\n            - Average: Mean value during the period\n            - Sum: Total value during the period\n            - Maximum: Highest value during the period\n            - Minimum: Lowest value during the period\n            - SampleCount: Number of samples during the period"
+              }
+            },
+            "required": [
+              "cluster_name",
+              "metric_name",
+              "namespace",
+              "dimensions"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "search_eks_troubleshoot_guide",
+        "description": "Search the EKS Troubleshoot Guide for troubleshooting information.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "Your specific question or issue description related to EKS troubleshooting"
+              }
+            },
+            "required": [
+              "query"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "manage_eks_stacks",
+        "description": "Manage EKS CloudFormation stacks with both read and write operations.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "operation": {
+                "type": "string",
+                "description": "Operation to perform: generate, deploy, describe, or delete. Choose \"describe\" for read-only operations when write access is disabled."
+              },
+              "template_file": {
+                "type": "string",
+                "description": "Absolute path for the CloudFormation template (for generate and deploy operations).\n            IMPORTANT: Assistant must provide the full absolute path to the template file, as the MCP client and server might not run from the same location."
+              },
+              "cluster_name": {
+                "type": "string",
+                "description": "Name of the EKS cluster (for generate, deploy, describe and delete operations).\n            This name will be used to derive the CloudFormation stack name and will be embedded in the cluster resources."
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_k8s_resources",
+        "description": "List Kubernetes resources of a specific kind.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "cluster_name": {
+                "type": "string",
+                "description": "Name of the EKS cluster where the resources are located."
+              },
+              "kind": {
+                "type": "string",
+                "description": "Kind of the Kubernetes resources to list (e.g., 'Pod', 'Service', 'Deployment').\n            Use the list_api_versions tool to find available resource kinds."
+              },
+              "api_version": {
+                "type": "string",
+                "description": "API version of the Kubernetes resources (e.g., 'v1', 'apps/v1', 'networking.k8s.io/v1').\n            Use the list_api_versions tool to find available API versions."
+              },
+              "namespace": {
+                "type": "string",
+                "description": "Namespace of the Kubernetes resources to list.\n            If not provided, resources will be listed across all namespaces (for namespaced resources)."
+              },
+              "label_selector": {
+                "type": "string",
+                "description": "Label selector to filter resources (e.g., 'app=nginx,tier=frontend').\n            Uses the same syntax as kubectl's --selector flag."
+              },
+              "field_selector": {
+                "type": "string",
+                "description": "Field selector to filter resources (e.g., 'metadata.name=my-pod,status.phase=Running').\n            Uses the same syntax as kubectl's --field-selector flag."
+              }
+            },
+            "required": [
+              "cluster_name",
+              "kind",
+              "api_version"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_pod_logs",
+        "description": "Get logs from a pod in a Kubernetes cluster.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "cluster_name": {
+                "type": "string",
+                "description": "Name of the EKS cluster where the pod is running."
+              },
+              "namespace": {
+                "type": "string",
+                "description": "Kubernetes namespace where the pod is located."
+              },
+              "pod_name": {
+                "type": "string",
+                "description": "Name of the pod to retrieve logs from."
+              },
+              "container_name": {
+                "type": "string",
+                "description": "Name of the specific container to get logs from. Required only if the pod contains multiple containers."
+              },
+              "since_seconds": {
+                "type": "string",
+                "description": "Only return logs newer than this many seconds. Useful for getting recent logs without retrieving the entire history."
+              },
+              "tail_lines": {
+                "type": "integer",
+                "description": "Number of lines to return from the end of the logs. Default: 100. Use higher values for more context."
+              },
+              "limit_bytes": {
+                "type": "integer",
+                "description": "Maximum number of bytes to return. Default: 10KB (10240 bytes). Prevents retrieving extremely large log files."
+              },
+              "previous": {
+                "type": "boolean",
+                "description": "Return previous terminated container logs. Default: false. Useful to get logs for pods that are restarting."
+              }
+            },
+            "required": [
+              "cluster_name",
+              "namespace",
+              "pod_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_k8s_events",
+        "description": "Get events related to a specific Kubernetes resource.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "cluster_name": {
+                "type": "string",
+                "description": "Name of the EKS cluster where the resource is located."
+              },
+              "kind": {
+                "type": "string",
+                "description": "Kind of the involved object (e.g., \"Pod\", \"Deployment\", \"Service\"). Must match the resource kind exactly."
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the involved object to get events for."
+              },
+              "namespace": {
+                "type": "string",
+                "description": "Namespace of the involved object. Required for namespaced resources (like Pods, Deployments).\n            Not required for cluster-scoped resources (like Nodes, PersistentVolumes)."
+              }
+            },
+            "required": [
+              "cluster_name",
+              "kind",
+              "name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_api_versions",
+        "description": "List all available API versions in the Kubernetes cluster.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "cluster_name": {
+                "type": "string",
+                "description": "Name of the EKS cluster to query for available API versions."
+              }
+            },
+            "required": [
+              "cluster_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "manage_k8s_resource",
+        "description": "Manage a single Kubernetes resource with various operations.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "operation": {
+                "type": "string",
+                "description": "Operation to perform on the resource. Valid values:\n            - create: Create a new resource\n            - replace: Replace an existing resource\n            - patch: Update specific fields of an existing resource\n            - delete: Delete an existing resource\n            - read: Get details of an existing resource\n            Use list_k8s_resources for listing multiple resources."
+              },
+              "cluster_name": {
+                "type": "string",
+                "description": "Name of the EKS cluster where the resource is located or will be created."
+              },
+              "kind": {
+                "type": "string",
+                "description": "Kind of the Kubernetes resource (e.g., \"Pod\", \"Service\", \"Deployment\")."
+              },
+              "api_version": {
+                "type": "string",
+                "description": "API version of the Kubernetes resource (e.g., \"v1\", \"apps/v1\", \"networking.k8s.io/v1\")."
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the Kubernetes resource. Required for all operations except create (where it can be specified in the body)."
+              },
+              "namespace": {
+                "type": "string",
+                "description": "Namespace of the Kubernetes resource. Required for namespaced resources.\n            Not required for cluster-scoped resources (like Nodes, PersistentVolumes)."
+              },
+              "body": {
+                "type": "string",
+                "description": "Resource definition as a dictionary. Required for create, replace, and patch operations.\n            For create and replace, this should be a complete resource definition.\n            For patch, this should contain only the fields to update."
+              }
+            },
+            "required": [
+              "operation",
+              "cluster_name",
+              "kind",
+              "api_version"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "apply_yaml",
+        "description": "Apply a Kubernetes YAML from a local file.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "yaml_path": {
+                "type": "string",
+                "description": "Absolute path to the YAML file to apply.\n            IMPORTANT: Must be an absolute path (e.g., '/home/user/manifests/app.yaml') as the MCP client and server might not run from the same location."
+              },
+              "cluster_name": {
+                "type": "string",
+                "description": "Name of the EKS cluster where the resources will be created or updated."
+              },
+              "namespace": {
+                "type": "string",
+                "description": "Kubernetes namespace to apply resources to. Will be used for namespaced resources that do not specify a namespace."
+              },
+              "force": {
+                "type": "boolean",
+                "description": "Whether to update resources if they already exist (similar to kubectl apply). Set to false to only create new resources."
+              }
+            },
+            "required": [
+              "yaml_path",
+              "cluster_name",
+              "namespace"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "generate_app_manifest",
+        "description": "Generate Kubernetes manifest for a deployment and service.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "app_name": {
+                "type": "string",
+                "description": "Name of the application. Used for deployment and service names, and for labels."
+              },
+              "image_uri": {
+                "type": "string",
+                "description": "Full ECR image URI with tag (e.g., 123456789012.dkr.ecr.region.amazonaws.com/repo:tag).\n            Must include the full repository path and tag."
+              },
+              "output_dir": {
+                "type": "string",
+                "description": "Absolute path to the directory to save the manifest file"
+              },
+              "port": {
+                "type": "integer",
+                "description": "Container port that the application listens on"
+              },
+              "replicas": {
+                "type": "integer",
+                "description": "Number of replicas to deploy"
+              },
+              "cpu": {
+                "type": "string",
+                "description": "CPU request for each container (e.g., \"100m\" for 0.1 CPU cores, \"500m\" for half a core)."
+              },
+              "memory": {
+                "type": "string",
+                "description": "Memory request for each container (e.g., \"128Mi\" for 128 MiB, \"1Gi\" for 1 GiB)."
+              },
+              "namespace": {
+                "type": "string",
+                "description": "Kubernetes namespace to deploy the application to. Default: \"default\""
+              },
+              "load_balancer_scheme": {
+                "type": "string",
+                "description": "AWS load balancer scheme. Options: \"internal\" (private VPC only) or \"internet-facing\" (public access)."
+              }
+            },
+            "required": [
+              "app_name",
+              "image_uri",
+              "output_dir"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "add_inline_policy",
+        "description": "Add a new inline policy to an IAM role.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "policy_name": {
+                "type": "string",
+                "description": "Name of the inline policy to create. Must be unique within the role."
+              },
+              "role_name": {
+                "type": "string",
+                "description": "Name of the IAM role to add the policy to. The role must exist."
+              },
+              "permissions": {
+                "type": "string",
+                "description": "Permissions to include in the policy as IAM policy statements in JSON format.\n            Can be either a single statement object or an array of statement objects."
+              }
+            },
+            "required": [
+              "policy_name",
+              "role_name",
+              "permissions"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_policies_for_role",
+        "description": "Get all policies attached to an IAM role.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "role_name": {
+                "type": "string",
+                "description": "Name of the IAM role to get policies for. The role must exist in your AWS account."
+              }
+            },
+            "required": [
+              "role_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_eks_metrics_guidance",
+        "description": "Get CloudWatch metrics guidance for specific resource types in EKS clusters.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "resource_type": {
+                "type": "string",
+                "description": "Type of resource to get metrics for (cluster, node, pod, namespace, service)"
+              }
+            },
+            "required": [
+              "resource_type"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_eks_vpc_config",
+        "description": "Get VPC configuration for an EKS cluster.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "cluster_name": {
+                "type": "string",
+                "description": "Name of the EKS cluster to get VPC configuration for"
+              },
+              "vpc_id": {
+                "type": "string",
+                "description": "ID of the specific VPC to query (optional, will use cluster VPC if not specified)"
+              }
+            },
+            "required": [
+              "cluster_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_eks_insights",
+        "description": "Get EKS Insights for cluster configuration and upgrade readiness.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "cluster_name": {
+                "type": "string",
+                "description": "Name of the EKS cluster"
+              },
+              "insight_id": {
+                "type": "string",
+                "description": "ID of a specific insight to get detailed information for. If provided, returns detailed information about this specific insight."
+              },
+              "category": {
+                "type": "string",
+                "description": "Filter insights by category (e.g., \"MISCONFIGURATION\" or \"UPGRADE_READINESS\")"
+              },
+              "next_token": {
+                "type": "string",
+                "description": "Token for pagination to get the next set of results"
+              }
+            },
+            "required": [
+              "cluster_name"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

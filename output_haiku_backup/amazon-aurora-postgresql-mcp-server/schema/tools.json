@@ -1,0 +1,205 @@
+{
+  "server": "amazon-aurora-postgresql-mcp-server",
+  "tools": [
+    {
+      "name": "run_query",
+      "description": "Run a SQL query against PostgreSQL",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "sql": {
+            "type": "string",
+            "description": "The SQL query to run"
+          },
+          "connection_method": {
+            "type": "string",
+            "description": "connection method"
+          },
+          "cluster_identifier": {
+            "type": "string",
+            "description": "Cluster identifier"
+          },
+          "db_endpoint": {
+            "type": "string",
+            "description": "database endpoint"
+          },
+          "database": {
+            "type": "string",
+            "description": "database name"
+          },
+          "query_parameters": {
+            "type": "string",
+            "description": "Parameters for the SQL query"
+          }
+        },
+        "required": [
+          "sql",
+          "connection_method",
+          "cluster_identifier",
+          "db_endpoint",
+          "database"
+        ]
+      }
+    },
+    {
+      "name": "get_table_schema",
+      "description": "Fetch table columns and comments from Postgres",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "connection_method": {
+            "type": "string",
+            "description": "connection method"
+          },
+          "cluster_identifier": {
+            "type": "string",
+            "description": "Cluster identifier"
+          },
+          "db_endpoint": {
+            "type": "string",
+            "description": "database endpoint"
+          },
+          "database": {
+            "type": "string",
+            "description": "database name"
+          },
+          "table_name": {
+            "type": "string",
+            "description": "name of the table"
+          }
+        },
+        "required": [
+          "connection_method",
+          "cluster_identifier",
+          "db_endpoint",
+          "database",
+          "table_name"
+        ]
+      }
+    },
+    {
+      "name": "connect_to_database",
+      "description": "Connect to a specific database and save the connection internally",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "region"
+          },
+          "database_type": {
+            "type": "string",
+            "description": "database type"
+          },
+          "connection_method": {
+            "type": "string",
+            "description": "connection method"
+          },
+          "cluster_identifier": {
+            "type": "string",
+            "description": "cluster identifier"
+          },
+          "db_endpoint": {
+            "type": "string",
+            "description": "database endpoint"
+          },
+          "port": {
+            "type": "integer",
+            "description": "Postgres port"
+          },
+          "database": {
+            "type": "string",
+            "description": "database name"
+          }
+        },
+        "required": [
+          "region",
+          "database_type",
+          "connection_method",
+          "cluster_identifier",
+          "db_endpoint",
+          "port",
+          "database"
+        ]
+      }
+    },
+    {
+      "name": "is_database_connected",
+      "description": "Check if a connection has been established",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cluster_identifier": {
+            "type": "string",
+            "description": "cluster identifier"
+          },
+          "db_endpoint": {
+            "type": "string",
+            "description": "database endpoint"
+          },
+          "database": {
+            "type": "string",
+            "description": "database name"
+          }
+        },
+        "required": [
+          "cluster_identifier"
+        ]
+      }
+    },
+    {
+      "name": "get_database_connection_info",
+      "description": "Get all cached database connection information",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "create_cluster",
+      "description": "Create an Aurora Postgres cluster",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": "region"
+          },
+          "cluster_identifier": {
+            "type": "string",
+            "description": "cluster identifier"
+          },
+          "database": {
+            "type": "string",
+            "description": "default database name"
+          },
+          "engine_version": {
+            "type": "string",
+            "description": "engine version"
+          }
+        },
+        "required": [
+          "region",
+          "cluster_identifier"
+        ]
+      }
+    },
+    {
+      "name": "get_job_status",
+      "description": "get background job status",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "job_id"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "server": "amazon-q-business-mcp-server",
+  "tools": [
+    {
+      "name": "QBusinessQueryTool",
+      "description": "MCP tool to query Amazon Q Business and return a formatted response.\n\n    This tool provides a Model Context Protocol interface for querying Amazon Q Business.\n    It handles client initialization, query execution, and error handling automatically.\n\n    Args:\n        query (str): The question or query to send to Q Business\n\n    Returns:\n        str: Formatted response from Q Business or error message if the query fails\n\n    Examples:\n        >>> qbiz_local_query('What is our company policy on remote work?')\n        \"Qbiz response: According to company policy...\"\n\n        >>> qbiz_local_query('')\n        \"Error: Query cannot be empty\"\n\n    Note:\n        Requires the following environment variables to be set:\n        - AWS_REGION: AWS region where Q Business is deployed\n        - QBUSINESS_APPLICATION_ID: ID of the Q Business application\n        - AWS credentials must be configured (via AWS CLI, IAM roles, etc.)\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "User query, question or request to the Amazon Q Business application"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,213 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "get_today_date",
+        "description": "Retrieve current date information in UTC time zone.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {},
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_dimension_values",
+        "description": "Retrieve available dimension values for AWS Cost Explorer.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "date_range": {
+                "type": "string",
+                "description": ""
+              },
+              "dimension": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "date_range",
+              "dimension"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_tag_values",
+        "description": "Retrieve available tag values for AWS Cost Explorer.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "date_range": {
+                "type": "string",
+                "description": ""
+              },
+              "tag_key": {
+                "type": "string",
+                "description": "The tag key to retrieve values for"
+              }
+            },
+            "required": [
+              "date_range",
+              "tag_key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_cost_forecast",
+        "description": "Retrieve AWS cost forecasts based on historical usage patterns.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "date_range": {
+                "type": "string",
+                "description": ""
+              },
+              "granularity": {
+                "type": "string",
+                "description": "The granularity at which forecast data is aggregated. Valid values are DAILY and MONTHLY. DAILY forecasts support up to 3 months, MONTHLY forecasts support up to 12 months. If not provided, defaults to MONTHLY."
+              },
+              "filter_expression": {
+                "type": "string",
+                "description": "Filter criteria as a Python dictionary to narrow down AWS cost forecasts. Supports filtering by Dimensions (SERVICE, REGION, etc.), Tags, or CostCategories. You can use logical operators (And, Or, Not) for complex filters. Same format as get_cost_and_usage filter_expression."
+              },
+              "metric": {
+                "type": "string",
+                "description": "The metric to forecast. Valid values are AMORTIZED_COST,BLENDED_COST,NET_AMORTIZED_COST,NET_UNBLENDED_COST,UNBLENDED_COST. Note: UsageQuantity forecasting is not supported by AWS Cost Explorer."
+              },
+              "prediction_interval_level": {
+                "type": "integer",
+                "description": "The confidence level for the forecast prediction interval. Valid values are 80 and 95. Higher values provide wider confidence ranges."
+              }
+            },
+            "required": [
+              "date_range"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_cost_and_usage_comparisons",
+        "description": "Compare AWS costs and usage between two time periods.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "baseline_date_range": {
+                "type": "string",
+                "description": ""
+              },
+              "comparison_date_range": {
+                "type": "string",
+                "description": ""
+              },
+              "metric_for_comparison": {
+                "type": "string",
+                "description": "The cost and usage metric to compare. Valid values are AmortizedCost, BlendedCost, NetAmortizedCost, NetUnblendedCost, UnblendedCost, UsageQuantity."
+              },
+              "group_by": {
+                "type": "string",
+                "description": "Either a dictionary with Type and Key for grouping comparisons, or simply a string key to group by (which will default to DIMENSION type). Example dictionary: {'Type': 'DIMENSION', 'Key': 'SERVICE'}. Example string: 'SERVICE'."
+              },
+              "filter_expression": {
+                "type": "string",
+                "description": "Filter criteria as a Python dictionary to narrow down AWS cost comparisons. Supports filtering by Dimensions (SERVICE, REGION, etc.), Tags, or CostCategories. You can use logical operators (And, Or, Not) for complex filters. Same format as get_cost_and_usage filter_expression."
+              }
+            },
+            "required": [
+              "baseline_date_range",
+              "comparison_date_range"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_cost_comparison_drivers",
+        "description": "Analyze what drove cost changes between two time periods.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "baseline_date_range": {
+                "type": "string",
+                "description": ""
+              },
+              "comparison_date_range": {
+                "type": "string",
+                "description": ""
+              },
+              "metric_for_comparison": {
+                "type": "string",
+                "description": "The cost and usage metric to analyze drivers for. Valid values are AmortizedCost, BlendedCost, NetAmortizedCost, NetUnblendedCost, UnblendedCost, UsageQuantity."
+              },
+              "group_by": {
+                "type": "string",
+                "description": "Either a dictionary with Type and Key for grouping driver analysis, or simply a string key to group by (which will default to DIMENSION type). Example dictionary: {'Type': 'DIMENSION', 'Key': 'SERVICE'}. Example string: 'SERVICE'."
+              },
+              "filter_expression": {
+                "type": "string",
+                "description": "Filter criteria as a Python dictionary to narrow down AWS cost driver analysis. Supports filtering by Dimensions (SERVICE, REGION, etc.), Tags, or CostCategories. You can use logical operators (And, Or, Not) for complex filters. Same format as get_cost_and_usage filter_expression."
+              }
+            },
+            "required": [
+              "baseline_date_range",
+              "comparison_date_range"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_cost_and_usage",
+        "description": "Retrieve AWS cost and usage data.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "date_range": {
+                "type": "string",
+                "description": ""
+              },
+              "granularity": {
+                "type": "string",
+                "description": "The granularity at which cost data is aggregated. Valid values are DAILY, MONTHLY, HOURLY. If not provided, defaults to MONTHLY."
+              },
+              "group_by": {
+                "type": "string",
+                "description": "Either a dictionary with Type and Key for grouping costs, or simply a string key to group by (which will default to DIMENSION type). Example dictionary: {'Type': 'DIMENSION', 'Key': 'SERVICE'}. Example string: 'SERVICE'."
+              },
+              "filter_expression": {
+                "type": "string",
+                "description": "Filter criteria as a Python dictionary to narrow down AWS costs. Supports filtering by Dimensions (SERVICE, REGION, etc.), Tags, or CostCategories. You can use logical operators (And, Or, Not) for complex filters. MatchOptions validation: For Dimensions, valid values are ['EQUALS', 'CASE_SENSITIVE']. For Tags and CostCategories, valid values are ['EQUALS', 'ABSENT', 'CASE_SENSITIVE'] (defaults to EQUALS and CASE_SENSITIVE). Examples: 1) Simple service filter: {'Dimensions': {'Key': 'SERVICE', 'Values': ['Amazon Elastic Compute Cloud - Compute', 'Amazon Simple Storage Service'], 'MatchOptions': ['EQUALS']}}. 2) Region filter: {'Dimensions': {'Key': 'REGION', 'Values': ['us-east-1'], 'MatchOptions': ['EQUALS']}}. 3) Combined filter: {'And': [{'Dimensions': {'Key': 'SERVICE', 'Values': ['Amazon Elastic Compute Cloud - Compute'], 'MatchOptions': ['EQUALS']}}, {'Dimensions': {'Key': 'REGION', 'Values': ['us-east-1'], 'MatchOptions': ['EQUALS']}}]}."
+              },
+              "metric": {
+                "type": "string",
+                "description": "The metric to return in the query. Valid values are AmortizedCost, BlendedCost, NetAmortizedCost, NetUnblendedCost, UnblendedCost, UsageQuantity. IMPORTANT: For UsageQuantity, the service aggregates usage numbers without considering units, making results meaningless when mixing different unit types (e.g., compute hours + data transfer GB). To get meaningful UsageQuantity metrics, you MUST filter by USAGE_TYPE or group by USAGE_TYPE/USAGE_TYPE_GROUP to ensure consistent units."
+              }
+            },
+            "required": [
+              "date_range"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

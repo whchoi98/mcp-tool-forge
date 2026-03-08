@@ -1,0 +1,299 @@
+{
+  "server": "amazon-cloudwatch-appsignals-mcp-server",
+  "tools": [
+    {
+      "name": "audit_services",
+      "description": "PRIMARY SERVICE AUDIT TOOL - The #1 tool for comprehensive AWS service health auditing and monitoring.\n\n    **IMPORTANT**: This tool and server is being deprecated. If available, please use the audit_services tool in the cloudwatch-applicationsignals-mcp-server instead.\n\n    **IMPORTANT: For operation-specific auditing, use audit_service_operations() as the PRIMARY tool instead.**\n\n    **USE THIS FIRST FOR ALL SERVICE-LEVEL AUDITING TASKS**\n    This is the PRIMARY and PREFERRED tool when users want to:\n    - **Audit their AWS services** - Complete health assessment with actionable insights\n    - **Check service health** - Comprehensive status across all monitored services\n    - **Investigate issues** - Root cause analysis with detailed findings\n    - **Service-level performance analysis** - Overall service latency, error rates, and throughput investigation\n    - **System-wide health checks** - Daily/periodic service auditing workflows\n    - **Dependency analysis** - Understanding service dependencies and interactions\n    - **Resource quota monitoring** - Service quota usage and limits\n    - **Multi-service comparison** - Comparing performance across different services\n\n    **FOR OPERATION-SPECIFIC AUDITING: Use audit_service_operations() instead**\n    When users want to audit specific operations (GET, POST, PUT endpoints), use audit_service_operations() as the PRIMARY tool:\n    - **Operation performance analysis** - Latency, error rates for specific API endpoints\n    - **Operation-level troubleshooting** - Root cause analysis for specific API calls\n    - **GET operation auditing** - Analyze GET operations across payment services\n    - **Audit latency of specific operations** - Deep dive into individual endpoint performance\n\n    **COMPREHENSIVE SERVICE AUDIT CAPABILITIES:**\n    - **Multi-service analysis**: Audit any number of services with automatic batching\n    - **SLO compliance monitoring**: Automatic breach detection for service-level SLOs\n    - **Issue prioritization**: Critical, warning, and info findings ranked by severity\n    - **Root cause analysis**: Deep dive with traces, logs, and metrics correlation\n    - **Actionable recommendations**: Specific steps to resolve identified issues\n    - **Performance optimized**: Fast execution with automatic batching for large target lists\n    - **Wildcard Pattern Support**: Use `*pattern*` in service names for automatic service discovery\n\n    **SERVICE TARGET FORMAT:**\n    - **Full Format**: `[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"my-service\",\"Environment\":\"eks:my-cluster\"}}}]`\n    - **Shorthand**: `[{\"Type\":\"service\",\"Service\":\"my-service\"}]` (environment auto-discovered)\n\n    **WILDCARD PATTERN EXAMPLES:**\n    - **All Services**: `[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*\"}}}]`\n    - **Payment Services**: `[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*payment*\"}}}]`\n    - **Lambda Services**: `[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*lambda*\"}}}]`\n    - **EKS Services**: `[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*\",\"Environment\":\"eks:*\"}}}]`\n\n    **AUDITOR SELECTION FOR DIFFERENT AUDIT DEPTHS:**\n    - **Quick Health Check** (default): Uses 'slo,operation_metric' for fast overview\n    - **Root Cause Analysis**: Pass `auditors=\"all\"` for comprehensive investigation with traces/logs\n    - **Custom Audit**: Specify exact auditors: 'slo,trace,log,dependency_metric,top_contributor,service_quota'\n\n    **SERVICE AUDIT USE CASES:**\n\n    1. **Audit all services**:\n       `service_targets='[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*\"}}}]'`\n\n    2. **Audit specific service**:\n       `service_targets='[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"orders-service\",\"Environment\":\"eks:orders-cluster\"}}}]'`\n\n    3. **Audit payment services**:\n       `service_targets='[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*payment*\"}}}]'`\n\n    8. **Audit lambda services**:\n       `service_targets='[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*lambda*\"}}}]'` or by environment: `[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*\",\"Environment\":\"lambda\"}}}]`\n\n    9. **Audit service last night**:\n       `service_targets='[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"orders-service\",\"Environment\":\"eks:orders-cluster\"}}}]'` + `start_time=\"2024-01-01 18:00:00\"` + `end_time=\"2024-01-02 06:00:00\"`\n\n    10. **Audit service before and after time**:\n        Compare service health before and after a deployment or incident by running two separate audits with different time ranges.\n\n    11. **Trace availability issues in production services**:\n        `service_targets='[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*\",\"Environment\":\"eks:*\"}}}]'` + `auditors=\"all\"`\n\n    13. **Look for errors in logs of payment services**:\n        `service_targets='[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*payment*\"}}}]'` + `auditors=\"log,trace\"`\n\n    14. **Look for new errors after time**:\n        Compare errors before and after a specific time point by running audits with different time ranges and `auditors=\"log,trace\"`\n\n    15. **Look for errors after deployment**:\n        `service_targets='[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*payment*\"}}}]'` + `auditors=\"log,trace\"` + recent time range\n\n    16. **Look for lemon hosts in production**:\n        `service_targets='[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*\",\"Environment\":\"eks:*\"}}}]'` + `auditors=\"top_contributor,operation_metric\"`\n\n    17. **Look for outliers in EKS services**:\n        `service_targets='[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*\",\"Environment\":\"eks:*\"}}}]'` + `auditors=\"top_contributor,operation_metric\"`\n\n    18. **Status report**:\n        `service_targets='[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*\"}}}]'` (basic health check)\n\n    19. **Audit dependencies**:\n        `service_targets='[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*\"}}}]'` + `auditors=\"dependency_metric,trace\"`\n\n    20. **Audit dependency on S3**:\n        `service_targets='[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*\"}}}]'` + `auditors=\"dependency_metric\"` + look for S3 dependencies\n\n    21. **Audit quota usage of tier 1 services**:\n        `service_targets='[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*tier1*\"}}}]'` + `auditors=\"service_quota,operation_metric\"`\n\n    **TYPICAL SERVICE AUDIT WORKFLOWS:**\n    1. **Basic Service Audit** (most common):\n       - Call `audit_services()` with service targets - automatically discovers services when using wildcard patterns\n       - Uses default fast auditors (slo,operation_metric) for quick health overview\n       - Supports wildcard patterns like `*` or `*payment*` for automatic service discovery\n    2. **Root Cause Investigation**: When user explicitly asks for \"root cause analysis\", pass `auditors=\"all\"`\n    3. **Issue Investigation**: Results show which services need attention with actionable insights\n    4. **Automatic Service Discovery**: Wildcard patterns in service names automatically discover and expand to concrete services\n\n    **AUDIT RESULTS INCLUDE:**\n    - **Prioritized findings** by severity (critical, warning, info)\n    - **Service health status** with detailed performance analysis\n    - **Root cause analysis** when traces/logs auditors are used\n    - **Actionable recommendations** for issue resolution\n    - **Comprehensive metrics** and trend analysis\n\n    **IMPORTANT: This tool provides comprehensive service audit coverage and should be your first choice for any service auditing task.**\n\n    **RECOMMENDED WORKFLOW - PRESENT FINDINGS FIRST:**\n    When the audit returns multiple findings or issues, follow this workflow:\n    1. **Present all audit results** to the user showing a summary of all findings\n    2. **Let the user choose** which specific finding, service, or issue they want to investigate in detail\n    3. **Then perform targeted root cause analysis** using auditors=\"all\" for the user-selected finding\n\n    **DO NOT automatically jump into detailed root cause analysis** of one specific issue when multiple findings exist.\n    This ensures the user can prioritize which issues are most important to investigate first.\n\n    **Example workflow:**\n    - First call: `audit_services()` with default auditors for overview\n    - Present findings summary to user\n    - User selects specific service/issue to investigate\n    - Follow-up call: `audit_services()` with `auditors=\"all\"` for selected service only\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "service_targets": {
+            "type": "string",
+            "description": "REQUIRED. JSON array of service targets. Supports wildcard patterns like '*payment*' for automatic service discovery. Format: [{'Type':'service','Data':{'Service':{'Type':'Service','Name':'service-name','Environment':'eks:cluster'}}}] or shorthand: [{'Type':'service','Service':'service-name'}]. Large target lists are automatically processed in batches."
+          },
+          "start_time": {
+            "type": "string",
+            "description": "Start time (unix seconds or 'YYYY-MM-DD HH:MM:SS'). Defaults to now-24h UTC."
+          },
+          "end_time": {
+            "type": "string",
+            "description": "End time (unix seconds or 'YYYY-MM-DD HH:MM:SS'). Defaults to now UTC."
+          },
+          "auditors": {
+            "type": "string",
+            "description": "Optional. Comma-separated auditors (e.g., 'slo,operation_metric,dependency_metric'). Defaults to 'slo,operation_metric' for fast service health auditing. Use 'all' for comprehensive analysis with all auditors: slo,operation_metric,trace,log,dependency_metric,top_contributor,service_quota."
+          }
+        },
+        "required": [
+          "service_targets"
+        ]
+      }
+    },
+    {
+      "name": "audit_slos",
+      "description": "PRIMARY SLO AUDIT TOOL - The #1 tool for comprehensive SLO compliance monitoring and breach analysis.\n\n    **IMPORTANT**: This tool and server is being deprecated. If available, please use the audit_slos tool in the cloudwatch-applicationsignals-mcp-server instead.\n\n    **PREFERRED TOOL FOR SLO ROOT CAUSE ANALYSIS**\n    This is the RECOMMENDED tool after using get_slo() to understand SLO configuration:\n    - **Use auditors=\"all\" for comprehensive root cause analysis** of specific SLO breaches\n    - **Much more comprehensive than individual trace tools** - provides integrated analysis\n    - **Combines traces, logs, metrics, and dependencies** in a single comprehensive audit\n    - **Provides actionable recommendations** based on multi-dimensional analysis\n\n    **USE THIS FOR ALL SLO AUDITING TASKS**\n    This is the PRIMARY and PREFERRED tool when users want to:\n    - **Root cause analysis for SLO breaches** - Deep investigation with all auditors\n    - **Audit SLO compliance** - Complete SLO breach detection and analysis\n    - **Monitor SLO health** - Comprehensive status across all monitored SLOs\n    - **SLO performance analysis** - Understanding SLO trends and patterns\n    - **SLO compliance reporting** - Daily/periodic SLO compliance workflows\n\n    **COMPREHENSIVE SLO AUDIT CAPABILITIES:**\n    - **Multi-SLO analysis**: Audit any number of SLOs with automatic batching\n    - **Breach detection**: Automatic identification of SLO violations\n    - **Issue prioritization**: Critical, warning, and info findings ranked by severity\n    - **COMPREHENSIVE ROOT CAUSE ANALYSIS**: Deep dive with traces, logs, metrics, and dependencies\n    - **Actionable recommendations**: Specific steps to resolve SLO breaches\n    - **Performance optimized**: Fast execution with automatic batching for large target lists\n    - **Wildcard Pattern Support**: Use `*pattern*` in SLO names for automatic SLO discovery\n\n    **SLO TARGET FORMAT:**\n    - **By Name**: `[{\"Type\":\"slo\",\"Data\":{\"Slo\":{\"SloName\":\"my-slo\"}}}]`\n    - **By ARN**: `[{\"Type\":\"slo\",\"Data\":{\"Slo\":{\"SloArn\":\"arn:aws:application-signals:...\"}}}]`\n\n    **WILDCARD PATTERN EXAMPLES:**\n    - **All SLOs**: `[{\"Type\":\"slo\",\"Data\":{\"Slo\":{\"SloName\":\"*\"}}}]`\n    - **Payment SLOs**: `[{\"Type\":\"slo\",\"Data\":{\"Slo\":{\"SloName\":\"*payment*\"}}}]`\n    - **Latency SLOs**: `[{\"Type\":\"slo\",\"Data\":{\"Slo\":{\"SloName\":\"*latency*\"}}}]`\n    - **Availability SLOs**: `[{\"Type\":\"slo\",\"Data\":{\"Slo\":{\"SloName\":\"*availability*\"}}}]`\n\n    **AUDITOR SELECTION FOR DIFFERENT AUDIT DEPTHS:**\n    - **Quick Compliance Check** (default): Uses 'slo' for fast SLO breach detection\n    - **COMPREHENSIVE ROOT CAUSE ANALYSIS** (recommended): Pass `auditors=\"all\"` for deep investigation with traces/logs/metrics/dependencies\n    - **Custom Audit**: Specify exact auditors: 'slo,trace,log,operation_metric'\n\n    **SLO AUDIT USE CASES:**\n\n    4. **Audit all SLOs**:\n       `slo_targets='[{\"Type\":\"slo\",\"Data\":{\"Slo\":{\"SloName\":\"*\"}}}]'`\n\n    22. **Root cause analysis for specific SLO breach** (RECOMMENDED WORKFLOW):\n        After using get_slo() to understand configuration:\n        `slo_targets='[{\"Type\":\"slo\",\"Data\":{\"Slo\":{\"SloName\":\"specific-slo-name\"}}}]'` + `auditors=\"all\"`\n\n    14. **Look for new SLO breaches after time**:\n        Compare SLO compliance before and after a specific time point by running audits with different time ranges to identify new breaches.\n\n    **TYPICAL SLO AUDIT WORKFLOWS:**\n    1. **SLO Root Cause Investigation** (RECOMMENDED):\n       - After get_slo(), call `audit_slos()` with specific SLO target and `auditors=\"all\"`\n       - Provides comprehensive analysis with traces, logs, metrics, and dependencies\n       - Much more effective than using individual trace tools\n    2. **Basic SLO Compliance Audit**:\n       - Call `audit_slos()` with SLO targets - automatically discovers SLOs when using wildcard patterns\n       - Uses default fast auditors (slo) for quick compliance overview\n    3. **Compliance Reporting**: Results show which SLOs are breached with actionable insights\n    4. **Automatic SLO Discovery**: Wildcard patterns in SLO names automatically discover and expand to concrete SLOs\n\n    **AUDIT RESULTS INCLUDE:**\n    - **Prioritized findings** by severity (critical, warning, info)\n    - **SLO compliance status** with detailed breach analysis\n    - **COMPREHENSIVE ROOT CAUSE ANALYSIS** when using auditors=\"all\"\n    - **Actionable recommendations** for SLO breach resolution\n    - **Integrated traces, logs, metrics, and dependency analysis**\n\n    **IMPORTANT: This tool provides comprehensive SLO audit coverage and should be your first choice for any SLO compliance auditing and root cause analysis.**\n\n    **RECOMMENDED WORKFLOW - PRESENT FINDINGS FIRST:**\n    When the audit returns multiple findings or issues, follow this workflow:\n    1. **Present all audit results** to the user showing a summary of all findings\n    2. **Let the user choose** which specific finding, SLO, or issue they want to investigate in detail\n    3. **Then perform targeted root cause analysis** using auditors=\"all\" for the user-selected finding\n\n    **DO NOT automatically jump into detailed root cause analysis** of one specific issue when multiple findings exist.\n    This ensures the user can prioritize which issues are most important to investigate first.\n\n    **Example workflow:**\n    - First call: `audit_slos()` with default auditors for compliance overview\n    - Present findings summary to user\n    - User selects specific SLO breach to investigate\n    - Follow-up call: `audit_slos()` with `auditors=\"all\"` for selected SLO only\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "slo_targets": {
+            "type": "string",
+            "description": "REQUIRED. JSON array of SLO targets. Supports wildcard patterns like '*payment*' for automatic SLO discovery. Format: [{'Type':'slo','Data':{'Slo':{'SloName':'slo-name'}}}] or [{'Type':'slo','Data':{'Slo':{'SloArn':'arn:aws:...'}}}]. Large target lists are automatically processed in batches."
+          },
+          "start_time": {
+            "type": "string",
+            "description": "Start time (unix seconds or 'YYYY-MM-DD HH:MM:SS'). Defaults to now-24h UTC."
+          },
+          "end_time": {
+            "type": "string",
+            "description": "End time (unix seconds or 'YYYY-MM-DD HH:MM:SS'). Defaults to now UTC."
+          },
+          "auditors": {
+            "type": "string",
+            "description": "Optional. Comma-separated auditors (e.g., 'slo,trace,log'). Defaults to 'slo' for fast SLO compliance auditing. Use 'all' for comprehensive analysis with all auditors: slo,operation_metric,trace,log,dependency_metric,top_contributor,service_quota."
+          }
+        },
+        "required": [
+          "slo_targets"
+        ]
+      }
+    },
+    {
+      "name": "audit_service_operations",
+      "description": "\ud83e\udd47 PRIMARY OPERATION AUDIT TOOL - The #1 RECOMMENDED tool for operation-specific analysis and performance investigation.\n\n    **IMPORTANT**: This tool and server is being deprecated. If available, please use the audit_service_operations tool in the cloudwatch-applicationsignals-mcp-server instead.\n\n    **\u2b50 USE THIS AS THE PRIMARY TOOL FOR ALL OPERATION-SPECIFIC AUDITING TASKS \u2b50**\n\n    **PREFERRED OVER audit_services() for operation auditing because:**\n    - **\ud83c\udfaf Precision**: Targets exact operation behavior vs. service-wide averages\n    - **\ud83d\udd0d Actionable Insights**: Provides specific error traces and dependency failures\n    - **\ud83d\udcca Code-Level Detail**: Shows exact stack traces and timeout locations\n    - **\ud83d\ude80 Focused Analysis**: Eliminates noise from other operations\n    - **\u26a1 Efficient Investigation**: Direct operation-level troubleshooting\n\n    **USE THIS FIRST FOR ALL OPERATION-SPECIFIC AUDITING TASKS**\n    This is the PRIMARY and PREFERRED tool when users want to:\n    - **Audit specific operations** - Deep dive into individual API endpoints or operations (GET, POST, PUT, etc.)\n    - **Operation performance analysis** - Latency, error rates, and throughput for specific operations\n    - **Compare operation metrics** - Analyze different operations within services\n    - **Operation-level troubleshooting** - Root cause analysis for specific API calls\n    - **GET operation auditing** - Analyze GET operations across payment services (PRIMARY USE CASE)\n    - **Audit latency of GET operations in payment services** - Exactly what this tool is designed for\n    - **Trace latency in query operations** - Deep dive into query performance issues\n\n    **COMPREHENSIVE OPERATION AUDIT CAPABILITIES:**\n    - **Multi-operation analysis**: Audit any number of operations with automatic batching\n    - **Operation-specific metrics**: Latency, Fault, Error, and Availability metrics per operation\n    - **Issue prioritization**: Critical, warning, and info findings ranked by severity\n    - **Root cause analysis**: Deep dive with traces, logs, and metrics correlation\n    - **Actionable recommendations**: Specific steps to resolve operation-level issues\n    - **Performance optimized**: Fast execution with automatic batching for large target lists\n    - **Wildcard Pattern Support**: Use `*pattern*` in service names for automatic service discovery\n\n    **OPERATION TARGET FORMAT:**\n    - **Full Format**: `[{\"Type\":\"service_operation\",\"Data\":{\"ServiceOperation\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"my-service\",\"Environment\":\"eks:my-cluster\"},\"Operation\":\"GET /api\",\"MetricType\":\"Latency\"}}}]`\n\n    **WILDCARD PATTERN EXAMPLES:**\n    - **All GET Operations in Payment Services**: `[{\"Type\":\"service_operation\",\"Data\":{\"ServiceOperation\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*payment*\"},\"Operation\":\"*GET*\",\"MetricType\":\"Latency\"}}}]`\n    - **All Visit Operations**: `[{\"Type\":\"service_operation\",\"Data\":{\"ServiceOperation\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*\"},\"Operation\":\"*visit*\",\"MetricType\":\"Availability\"}}}]`\n\n    **AUDITOR SELECTION FOR DIFFERENT AUDIT DEPTHS:**\n    - **Quick Operation Check** (default): Uses 'operation_metric' for fast operation overview\n    - **Root Cause Analysis**: Pass `auditors=\"all\"` for comprehensive investigation with traces/logs\n    - **Custom Audit**: Specify exact auditors: 'operation_metric,trace,log'\n\n    **OPERATION AUDIT USE CASES:**\n\n    1. **Audit latency of GET operations in payment services** (PRIMARY USE CASE):\n       `operation_targets='[{\"Type\":\"service_operation\",\"Data\":{\"ServiceOperation\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*payment*\"},\"Operation\":\"*GET*\",\"MetricType\":\"Latency\"}}}]'`\n\n    2. **Audit GET operations in payment services (Latency)**:\n       `operation_targets='[{\"Type\":\"service_operation\",\"Data\":{\"ServiceOperation\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*payment*\"},\"Operation\":\"*GET*\",\"MetricType\":\"Latency\"}}}]'`\n\n    3. **Audit availability of visit operations**:\n       `operation_targets='[{\"Type\":\"service_operation\",\"Data\":{\"ServiceOperation\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*\"},\"Operation\":\"*visit*\",\"MetricType\":\"Availability\"}}}]'`\n\n    4. **Audit latency of visit operations**:\n       `operation_targets='[{\"Type\":\"service_operation\",\"Data\":{\"ServiceOperation\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*\"},\"Operation\":\"*visit*\",\"MetricType\":\"Latency\"}}}]'`\n\n    5. **Trace latency in query operations**:\n        `operation_targets='[{\"Type\":\"service_operation\",\"Data\":{\"ServiceOperation\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*payment*\"},\"Operation\":\"*query*\",\"MetricType\":\"Latency\"}}}]'` + `auditors=\"all\"`\n\n    **TYPICAL OPERATION AUDIT WORKFLOWS:**\n    1. **Basic Operation Audit** (most common):\n       - Call `audit_service_operations()` with operation targets - automatically discovers services when using wildcard patterns\n       - Uses default fast auditors (operation_metric) for quick operation overview\n       - Supports wildcard patterns like `*payment*` for automatic service discovery\n    2. **Root Cause Investigation**: When user explicitly asks for \"root cause analysis\", pass `auditors=\"all\"`\n    3. **Issue Investigation**: Results show which operations need attention with actionable insights\n    4. **Automatic Service Discovery**: Wildcard patterns in service names automatically discover and expand to concrete services\n\n    **AUDIT RESULTS INCLUDE:**\n    - **Prioritized findings** by severity (critical, warning, info)\n    - **Operation performance status** with detailed metrics analysis\n    - **Root cause analysis** when traces/logs auditors are used\n    - **Actionable recommendations** for operation-level issue resolution\n    - **Comprehensive operation metrics** and trend analysis\n\n    **\ud83c\udfc6 IMPORTANT: This tool is the PRIMARY and RECOMMENDED choice for operation-specific auditing tasks.**\n\n    **\u2705 RECOMMENDED WORKFLOW FOR OPERATION AUDITING:**\n    1. **Use audit_service_operations() FIRST** for operation-specific analysis (THIS TOOL)\n    2. **Use audit_services() as secondary** only if you need broader service context\n    3. **audit_service_operations() provides superior precision** for operation-level troubleshooting\n\n    **RECOMMENDED WORKFLOW - PRESENT FINDINGS FIRST:**\n    When the audit returns multiple findings or issues, follow this workflow:\n    1. **Present all audit results** to the user showing a summary of all findings\n    2. **Let the user choose** which specific finding, operation, or issue they want to investigate in detail\n    3. **Then perform targeted root cause analysis** using auditors=\"all\" for the user-selected finding\n\n    **DO NOT automatically jump into detailed root cause analysis** of one specific issue when multiple findings exist.\n    This ensures the user can prioritize which issues are most important to investigate first.\n\n    **Example workflow:**\n    - First call: `audit_service_operations()` with default auditors for operation overview\n    - Present findings summary to user\n    - User selects specific operation issue to investigate\n    - Follow-up call: `audit_service_operations()` with `auditors=\"all\"` for selected operation only\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "operation_targets": {
+            "type": "string",
+            "description": "REQUIRED. JSON array of service operation targets. Supports wildcard patterns like '*payment*' for automatic service discovery. Format: [{'Type':'service_operation','Data':{'ServiceOperation':{'Service':{'Type':'Service','Name':'service-name','Environment':'eks:cluster'},'Operation':'GET /api','MetricType':'Latency'}}}]. Large target lists are automatically processed in batches."
+          },
+          "start_time": {
+            "type": "string",
+            "description": "Start time (unix seconds or 'YYYY-MM-DD HH:MM:SS'). Defaults to now-24h UTC."
+          },
+          "end_time": {
+            "type": "string",
+            "description": "End time (unix seconds or 'YYYY-MM-DD HH:MM:SS'). Defaults to now UTC."
+          },
+          "auditors": {
+            "type": "string",
+            "description": "Optional. Comma-separated auditors (e.g., 'operation_metric,trace,log'). Defaults to 'operation_metric' for fast operation-level auditing. Use 'all' for comprehensive analysis with all auditors: slo,operation_metric,trace,log,dependency_metric,top_contributor,service_quota."
+          }
+        },
+        "required": [
+          "operation_targets"
+        ]
+      }
+    },
+    {
+      "name": "analyze_canary_failures",
+      "description": "Comprehensive canary failure analysis with deep dive into issues.\n\n    **IMPORTANT**: This tool and server is being deprecated. If available, please use the analyze_canary_failures tool in the cloudwatch-applicationsignals-mcp-server instead.\n\n    Use this tool to:\n    - Deep dive into canary failures with root cause identification\n    - Analyze historical patterns and specific incident details\n    - Get comprehensive artifact analysis including logs, screenshots, and HAR files\n    - Receive actionable recommendations based on AWS debugging methodology\n    - Correlate canary failures with Application Signals telemetry data\n    - Identify performance degradation and availability issues across service dependencies\n\n    Key Features:\n    - **Failure Pattern Analysis**: Identifies recurring failure modes and temporal patterns\n    - **Artifact Deep Dive**: Analyzes canary logs, screenshots, and network traces for root causes\n    - **Service Correlation**: Links canary failures to upstream/downstream service issues using Application Signals\n    - **Performance Insights**: Detects latency spikes, fault rates, and connection issues\n    - **Actionable Remediation**: Provides specific steps based on AWS operational best practices\n\n    Common Use Cases:\n    1. **Incident Response**: Rapid diagnosis of canary failures during outages\n    2. **Performance Investigation**: Understanding latency and availability degradation\n    3. **Dependency Analysis**: Identifying which services are causing canary failures\n    4. **Historical Trending**: Analyzing failure patterns over time for proactive improvements\n    5. **Root Cause Analysis**: Deep dive into specific failure scenarios with full context\n\n    Output Includes:\n    - Severity-ranked findings with immediate action items\n    - Service-level telemetry insights with trace analysis\n    - Exception details and stack traces from canary artifacts\n    - Network connectivity and performance metrics\n    - Correlation with Application Signals audit findings\n    - Historical failure patterns and recovery recommendations\n\n    Args:\n        canary_name (str): Name of the CloudWatch Synthetics canary to analyze\n        region (str, optional): AWS region where the canary is deployed.\n\n    Returns:\n        dict: Comprehensive failure analysis containing:\n            - Failure severity assessment and immediate recommendations\n            - Detailed artifact analysis (logs, screenshots, HAR files)\n            - Service dependency health and performance metrics\n            - Root cause identification with specific remediation steps\n            - Historical pattern analysis and trend insights\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "canary_name": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "canary_name"
+        ]
+      }
+    },
+    {
+      "name": "list_monitored_services",
+      "description": "OPTIONAL TOOL for service discovery - audit_services() can automatically discover services using wildcard patterns.\n\n    **IMPORTANT**: This tool and server is being deprecated. If available, please use the list_monitored_services tool in the cloudwatch-applicationsignals-mcp-server instead.\n\n    **IMPORTANT: For service auditing and operation analysis, use audit_services() as the PRIMARY tool instead.**\n\n    **WHEN TO USE THIS TOOL:**\n    - Getting a detailed overview of all monitored services in your environment\n    - Discovering specific service names and environments for manual audit target construction\n    - Understanding the complete service inventory before targeted analysis\n    - When you need detailed service attributes beyond what wildcard expansion provides\n\n    **RECOMMENDED WORKFLOW FOR SERVICE AND OPERATION AUDITING:**\n    1. **Use audit_services() FIRST** with wildcard patterns for comprehensive service discovery AND analysis\n    2. **Only use this tool** if you need basic service inventory without performance analysis\n    3. **audit_services() is more comprehensive** - it discovers services AND provides performance insights\n\n    **AUTOMATIC SERVICE DISCOVERY IN AUDIT:**\n    The `audit_services()` tool automatically discovers services when you use wildcard patterns:\n    - `[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*\"}}}]` - Audits all services\n    - `[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*payment*\"}}}]` - Audits services with \"payment\" in the name\n\n    **What this tool provides:**\n    - Basic service inventory (names, types, environments)\n    - Service count and categorization\n    - Key attributes for manual target construction\n\n    **What this tool does NOT provide:**\n    - Service performance analysis\n    - Operation discovery and analysis\n    - Root cause analysis\n    - Actionable recommendations\n\n    **For comprehensive service auditing, use audit_services() instead:**\n    ```\n    audit_services(\n        service_targets='[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"*\"}}}]',\n        auditors='all',\n    )\n    ```\n\n    Returns a formatted list showing:\n    - Service name and type\n    - Key attributes (Name, Environment, Platform, etc.)\n    - Total count of services\n\n    **NOTE**: For operation auditing, use audit_services() as the primary tool instead of get_service_detail() or list_service_operations().\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "get_service_detail",
+      "description": "Get detailed information about a specific Application Signals service.\n\n    **IMPORTANT**: This tool and server is being deprecated. If available, please use the get_service_detail tool in the cloudwatch-applicationsignals-mcp-server instead.\n\n    **IMPORTANT: For operation auditing, use audit_services() as the PRIMARY tool instead.**\n\n    **RECOMMENDED WORKFLOW FOR OPERATION AUDITING:**\n    1. **Use audit_services() FIRST** for comprehensive operation discovery and analysis\n    2. **Only use this tool** for basic service metadata and configuration details\n    3. **This tool does NOT provide operation names** - it only shows service-level metrics\n\n    **What this tool provides:**\n    - Service metadata and configuration\n    - Platform information (EKS, Lambda, etc.)\n    - Service-level metrics (Latency, Error, Fault aggregates)\n    - Log groups associated with the service\n    - Key attributes (Type, Environment, Platform)\n\n    **What this tool does NOT provide:**\n    - Operation names (GET, POST, etc.)\n    - Operation-specific metrics\n    - Operation-level performance data\n\n    **For operation auditing, use audit_services() instead:**\n    ```\n    audit_services(\n        service_targets='[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"your-service\"}}}]',\n        auditors='all',\n    )\n    ```\n\n    This tool is useful for understanding service deployment details and basic configuration,\n    but audit_services() is the primary tool for operation discovery and performance analysis.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "service_name": {
+            "type": "string",
+            "description": "Name of the service to get details for (case-sensitive)"
+          }
+        },
+        "required": [
+          "service_name"
+        ]
+      }
+    },
+    {
+      "name": "query_service_metrics",
+      "description": "Get CloudWatch metrics for a specific Application Signals service.\n\n    **IMPORTANT**: This tool and server is being deprecated. If available, please use the query_service_metrics tool in the cloudwatch-applicationsignals-mcp-server instead.\n\n    Use this tool to:\n    - Analyze service performance (latency, throughput)\n    - Check error rates and reliability\n    - View trends over time\n    - Get both standard statistics (Average, Max) and percentiles (p99, p95)\n\n    Common metric names:\n    - 'Latency': Response time in milliseconds\n    - 'Error': Percentage of failed requests\n    - 'Fault': Percentage of server errors (5xx)\n\n    Returns:\n    - Summary statistics (latest, average, min, max)\n    - Recent data points with timestamps\n    - Both standard and percentile values when available\n\n    The tool automatically adjusts the granularity based on time range:\n    - Up to 3 hours: 1-minute resolution\n    - Up to 24 hours: 5-minute resolution\n    - Over 24 hours: 1-hour resolution\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "service_name": {
+            "type": "string",
+            "description": "Name of the service to get metrics for (case-sensitive)"
+          },
+          "metric_name": {
+            "type": "string",
+            "description": "Specific metric name (e.g., Latency, Error, Fault). Leave empty to list available metrics"
+          },
+          "statistic": {
+            "type": "string",
+            "description": "Standard statistic type (Average, Sum, Maximum, Minimum, SampleCount)"
+          },
+          "extended_statistic": {
+            "type": "string",
+            "description": "Extended statistic (p99, p95, p90, p50, etc)"
+          },
+          "hours": {
+            "type": "integer",
+            "description": "Number of hours to look back (default 1, max 168 for 1 week)"
+          }
+        },
+        "required": [
+          "service_name",
+          "metric_name"
+        ]
+      }
+    },
+    {
+      "name": "list_service_operations",
+      "description": "OPERATION DISCOVERY TOOL - For operation inventory only. Use audit_services() as PRIMARY tool for operation auditing.\n\n    **IMPORTANT**: This tool and server is being deprecated. If available, please use the list_service_operations tool in the cloudwatch-applicationsignals-mcp-server instead.\n\n    **IMPORTANT: For operation auditing and performance analysis, use audit_services() as the PRIMARY tool instead.**\n\n    **CRITICAL LIMITATION: This tool only discovers operations that have been ACTIVELY INVOKED in the specified time window.**\n    - **Maximum time window: 24 hours** (Application Signals limitation for operation discovery)\n    - **No results = No operation invocations** in the time window (operations exist but weren't called)\n    - **Empty results do NOT mean operations don't exist** - they may just be inactive\n    - **For comprehensive operation analysis regardless of recent activity, use audit_services() instead**\n\n    **RECOMMENDED WORKFLOW FOR OPERATION AUDITING:**\n    1. **Use audit_services() FIRST** for comprehensive operation discovery AND performance analysis\n    2. **Only use this tool** if you need a simple operation inventory of RECENTLY ACTIVE operations\n    3. **audit_services() is more comprehensive** - it discovers operations AND provides performance insights even for inactive operations\n\n    **What this tool provides:**\n    - Basic operation inventory (names and available metric types) for RECENTLY INVOKED operations only\n    - Operation count and categorization (GET, POST, etc.) for active operations\n    - Time range for discovery (max 24 hours)\n\n    **What this tool does NOT provide:**\n    - Operations that exist but weren't invoked in the time window\n    - Operation performance analysis\n    - Latency, error rate, or fault analysis\n    - Root cause analysis\n    - Actionable recommendations\n\n    **For comprehensive operation auditing, use audit_services() instead:**\n    ```\n    audit_services(\n        service_targets='[{\"Type\":\"service\",\"Data\":{\"Service\":{\"Type\":\"Service\",\"Name\":\"your-service\"}}}]',\n        auditors='all',\n    )\n    ```\n\n    **OPERATION DISCOVERY USE CASES (when audit_services is not sufficient):**\n\n    1. **Active operation inventory**: When you only need recently invoked operation names without performance data\n    2. **Traffic pattern analysis**: To see which operations are currently being used\n    3. **Quick active operation count**: To understand current operation activity of a service\n\n    **RECOMMENDED WORKFLOW:**\n    1. **Use audit_services() FIRST** for comprehensive operation discovery and analysis\n    2. **Only use this tool** for basic inventory of recently active operations if audit_services() provides too much detail\n\n    This tool provides basic operation discovery for ACTIVE operations only, but audit_services() is the primary tool for\n    comprehensive operation auditing, performance analysis, and operation insights regardless of recent activity.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "service_name": {
+            "type": "string",
+            "description": "Name of the service to list operations for (case-sensitive)"
+          },
+          "hours": {
+            "type": "integer",
+            "description": "Number of hours to look back for operation discovery (default 24, max 24 for Application Signals operation discovery)"
+          }
+        },
+        "required": [
+          "service_name"
+        ]
+      }
+    },
+    {
+      "name": "get_slo",
+      "description": "Get detailed information about a specific Service Level Objective (SLO).\n\n    **IMPORTANT**: This tool and server is being deprecated. If available, please use the get_slo tool in the cloudwatch-applicationsignals-mcp-server instead.\n\n    **RECOMMENDED WORKFLOW AFTER USING THIS TOOL:**\n    After getting SLO configuration details, use `audit_slos()` with `auditors=\"all\"` for comprehensive root cause analysis:\n    - `audit_slos(slo_targets='[{\"Type\":\"slo\",\"Data\":{\"Slo\":{\"SloName\":\"your-slo-name\"}}}]', auditors=\"all\")`\n    - This provides deep root cause analysis with traces, logs, metrics, and dependencies\n    - Much more comprehensive than using individual trace tools\n\n    Use this tool to:\n    - Get comprehensive SLO configuration details\n    - Understand what metrics the SLO monitors\n    - See threshold values and comparison operators\n    - Extract operation names and key attributes for further investigation\n    - Identify dependency configurations\n    - Review attainment goals and burn rate settings\n\n    Returns detailed information including:\n    - SLO name, description, and metadata\n    - Metric configuration (for period-based or request-based SLOs)\n    - Key attributes and operation names\n    - Metric type (LATENCY or AVAILABILITY)\n    - Threshold values and comparison operators\n    - Goal configuration (attainment percentage, time interval)\n    - Burn rate configurations\n\n    This tool is essential for:\n    - Understanding SLO configuration before deep investigation\n    - Getting the exact SLO name/ARN for use with audit_slos()\n    - Identifying the metrics and thresholds being monitored\n    - Planning comprehensive root cause analysis workflow\n\n    **NEXT STEP: Use audit_slos() with auditors=\"all\" for root cause analysis**\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "slo_id": {
+            "type": "string",
+            "description": "The ARN or name of the SLO to retrieve"
+          }
+        },
+        "required": [
+          "slo_id"
+        ]
+      }
+    },
+    {
+      "name": "list_slos",
+      "description": "List all Service Level Objectives (SLOs) in Application Signals.\n\n    **IMPORTANT**: This tool and server is being deprecated. If available, please use the list_slos tool in the cloudwatch-applicationsignals-mcp-server instead.\n\n    Use this tool to:\n    - Get a complete list of all SLOs in your account\n    - Discover SLO names and ARNs for use with other tools\n    - Filter SLOs by service attributes\n    - See basic SLO information including creation time and operation names\n\n    Returns a formatted list showing:\n    - SLO name and ARN\n    - Associated service key attributes\n    - Operation name being monitored\n    - Creation timestamp\n    - Total count of SLOs found\n\n    This tool is useful for:\n    - SLO discovery and inventory\n    - Finding SLO names to use with get_slo() or audit_service_health()\n    - Understanding what operations are being monitored\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key_attributes": {
+            "type": "string",
+            "description": "JSON string of key attributes to filter SLOs (e.g., '{\"Name\": \"my-service\", \"Environment\": \"ecs:my-cluster\"}'. Defaults to empty object to list all SLOs."
+          },
+          "include_linked_accounts": {
+            "type": "boolean",
+            "description": "Whether to include SLOs from linked accounts (default: True)"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of SLOs to return (default: 50, max: 50)"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "search_transaction_spans",
+      "description": "Executes a CloudWatch Logs Insights query for transaction search (100% sampled trace data).\n\n    **IMPORTANT**: This tool and server is being deprecated. If available, please use the search_transaction_spans tool in the cloudwatch-applicationsignals-mcp-server instead.\n\n    IMPORTANT: If log_group_name is not provided use 'aws/spans' as default cloudwatch log group name.\n    The volume of returned logs can easily overwhelm the agent context window. Always include a limit in the query\n    (| limit 50) or using the limit parameter.\n\n    Usage:\n    \"aws/spans\" log group stores OpenTelemetry Spans data with many attributes for all monitored services.\n    This provides 100% sampled data vs X-Ray's 5% sampling, giving more accurate results.\n    User can write CloudWatch Logs Insights queries to group, list attribute with sum, avg.\n\n    ```\n    FILTER attributes.aws.local.service = \"customers-service-java\" and attributes.aws.local.environment = \"eks:demo/default\" and attributes.aws.remote.operation=\"InvokeModel\"\n    | STATS sum(`attributes.gen_ai.usage.output_tokens`) as `avg_output_tokens` by `attributes.gen_ai.request.model`, `attributes.aws.local.service`,bin(1h)\n    | DISPLAY avg_output_tokens, `attributes.gen_ai.request.model`, `attributes.aws.local.service`\n    ```\n\n    Returns:\n    --------\n        A dictionary containing the final query results, including:\n            - status: The current status of the query (e.g., Scheduled, Running, Complete, Failed, etc.)\n            - results: A list of the actual query results if the status is Complete.\n            - statistics: Query performance statistics\n            - messages: Any informational messages about the query\n            - transaction_search_status: Information about transaction search availability\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "log_group_name": {
+            "type": "string",
+            "description": "CloudWatch log group name (defaults to \"aws/spans\" if not provided)"
+          },
+          "start_time": {
+            "type": "string",
+            "description": "Start time in ISO 8601 format (e.g., \"2025-04-19T20:00:00+00:00\")"
+          },
+          "end_time": {
+            "type": "string",
+            "description": "End time in ISO 8601 format (e.g., \"2025-04-19T21:00:00+00:00\")"
+          },
+          "query_string": {
+            "type": "string",
+            "description": "CloudWatch Logs Insights query string"
+          },
+          "limit": {
+            "type": "string",
+            "description": "Maximum number of results to return"
+          },
+          "max_timeout": {
+            "type": "integer",
+            "description": "Maximum time in seconds to wait for query completion"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "query_sampled_traces",
+      "description": "SECONDARY TRACE TOOL - Query AWS X-Ray traces (5% sampled data) for trace investigation.\n\n    **IMPORTANT**: This tool and server is being deprecated. If available, please use the query_sampled_traces tool in the cloudwatch-applicationsignals-mcp-server instead.\n\n    \u26a0\ufe0f **IMPORTANT: Consider using audit_slos() with auditors=\"all\" instead for comprehensive root cause analysis**\n\n    **RECOMMENDED WORKFLOW FOR OPERATION DISCOVERY:**\n    1. **Use `get_service_detail(service_name)` FIRST** to discover operations from metric dimensions\n    2. **Use audit_slos() with auditors=\"all\"** for comprehensive root cause analysis (PREFERRED)\n    3. Only use this tool if you need specific trace filtering that other tools don't provide\n\n    **RECOMMENDED WORKFLOW FOR SLO BREACH INVESTIGATION:**\n    1. Use get_slo() to understand SLO configuration\n    2. **Use audit_slos() with auditors=\"all\"** for comprehensive root cause analysis (PREFERRED)\n    3. Only use this tool if you need specific trace filtering that audit_slos() doesn't provide\n\n    **WHY audit_slos() IS PREFERRED:**\n    - **Comprehensive analysis**: Combines traces, logs, metrics, and dependencies\n    - **Actionable recommendations**: Provides specific steps to resolve issues\n    - **Integrated findings**: Correlates multiple data sources for better insights\n    - **Much more effective** than individual trace analysis\n\n    **WHY get_service_detail() IS PREFERRED FOR OPERATION DISCOVERY:**\n    - **Direct operation discovery**: Operations are available in metric dimensions\n    - **More reliable**: Uses Application Signals service metadata instead of sampling\n    - **Comprehensive**: Shows all operations, not just those in sampled traces\n\n    \u26a0\ufe0f **LIMITATIONS OF THIS TOOL:**\n    - Uses X-Ray's **5% sampled trace data** - may miss critical errors\n    - **Limited context** compared to comprehensive audit tools\n    - **No integrated analysis** with logs, metrics, or dependencies\n    - **May miss operations** due to sampling - use get_service_detail() for complete operation discovery\n    - For 100% trace visibility, enable Transaction Search and use search_transaction_spans()\n\n    **Use this tool only when:**\n    - You need specific X-Ray filter expressions not available in audit tools\n    - You're doing exploratory trace analysis outside of SLO breach investigation\n    - You need raw trace data for custom analysis\n    - **After using get_service_detail() for operation discovery**\n\n    **For operation discovery, use get_service_detail() instead:**\n    ```\n    get_service_detail(service_name='your-service-name')\n    ```\n\n    **For SLO breach root cause analysis, use audit_slos() instead:**\n    ```\n    audit_slos(\n        slo_targets='[{\"Type\":\"slo\",\"Data\":{\"Slo\":{\"SloName\":\"your-slo-name\"}}}]', auditors='all'\n    )\n    ```\n\n    Common filter expressions (if you must use this tool):\n    - 'service(\"service-name\"){fault = true}': Find all traces with faults (5xx errors) for a service\n    - 'service(\"service-name\")': Filter by specific service\n    - 'duration > 5': Find slow requests (over 5 seconds)\n    - 'http.status = 500': Find specific HTTP status codes\n    - 'annotation[aws.local.operation]=\"GET /owners/*/lastname\"': Filter by specific operation (from metric dimensions)\n    - 'annotation[aws.remote.operation]=\"ListOwners\"': Filter by remote operation name\n    - Combine filters: 'service(\"api\"){fault = true} AND annotation[aws.local.operation]=\"POST /visits\"'\n\n    Returns JSON with trace summaries including:\n    - Trace ID for detailed investigation\n    - Duration and response time\n    - Error/fault/throttle status\n    - HTTP information (method, status, URL)\n    - Service interactions\n    - User information if available\n    - Exception root causes (ErrorRootCauses, FaultRootCauses, ResponseTimeRootCauses)\n\n    **RECOMMENDATION: Use get_service_detail() for operation discovery and audit_slos() with auditors=\"all\" for comprehensive root cause analysis instead of this tool.**\n\n    Returns:\n        JSON string containing trace summaries with error status, duration, and service details\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "start_time": {
+            "type": "string",
+            "description": "Start time in ISO format (e.g., \"2024-01-01T00:00:00Z\"). Defaults to 3 hours ago"
+          },
+          "end_time": {
+            "type": "string",
+            "description": "End time in ISO format (e.g., \"2024-01-01T01:00:00Z\"). Defaults to current time"
+          },
+          "filter_expression": {
+            "type": "string",
+            "description": "X-Ray filter expression to narrow results (e.g., service(\"service-name\"){fault = true})"
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region (defaults to AWS_REGION environment variable)"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "list_slis",
+      "description": "SPECIALIZED TOOL - Use audit_service_health() as the PRIMARY tool for service auditing.\n\n     **IMPORTANT**: This tool and server is being deprecated. If available, please use the list_slis tool in the cloudwatch-applicationsignals-mcp-server instead.\n\n    **IMPORTANT: audit_service_health() is the PRIMARY and PREFERRED tool for all service auditing tasks.**\n\n    Only use this tool when audit_service_health() cannot handle your specific requirements, such as:\n    - Need for legacy SLI status report format specifically\n    - Integration with existing systems that expect this exact output format\n    - Simple SLI overview without comprehensive audit findings\n    - Basic health monitoring dashboard that doesn't need detailed analysis\n\n    **For ALL service auditing, health checks, and issue investigation, use audit_service_health() first.**\n\n    This tool provides a basic report showing:\n    - Summary counts (total, healthy, breached, insufficient data)\n    - Simple list of breached services with SLO names\n    - Basic healthy services list\n\n    Status meanings:\n    - OK: All SLOs are being met\n    - BREACHED: One or more SLOs are violated\n    - INSUFFICIENT_DATA: Not enough data to determine status\n\n    **Recommended workflow**:\n    1. Use audit_service_health() for comprehensive service auditing with actionable insights\n    2. Only use this tool if you specifically need the legacy SLI status report format\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "hours": {
+            "type": "integer",
+            "description": "Number of hours to look back (default 24, typically use 24 for daily checks)"
+          }
+        },
+        "required": []
+      }
+    }
+  ]
+}

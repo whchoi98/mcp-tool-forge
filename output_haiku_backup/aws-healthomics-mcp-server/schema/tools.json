@@ -1,0 +1,1677 @@
+{
+  "server": "aws-healthomics-mcp-server",
+  "tools": [
+    {
+      "name": "ListAHOWorkflows",
+      "description": "List available HealthOmics workflows.\n\n    Args:\n        ctx: MCP context for error reporting\n        max_results: Maximum number of results to return (default: 10)\n        next_token: Token for pagination\n\n    Returns:\n        Dictionary containing workflow information and next token if available\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination from a previous response"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "CreateAHOWorkflow",
+      "description": "Create a new HealthOmics workflow.\n\n    Args:\n        ctx: MCP context for error reporting\n        name: Name of the workflow\n        definition_zip_base64: Base64-encoded workflow definition ZIP file. Cannot be used together with definition_uri or definition_repository\n        description: Optional description of the workflow\n        parameter_template: Optional parameter template for the workflow\n        container_registry_map: Optional container registry map with registryMappings (upstreamRegistryUrl, ecrRepositoryPrefix, upstreamRepositoryPrefix, ecrAccountId) and imageMappings (sourceImage, destinationImage) arrays\n        container_registry_map_uri: Optional S3 URI pointing to a JSON file containing container registry mappings. Cannot be used together with container_registry_map\n        definition_uri: S3 URI of the workflow definition ZIP file. Cannot be used together with definition_zip_base64 or definition_repository\n        path_to_main: Path to the main file in the workflow definition ZIP file. Not required if there is a top level main.wdl, main.cwl or main.nf files in the workflow package. Not required if there is only a single top level workflow file.\n        readme: README documentation - can be markdown content, local .md file path, or S3 URI (s3://bucket/key)\n        definition_repository: Git repository configuration with connection_arn, full_repository_id, source_reference, and optional exclude_file_patterns\n        parameter_template_path: Path to parameter template JSON file within the repository (only valid with definition_repository)\n        readme_path: Path to README markdown file within the repository (only valid with definition_repository)\n\n    Returns:\n        Dictionary containing the created workflow information or error dict\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the workflow"
+          },
+          "definition_zip_base64": {
+            "type": "string",
+            "description": "Base64-encoded workflow definition ZIP file. Cannot be used together with definition_uri or definition_repository"
+          },
+          "description": {
+            "type": "string",
+            "description": "Optional description of the workflow"
+          },
+          "parameter_template": {
+            "type": "string",
+            "description": "Optional parameter template for the workflow"
+          },
+          "container_registry_map": {
+            "type": "string",
+            "description": "Optional container registry map with registryMappings (upstreamRegistryUrl, ecrRepositoryPrefix, upstreamRepositoryPrefix, ecrAccountId) and imageMappings (sourceImage, destinationImage) arrays"
+          },
+          "container_registry_map_uri": {
+            "type": "string",
+            "description": "Optional S3 URI pointing to a JSON file containing container registry mappings. Cannot be used together with container_registry_map"
+          },
+          "definition_uri": {
+            "type": "string",
+            "description": "S3 URI of the workflow definition ZIP file. Cannot be used together with definition_zip_base64 or definition_repository"
+          },
+          "path_to_main": {
+            "type": "string",
+            "description": "Path to the main file in the workflow definition ZIP file. Not required if there is a top level main.wdl, main.cwl or main.nf files in the workflow package. Not required if there is only a single top level workflow file."
+          },
+          "readme": {
+            "type": "string",
+            "description": "README documentation: markdown content, local .md file path, or S3 URI (s3://bucket/key)"
+          },
+          "definition_repository": {
+            "type": "string",
+            "description": "Git repository configuration with connection_arn, full_repository_id, source_reference (type and value), and optional exclude_file_patterns. Cannot be used together with definition_zip_base64 or definition_uri"
+          },
+          "parameter_template_path": {
+            "type": "string",
+            "description": "Path to parameter template JSON file within the repository (only valid with definition_repository)"
+          },
+          "readme_path": {
+            "type": "string",
+            "description": "Path to README markdown file within the repository (only valid with definition_repository)"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "GetAHOWorkflow",
+      "description": "Get details about a specific workflow.\n\n    Args:\n        ctx: MCP context for error reporting\n        workflow_id: ID of the workflow to retrieve\n        export_definition: Whether to include a presigned URL for downloading the workflow definition ZIP file\n\n    Returns:\n        Dictionary containing workflow details. When export_definition=True, includes a 'definition'\n        field with a presigned URL for downloading the workflow definition ZIP file.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "workflow_id": {
+            "type": "string",
+            "description": "ID of the workflow to retrieve"
+          },
+          "export_definition": {
+            "type": "boolean",
+            "description": "Whether to include a presigned URL for downloading the workflow definition ZIP file"
+          }
+        },
+        "required": [
+          "workflow_id"
+        ]
+      }
+    },
+    {
+      "name": "CreateAHOWorkflowVersion",
+      "description": "Create a new version of an existing workflow.\n\n    Args:\n        ctx: MCP context for error reporting\n        workflow_id: ID of the workflow\n        version_name: Name for the new version\n        definition_zip_base64: Base64-encoded workflow definition ZIP file. Cannot be used together with definition_uri or definition_repository\n        description: Optional description of the workflow version\n        parameter_template: Optional parameter template for the workflow\n        storage_type: Storage type (STATIC or DYNAMIC)\n        storage_capacity: Storage capacity in GB (required for STATIC)\n        container_registry_map: Optional container registry map with registryMappings (upstreamRegistryUrl, ecrRepositoryPrefix, upstreamRepositoryPrefix, ecrAccountId) and imageMappings (sourceImage, destinationImage) arrays\n        container_registry_map_uri: Optional S3 URI pointing to a JSON file containing container registry mappings. Cannot be used together with container_registry_map\n        definition_uri: S3 URI of the workflow definition ZIP file. Cannot be used together with definition_zip_base64 or definition_repository\n        path_to_main: Path to the main file in the workflow definition ZIP file. Not required if there is a top level main.wdl, main.cwl or main.nf files in the workflow package. Not required if there is only a single top level workflow file.\n        readme: README documentation - can be markdown content, local .md file path, or S3 URI (s3://bucket/key)\n        definition_repository: Git repository configuration with connection_arn, full_repository_id, source_reference, and optional exclude_file_patterns\n        parameter_template_path: Path to parameter template JSON file within the repository (only valid with definition_repository)\n        readme_path: Path to README markdown file within the repository (only valid with definition_repository)\n\n    Returns:\n        Dictionary containing the created workflow version information\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "workflow_id": {
+            "type": "string",
+            "description": "ID of the workflow"
+          },
+          "version_name": {
+            "type": "string",
+            "description": "Name for the new version"
+          },
+          "definition_zip_base64": {
+            "type": "string",
+            "description": "Base64-encoded workflow definition ZIP file. Cannot be used together with definition_uri or definition_repository"
+          },
+          "description": {
+            "type": "string",
+            "description": "Optional description of the workflow version"
+          },
+          "parameter_template": {
+            "type": "string",
+            "description": "Optional parameter template for the workflow"
+          },
+          "storage_type": {
+            "type": "string",
+            "description": "Storage type (STATIC or DYNAMIC)"
+          },
+          "storage_capacity": {
+            "type": "string",
+            "description": "Storage capacity in GB (required for STATIC)"
+          },
+          "container_registry_map": {
+            "type": "string",
+            "description": "Optional container registry map with registryMappings (upstreamRegistryUrl, ecrRepositoryPrefix, upstreamRepositoryPrefix, ecrAccountId) and imageMappings (sourceImage, destinationImage) arrays"
+          },
+          "container_registry_map_uri": {
+            "type": "string",
+            "description": "Optional S3 URI pointing to a JSON file containing container registry mappings. Cannot be used together with container_registry_map"
+          },
+          "definition_uri": {
+            "type": "string",
+            "description": "S3 URI of the workflow definition ZIP file. Cannot be used together with definition_zip_base64 or definition_repository"
+          },
+          "path_to_main": {
+            "type": "string",
+            "description": "Path to the main file in the workflow definition ZIP file. Not required if there is a top level main.wdl, main.cwl or main.nf files in the workflow package. Not required if there is only a single top level workflow file."
+          },
+          "readme": {
+            "type": "string",
+            "description": "README documentation: markdown content, local .md file path, or S3 URI (s3://bucket/key)"
+          },
+          "definition_repository": {
+            "type": "string",
+            "description": "Git repository configuration with connection_arn, full_repository_id, source_reference (type and value), and optional exclude_file_patterns. Cannot be used together with definition_zip_base64 or definition_uri"
+          },
+          "parameter_template_path": {
+            "type": "string",
+            "description": "Path to parameter template JSON file within the repository (only valid with definition_repository)"
+          },
+          "readme_path": {
+            "type": "string",
+            "description": "Path to README markdown file within the repository (only valid with definition_repository)"
+          }
+        },
+        "required": [
+          "workflow_id",
+          "version_name"
+        ]
+      }
+    },
+    {
+      "name": "ListAHOWorkflowVersions",
+      "description": "List versions of a workflow.\n\n    Args:\n        ctx: MCP context for error reporting\n        workflow_id: ID of the workflow\n        max_results: Maximum number of results to return (default: 10)\n        next_token: Token for pagination\n\n    Returns:\n        Dictionary containing workflow version information and next token if available\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "workflow_id": {
+            "type": "string",
+            "description": "ID of the workflow"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination from a previous response"
+          }
+        },
+        "required": [
+          "workflow_id"
+        ]
+      }
+    },
+    {
+      "name": "StartAHORun",
+      "description": "Start a workflow run.\n\n    Args:\n        ctx: MCP context for error reporting\n        workflow_id: ID of the workflow to run\n        role_arn: ARN of the IAM role to use for the run\n        name: Name for the run\n        output_uri: S3 URI for the run outputs\n        parameters: Parameters for the workflow.\n           Parameter names must match one of the keys in the workflow's parameter template.\n           All non-optional parameters must be present, if they are not provided the workflow run will not start. No other parameter\n           names are allowed.\n           The descriptions of the parameters in the parameter template may provide clues to the type of the parameter. It may be\n           necessary to inspect the workflow definition to determine the appropriate parameter type.\n        workflow_version_name: Optional version name to run\n        storage_type: Storage type (STATIC or DYNAMIC)\n        storage_capacity: Storage capacity in GB (required for STATIC)\n        cache_id: Optional ID of a run cache to use\n        cache_behavior: Optional cache behavior (CACHE_ALWAYS or CACHE_ON_FAILURE)\n        run_group_id: Optional ID of a run group to associate with this run\n\n    Returns:\n        Dictionary containing the run information or error dict\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "workflow_id": {
+            "type": "string",
+            "description": "ID of the workflow to run"
+          },
+          "role_arn": {
+            "type": "string",
+            "description": "ARN of the IAM role to use for the run"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name for the run"
+          },
+          "output_uri": {
+            "type": "string",
+            "description": "S3 URI for the run outputs"
+          },
+          "parameters": {
+            "type": "string",
+            "description": "Parameters for the workflow. Parameter names must match one of the keys in the workflow's parameter template.\n       All non-optional parameters must be present, if they are not provided the workflow run will not start. No other parameter names are allowed.\n       The descriptions of the parameters in the parameter template may provide clues to the type of the parameter. It may be\n       necessary to inspect the workflow definition to determine the appropriate parameter type.\n       "
+          },
+          "workflow_version_name": {
+            "type": "string",
+            "description": "Optional version name to run"
+          },
+          "storage_type": {
+            "type": "string",
+            "description": "Storage type (STATIC or DYNAMIC). DYNAMIC is preferred except for runs with very large inputs (TiBs)."
+          },
+          "storage_capacity": {
+            "type": "string",
+            "description": "Storage capacity in GB (required for STATIC). Storage is allocated in 1200 GiB chunks"
+          },
+          "cache_id": {
+            "type": "string",
+            "description": "Optional ID of a run cache to use"
+          },
+          "cache_behavior": {
+            "type": "string",
+            "description": "Optional cache behavior (CACHE_ALWAYS or CACHE_ON_FAILURE)"
+          },
+          "run_group_id": {
+            "type": "string",
+            "description": "Optional ID of a run group to associate with this run"
+          }
+        },
+        "required": [
+          "workflow_id",
+          "role_arn",
+          "name",
+          "output_uri",
+          "parameters"
+        ]
+      }
+    },
+    {
+      "name": "ListAHORuns",
+      "description": "List workflow runs.\n\n    Args:\n        ctx: MCP context for error reporting\n        max_results: Maximum number of results to return (default: 10)\n        next_token: Token for pagination\n        status: Filter by run status\n        created_after: Filter for runs created after this timestamp (ISO format)\n        created_before: Filter for runs created before this timestamp (ISO format)\n        run_group_id: Optional run group ID to filter runs\n\n    Returns:\n        Dictionary containing run information and next token if available, or error dict\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination from a previous response"
+          },
+          "status": {
+            "type": "string",
+            "description": "Filter by run status"
+          },
+          "created_after": {
+            "type": "string",
+            "description": "Filter for runs created after this timestamp (ISO format)"
+          },
+          "created_before": {
+            "type": "string",
+            "description": "Filter for runs created before this timestamp (ISO format)"
+          },
+          "run_group_id": {
+            "type": "string",
+            "description": "Optional run group ID to filter runs"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "GetAHORun",
+      "description": "Get details about a specific run.\n\n    Args:\n        ctx: MCP context for error reporting\n        run_id: ID of the run to retrieve\n\n    Returns:\n        Dictionary containing run details or error dict including:\n        - Basic run information (id, arn, name, status)\n        - Workflow information (workflowId, workflowType, workflowVersionName)\n        - Timing information (creationTime, startTime, stopTime)\n        - Output locations (outputUri, runOutputUri)\n        - IAM role (roleArn)\n        - Run parameters and metadata\n        - Status messages and failure reasons (if applicable)\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "description": "ID of the run to retrieve"
+          }
+        },
+        "required": [
+          "run_id"
+        ]
+      }
+    },
+    {
+      "name": "ListAHORunTasks",
+      "description": "List tasks for a specific run.\n\n    Args:\n        ctx: MCP context for error reporting\n        run_id: ID of the run\n        max_results: Maximum number of results to return (default: 10)\n        next_token: Token for pagination\n        status: Filter by task status\n\n    Returns:\n        Dictionary containing task information and next token if available\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "description": "ID of the run"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination from a previous response"
+          },
+          "status": {
+            "type": "string",
+            "description": "Filter by task status"
+          }
+        },
+        "required": [
+          "run_id"
+        ]
+      }
+    },
+    {
+      "name": "GetAHORunTask",
+      "description": "Get details about a specific task.\n\n    Args:\n        ctx: MCP context for error reporting\n        run_id: ID of the run\n        task_id: ID of the task\n\n    Returns:\n        Dictionary containing task details including imageDetails when available\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "description": "ID of the run"
+          },
+          "task_id": {
+            "type": "string",
+            "description": "ID of the task"
+          }
+        },
+        "required": [
+          "run_id",
+          "task_id"
+        ]
+      }
+    },
+    {
+      "name": "CreateAHORunGroup",
+      "description": "Create a new HealthOmics run group.\n\n    Args:\n        ctx: MCP context for error reporting\n        name: Name for the run group (1-128 characters)\n        max_cpus: Maximum CPUs for the run group (1-100000)\n        max_gpus: Maximum GPUs for the run group (1-100000)\n        max_duration: Maximum duration in minutes (1-100000)\n        max_runs: Maximum concurrent runs (1-100000)\n        tags: Tags to apply to the run group\n\n    Returns:\n        Dictionary containing the created run group's id, arn, and tags, or error dict\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name for the run group (1-128 characters)"
+          },
+          "max_cpus": {
+            "type": "string",
+            "description": "Maximum CPUs for the run group (1-100000)"
+          },
+          "max_gpus": {
+            "type": "string",
+            "description": "Maximum GPUs for the run group (1-100000)"
+          },
+          "max_duration": {
+            "type": "string",
+            "description": "Maximum duration in minutes (1-100000)"
+          },
+          "max_runs": {
+            "type": "string",
+            "description": "Maximum concurrent runs (1-100000)"
+          },
+          "tags": {
+            "type": "string",
+            "description": "Tags to apply to the run group"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "GetAHORunGroup",
+      "description": "Get details of a specific HealthOmics run group.\n\n    Args:\n        ctx: MCP context for error reporting\n        run_group_id: ID of the run group to retrieve\n\n    Returns:\n        Dictionary containing the run group details, or error dict\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "run_group_id": {
+            "type": "string",
+            "description": "ID of the run group to retrieve"
+          }
+        },
+        "required": [
+          "run_group_id"
+        ]
+      }
+    },
+    {
+      "name": "ListAHORunGroups",
+      "description": "List HealthOmics run groups.\n\n    Args:\n        ctx: MCP context for error reporting\n        name: Filter by run group name\n        max_results: Maximum number of results to return\n        next_token: Token for pagination from a previous response\n\n    Returns:\n        Dictionary containing run group summaries and next token if available, or error dict\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Filter by run group name"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination from a previous response"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "UpdateAHORunGroup",
+      "description": "Update an existing HealthOmics run group.\n\n    Args:\n        ctx: MCP context for error reporting\n        run_group_id: ID of the run group to update\n        name: New name for the run group\n        max_cpus: New maximum CPUs\n        max_gpus: New maximum GPUs\n        max_duration: New maximum duration in minutes\n        max_runs: New maximum concurrent runs\n\n    Returns:\n        Dictionary containing the run group ID and update status, or error dict\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "run_group_id": {
+            "type": "string",
+            "description": "ID of the run group to update"
+          },
+          "name": {
+            "type": "string",
+            "description": "New name for the run group"
+          },
+          "max_cpus": {
+            "type": "string",
+            "description": "New maximum CPUs"
+          },
+          "max_gpus": {
+            "type": "string",
+            "description": "New maximum GPUs"
+          },
+          "max_duration": {
+            "type": "string",
+            "description": "New maximum duration in minutes"
+          },
+          "max_runs": {
+            "type": "string",
+            "description": "New maximum concurrent runs"
+          }
+        },
+        "required": [
+          "run_group_id"
+        ]
+      }
+    },
+    {
+      "name": "CreateAHORunCache",
+      "description": "Create a new HealthOmics run cache.\n\n    Args:\n        ctx: MCP context for error reporting\n        cache_behavior: Cache behavior (CACHE_ALWAYS or CACHE_ON_FAILURE)\n        cache_s3_location: S3 URI for cache storage (e.g., s3://bucket/prefix)\n        name: Name for the run cache\n        description: Description for the run cache\n        tags: Tags to apply to the run cache\n        cache_bucket_owner_id: AWS account ID of the S3 bucket owner\n\n    Returns:\n        Dictionary containing the created run cache's id, arn, and status, or error dict\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cache_behavior": {
+            "type": "string",
+            "description": "Cache behavior (CACHE_ALWAYS or CACHE_ON_FAILURE)"
+          },
+          "cache_s3_location": {
+            "type": "string",
+            "description": "S3 URI for cache storage (e.g., s3://bucket/prefix)"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name for the run cache"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description for the run cache"
+          },
+          "tags": {
+            "type": "string",
+            "description": "Tags to apply to the run cache"
+          },
+          "cache_bucket_owner_id": {
+            "type": "string",
+            "description": "AWS account ID of the S3 bucket owner for cross-account access"
+          }
+        },
+        "required": [
+          "cache_behavior",
+          "cache_s3_location"
+        ]
+      }
+    },
+    {
+      "name": "GetAHORunCache",
+      "description": "Get details of a specific HealthOmics run cache.\n\n    Args:\n        ctx: MCP context for error reporting\n        cache_id: ID of the run cache to retrieve\n\n    Returns:\n        Dictionary containing the run cache details, or error dict\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cache_id": {
+            "type": "string",
+            "description": "ID of the run cache to retrieve"
+          }
+        },
+        "required": [
+          "cache_id"
+        ]
+      }
+    },
+    {
+      "name": "ListAHORunCaches",
+      "description": "List HealthOmics run caches.\n\n    Args:\n        ctx: MCP context for error reporting\n        name: Filter by run cache name\n        status: Filter by run cache status\n        cache_behavior: Filter by cache behavior\n        max_results: Maximum number of results to return\n        next_token: Token for pagination from a previous response\n\n    Returns:\n        Dictionary containing run cache summaries and next token if available, or error dict\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Filter by run cache name"
+          },
+          "status": {
+            "type": "string",
+            "description": "Filter by run cache status"
+          },
+          "cache_behavior": {
+            "type": "string",
+            "description": "Filter by cache behavior"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination from a previous response"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "UpdateAHORunCache",
+      "description": "Update an existing HealthOmics run cache.\n\n    Args:\n        ctx: MCP context for error reporting\n        cache_id: ID of the run cache to update\n        cache_behavior: New cache behavior\n        name: New name for the run cache\n        description: New description for the run cache\n\n    Returns:\n        Dictionary containing the run cache ID and update status, or error dict\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cache_id": {
+            "type": "string",
+            "description": "ID of the run cache to update"
+          },
+          "cache_behavior": {
+            "type": "string",
+            "description": "New cache behavior"
+          },
+          "name": {
+            "type": "string",
+            "description": "New name for the run cache"
+          },
+          "description": {
+            "type": "string",
+            "description": "New description for the run cache"
+          }
+        },
+        "required": [
+          "cache_id"
+        ]
+      }
+    },
+    {
+      "name": "GetAHORunLogs",
+      "description": "Retrieve high-level run logs that show workflow execution events.\n\n    These logs contain a high-level summary of events during a run including:\n    - Run creation and start events\n    - File import start and completion\n    - Workflow task start and completion\n    - Export start and completion\n    - Workflow completion\n\n    Args:\n        ctx: MCP context for error reporting\n        run_id: ID of the run\n        start_time: Optional start time for log retrieval (ISO format)\n        end_time: Optional end time for log retrieval (ISO format)\n        limit: Maximum number of log events to return (default: 100)\n        next_token: Token for pagination from a previous response\n        start_from_head: Whether to start from the beginning (True) or end (False) of the log stream\n\n    Returns:\n        Dictionary containing log events and next token if available\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "description": "ID of the run"
+          },
+          "start_time": {
+            "type": "string",
+            "description": "Optional start time for log retrieval (ISO format)"
+          },
+          "end_time": {
+            "type": "string",
+            "description": "Optional end time for log retrieval (ISO format)"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of log events to return"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination from a previous response"
+          },
+          "start_from_head": {
+            "type": "boolean",
+            "description": "Whether to start from the beginning (True) or end (False) of the log stream"
+          }
+        },
+        "required": [
+          "run_id"
+        ]
+      }
+    },
+    {
+      "name": "GetAHORunManifestLogs",
+      "description": "Retrieve run manifest logs produced when a workflow completes or fails.\n\n    These logs contain a summary of the overall workflow including:\n    - Runtime information\n    - Inputs and input digests\n    - Messages and status information\n    - Task summaries with resource allocation and utilization metrics\n\n    Args:\n        ctx: MCP context for error reporting\n        run_id: ID of the run\n        run_uuid: Optional UUID of the run\n        start_time: Optional start time for log retrieval (ISO format)\n        end_time: Optional end time for log retrieval (ISO format)\n        limit: Maximum number of log events to return (default: 100)\n        next_token: Token for pagination from a previous response\n        start_from_head: Whether to start from the beginning (True) or end (False) of the log stream\n\n    Returns:\n        Dictionary containing log events and next token if available\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "description": "ID of the run"
+          },
+          "run_uuid": {
+            "type": "string",
+            "description": "Optional UUID of the run"
+          },
+          "start_time": {
+            "type": "string",
+            "description": "Optional start time for log retrieval (ISO format)"
+          },
+          "end_time": {
+            "type": "string",
+            "description": "Optional end time for log retrieval (ISO format)"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of log events to return"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination from a previous response"
+          },
+          "start_from_head": {
+            "type": "boolean",
+            "description": "Whether to start from the beginning (True) or end (False) of the log stream"
+          }
+        },
+        "required": [
+          "run_id",
+          "run_uuid"
+        ]
+      }
+    },
+    {
+      "name": "GetAHORunEngineLogs",
+      "description": "Retrieve engine logs containing STDOUT and STDERR from the workflow engine process.\n\n    These logs contain all output from the workflow engine process including:\n    - Engine startup and initialization messages\n    - Workflow parsing and validation output\n    - Task scheduling and execution messages\n    - Error messages and debugging information\n\n    Args:\n        ctx: MCP context for error reporting\n        run_id: ID of the run\n        start_time: Optional start time for log retrieval (ISO format)\n        end_time: Optional end time for log retrieval (ISO format)\n        limit: Maximum number of log events to return (default: 100)\n        next_token: Token for pagination from a previous response\n        start_from_head: Whether to start from the beginning (True) or end (False) of the log stream\n\n    Returns:\n        Dictionary containing log events and next token if available\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "description": "ID of the run"
+          },
+          "start_time": {
+            "type": "string",
+            "description": "Optional start time for log retrieval (ISO format)"
+          },
+          "end_time": {
+            "type": "string",
+            "description": "Optional end time for log retrieval (ISO format)"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of log events to return"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination from a previous response"
+          },
+          "start_from_head": {
+            "type": "boolean",
+            "description": "Whether to start from the beginning (True) or end (False) of the log stream"
+          }
+        },
+        "required": [
+          "run_id"
+        ]
+      }
+    },
+    {
+      "name": "GetAHOTaskLogs",
+      "description": "Retrieve logs for a specific workflow task containing STDOUT and STDERR.\n\n    These logs contain the output from a specific task process including:\n    - Task container startup messages\n    - Application-specific output and error messages\n    - Task completion or failure information\n\n    Args:\n        ctx: MCP context for error reporting\n        run_id: ID of the run\n        task_id: ID of the specific task\n        start_time: Optional start time for log retrieval (ISO format)\n        end_time: Optional end time for log retrieval (ISO format)\n        limit: Maximum number of log events to return (default: 100)\n        next_token: Token for pagination from a previous response\n        start_from_head: Whether to start from the beginning (True) or end (False) of the log stream\n\n    Returns:\n        Dictionary containing log events and next token if available\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "description": "ID of the run"
+          },
+          "task_id": {
+            "type": "string",
+            "description": "ID of the specific task"
+          },
+          "start_time": {
+            "type": "string",
+            "description": "Optional start time for log retrieval (ISO format)"
+          },
+          "end_time": {
+            "type": "string",
+            "description": "Optional end time for log retrieval (ISO format)"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of log events to return"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination from a previous response"
+          },
+          "start_from_head": {
+            "type": "boolean",
+            "description": "Whether to start from the beginning (True) or end (False) of the log stream"
+          }
+        },
+        "required": [
+          "run_id",
+          "task_id"
+        ]
+      }
+    },
+    {
+      "name": "AnalyzeAHORunPerformance",
+      "description": "Analyze AWS HealthOmics workflow run performance and provide optimization recommendations.\n\n    This tool analyzes HealthOmics workflow runs to help users optimize:\n    - Resource utilization patterns (CPU, memory)\n    - Cost optimization opportunities\n    - Performance bottlenecks\n    - Resource allocation efficiency\n    - Runtime optimization suggestions\n\n    Use this tool when users ask about:\n    - \"How can I optimize my HealthOmics runs?\"\n    - \"Why is my workflow using too many resources?\"\n    - \"How can I reduce costs for my genomic workflows?\"\n    - \"What resources are being wasted in my runs?\"\n    - \"How can I improve workflow performance?\"\n\n    The tool summarizes run manifest logs containing task-level metrics\n    and provides a structured report with recommendations for optimization.\n\n    Args:\n        ctx: MCP request context for error reporting\n        run_ids: List of run IDs to analyze for optimization\n        headroom: Headroom percentage for instance recommendations (default 0.20 = 20%)\n        detailed: Include detailed task metrics JSON section (default False)\n\n    Returns:\n        Formatted analysis string with structured manifest data and optimization recommendations\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "run_ids": {
+            "type": "string",
+            "description": "List of run IDs to analyze for resource optimization. Can be provided as a JSON array string like [\"run1\", \"run2\"] or as a comma-separated string like \"run1,run2\""
+          },
+          "headroom": {
+            "type": "number",
+            "description": "Headroom percentage for instance recommendations (0.0 to 1.0). Default is 0.20 (20%). This adds a buffer to recommended instance sizes to prevent over-optimization. Set this value to 0 for aggressive optimization"
+          },
+          "detailed": {
+            "type": "boolean",
+            "description": "Include very detailed task metrics in the report. Typically this is only required for granular analysis and can consume a large number of tokens in the agents context window. Default is False."
+          }
+        },
+        "required": [
+          "run_ids"
+        ]
+      }
+    },
+    {
+      "name": "GenerateAHORunTimeline",
+      "description": "Generate a Gantt-style timeline visualization for an AWS HealthOmics workflow run.\n\n    This tool creates an SVG Gantt chart showing task execution phases (pending and running)\n    with status-based coloring. The chart helps visualize task parallelism and identify\n    bottlenecks in workflow execution.\n\n    Use this tool when users ask about:\n    - \"Show me a timeline of my workflow run\"\n    - \"Visualize the execution of my HealthOmics workflow\"\n    - \"Create a Gantt chart for my run\"\n    - \"How did my tasks execute over time?\"\n    - \"What was the parallelism in my workflow?\"\n\n    The chart displays:\n    - Pending/starting phase (light grey bars)\n    - Running phase (colored by status: blue=COMPLETED, red=FAILED, orange=CANCELLED)\n    - Interactive tooltips with task details (name, CPUs, memory, instance type, cost)\n    - Time axis with configurable units (seconds, minutes, hours, days)\n\n    Args:\n        ctx: MCP request context for error reporting\n        run_id: The run ID to generate timeline for\n        time_unit: Time unit for the timeline axis (sec, min, hr, day)\n        region: AWS region for pricing lookups\n        output_format: Output format (svg or base64)\n\n    Returns:\n        SVG string or base64-encoded SVG representing the Gantt chart timeline\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "description": "The run ID to generate timeline for."
+          },
+          "time_unit": {
+            "type": "string",
+            "description": "Time unit for the timeline axis. Valid values: sec, min, hr, day. Defaults to hr."
+          },
+          "region": {
+            "type": "string",
+            "description": "AWS region for pricing lookups. Defaults to us-east-1."
+          },
+          "output_format": {
+            "type": "string",
+            "description": "Output format for the SVG. Valid values: svg (raw SVG string), base64 (base64-encoded SVG for easier extraction). Defaults to base64."
+          }
+        },
+        "required": [
+          "run_id"
+        ]
+      }
+    },
+    {
+      "name": "DiagnoseAHORunFailure",
+      "description": "Provides comprehensive diagnostic information for a failed workflow run.\n\n    This function collects multiple sources of diagnostic information including:\n    - Run details and failure reason\n    - Engine logs from CloudWatch\n    - Run manifest logs containing workflow summary and resource metrics (when detailed=True)\n    - Task logs from all failed tasks\n    - Actionable recommendations for troubleshooting\n\n    Args:\n        ctx: MCP context for error reporting\n        run_id: ID of the failed run\n        detailed: If False (default), excludes manifest logs and limits engine/task logs to last 50 lines\n                 from 15 minutes before stop time to 5 minutes after. If True, includes all logs.\n\n    Returns:\n        Dictionary containing comprehensive diagnostic information including:\n        - runId: The run identifier\n        - status: Current run status\n        - failureReason: AWS-provided failure reason\n        - runUuid: Run UUID for log stream identification\n        - engineLogs: Engine execution logs\n        - manifestLogs: Run manifest logs with workflow summary (only when detailed=True)\n        - failedTasks: List of failed tasks with their logs\n        - recommendations: Troubleshooting recommendations\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "description": "ID of the failed run"
+          },
+          "detailed": {
+            "type": "boolean",
+            "description": "If False, excludes manifest logs and limits engine/task logs to last 50 lines from 15 minutes before stop time to 5 minutes after. If True, includes all logs. False is suitable for most scenarios"
+          }
+        },
+        "required": [
+          "run_id"
+        ]
+      }
+    },
+    {
+      "name": "LintAHOWorkflowDefinition",
+      "description": "Lint WDL or CWL workflow definitions and return validation findings.\n\n    This tool validates workflow definitions using appropriate linting tools:\n    - WDL workflows: Uses miniwdl package for parsing and validation\n    - CWL workflows: Uses cwltool package for parsing and validation\n\n    The tool checks for:\n    - Syntax errors and parsing issues\n    - Missing required fields (inputs, outputs, steps)\n    - Runtime requirements for tasks\n    - Common workflow structure issues\n\n    Args:\n        ctx: MCP context for error reporting\n        workflow_content: The workflow definition content to lint\n        workflow_format: The workflow format ('wdl' or 'cwl')\n        filename: Optional filename for context in error messages\n\n    Returns:\n        Dictionary containing:\n        - status: 'success' or 'error'\n        - format: The workflow format that was linted\n        - filename: The filename that was processed (optional)\n        - linter: Name of the linting tool used\n        - raw_output: Raw output from the linter command execution\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "workflow_content": {
+            "type": "string",
+            "description": "The workflow definition content to lint"
+          },
+          "workflow_format": {
+            "type": "string",
+            "description": "The workflow format: 'wdl' or 'cwl'"
+          },
+          "filename": {
+            "type": "string",
+            "description": "Optional filename for context"
+          }
+        },
+        "required": [
+          "workflow_content",
+          "workflow_format"
+        ]
+      }
+    },
+    {
+      "name": "LintAHOWorkflowBundle",
+      "description": "Lint multi-file WDL or CWL workflow bundles and return validation findings.\n\n    This tool validates multi-file workflow bundles using appropriate linting tools:\n    - WDL workflows: Uses miniwdl package for parsing and validation with import support\n    - CWL workflows: Uses cwltool package for parsing and validation with dependency resolution\n\n    The tool creates a temporary directory structure that preserves the relative file paths,\n    allowing proper resolution of imports and dependencies between workflow files.\n\n    The tool checks for:\n    - Syntax errors and parsing issues across all files\n    - Missing required fields (inputs, outputs, steps)\n    - Import/dependency resolution\n    - Runtime requirements for tasks\n    - Common workflow structure issues\n\n    Args:\n        ctx: MCP context for error reporting\n        workflow_files: Dictionary mapping relative file paths to their content\n        workflow_format: The workflow format ('wdl' or 'cwl')\n        main_workflow_file: Path to the main workflow file within the bundle\n\n    Returns:\n        Dictionary containing:\n        - status: 'success' or 'error'\n        - format: The workflow format that was linted\n        - main_file: The main workflow file that was processed\n        - files_processed: List of all files that were processed\n        - linter: Name of the linting tool used\n        - raw_output: Raw output from the linter command execution\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "workflow_files": {
+            "type": "object",
+            "description": "Dictionary mapping file paths to their content"
+          },
+          "workflow_format": {
+            "type": "string",
+            "description": "The workflow format: 'wdl' or 'cwl'"
+          },
+          "main_workflow_file": {
+            "type": "string",
+            "description": "Path to the main workflow file within the bundle"
+          }
+        },
+        "required": [
+          "workflow_files",
+          "workflow_format",
+          "main_workflow_file"
+        ]
+      }
+    },
+    {
+      "name": "SearchGenomicsFiles",
+      "description": "Search for genomics files across S3 buckets, HealthOmics sequence stores, and reference stores.\n\n    This tool provides intelligent search capabilities with pattern matching, file association detection,\n    and ranked results based on relevance scoring. It can find genomics files across multiple storage\n    locations and automatically group related files together.\n\n    Args:\n        ctx: MCP context for error reporting\n        file_type: Optional file type filter (e.g., 'fastq', 'bam', 'vcf')\n        search_terms: List of search terms to match against file paths and tags\n        max_results: Maximum number of results to return (default: 100, max: 10000)\n        include_associated_files: Whether to include associated files in results (default: True)\n        offset: Number of results to skip for pagination (0-based offset, default: 0), allows arbitray page skippig, ignored of enable_storage_pagination is true\n        continuation_token: Continuation token from previous search response for paginated results\n        enable_storage_pagination: Enable efficient storage-level pagination for large datasets\n        pagination_buffer_size: Buffer size for storage-level pagination (affects ranking accuracy)\n        adhoc_s3_buckets: Optional list of additional S3 bucket paths to search beyond configured buckets\n\n    Returns:\n        Comprehensive dictionary containing:\n\n        **Core Results:**\n        - results: List of file result objects, each containing:\n          - primary_file: Main genomics file with full metadata (path, file_type, size_bytes,\n            size_human_readable, storage_class, last_modified, tags, source_system, metadata, file_info)\n          - associated_files: List of related files (index files, paired reads, etc.) with same metadata structure\n          - file_group: Summary of the file group (total_files, total_size_bytes, has_associations, association_types)\n          - relevance_score: Numerical relevance score (0.0-1.0)\n          - match_reasons: List of reasons why this file matched the search\n          - ranking_info: Score breakdown and match quality assessment\n\n        **Search Metadata:**\n        - total_found: Total number of files found before pagination\n        - returned_count: Number of results actually returned\n        - search_duration_ms: Time taken for the search in milliseconds\n        - storage_systems_searched: List of storage systems that were searched\n\n        **Performance & Analytics:**\n        - performance_metrics: Search efficiency statistics including results_per_second and truncation_ratio\n        - search_statistics: Optional detailed search metrics if available\n        - pagination: Pagination information including:\n          - has_more: Boolean indicating if more results are available\n          - next_offset: Offset value to use for the next page\n          - continuation_token: Token to use for the next page (if applicable)\n          - current_page: Current page number (if applicable)\n\n        **Content Analysis:**\n        - metadata: Analysis of the result set including:\n          - file_type_distribution: Count of each file type found\n          - source_system_distribution: Count of files from each storage system\n          - association_summary: Statistics about file associations and groupings\n\n    Raises:\n        ValueError: If search parameters are invalid\n        Exception: If search operations fail\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "file_type": {
+            "type": "string",
+            "description": "Optional file type filter. Valid types: fastq, fasta, fna, bam, cram, sam, vcf, gvcf, bcf, bed, gff, bai, crai, fai, dict, tbi, csi, bwa_amb, bwa_ann, bwa_bwt, bwa_pac, bwa_sa"
+          },
+          "search_terms": {
+            "type": "array",
+            "description": "List of search terms to match against file paths, tags and metadata. If empty, returns all files of the specified file type."
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return (1-10000)"
+          },
+          "include_associated_files": {
+            "type": "boolean",
+            "description": "Whether to include associated files (e.g., BAM index files, FASTQ pairs) in the results"
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Number of results to skip for pagination (0-based offset), ignored if enable_storage_pagination is true"
+          },
+          "continuation_token": {
+            "type": "string",
+            "description": "Continuation token from previous search response for paginated results"
+          },
+          "enable_storage_pagination": {
+            "type": "boolean",
+            "description": "Enable efficient storage-level pagination for large datasets (recommended for >1000 results)"
+          },
+          "pagination_buffer_size": {
+            "type": "integer",
+            "description": "Buffer size for storage-level pagination (100-50000). Larger values improve ranking accuracy but use more memory."
+          },
+          "adhoc_s3_buckets": {
+            "type": "string",
+            "description": "Optional list of additional S3 bucket paths to search (e.g., [\"s3://bucket-name/prefix/\"]). These buckets will be searched in addition to any configured buckets, allowing you to search buckets that are not part of the standard configuration. Maximum 50 bucket paths."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "GetSupportedFileTypes",
+      "description": "Get information about supported genomics file types.\n\n    Args:\n        ctx: MCP context for error reporting\n\n    Returns:\n        Dictionary containing information about supported file types and their descriptions\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "PackageAHOWorkflow",
+      "description": "Package workflow definition files into a base64-encoded ZIP.\n\n    Args:\n        ctx: MCP context for error reporting\n        main_file_content: Content of the main workflow file\n        main_file_name: Name of the main workflow file (default: main.wdl)\n        additional_files: Dictionary of additional files (filename: content)\n\n    Returns:\n        Base64-encoded ZIP file containing the workflow definition, or error dict\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "main_file_content": {
+            "type": "string",
+            "description": "Content of the main workflow file"
+          },
+          "main_file_name": {
+            "type": "string",
+            "description": "Name of the main workflow file"
+          },
+          "additional_files": {
+            "type": "string",
+            "description": "Dictionary of additional files (filename: content)"
+          }
+        },
+        "required": [
+          "main_file_content"
+        ]
+      }
+    },
+    {
+      "name": "GetAHOSupportedRegions",
+      "description": "Get the list of AWS regions where HealthOmics is available.\n\n    Args:\n        ctx: MCP context for error reporting\n\n    Returns:\n        Dictionary containing the list of supported region codes and the total count\n        of regions where HealthOmics is available\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "ListCodeConnections",
+      "description": "List available CodeConnections.\n\n    This function retrieves existing CodeConnections that can be used with\n    HealthOmics workflows. Connections can be filtered by provider type and\n    results are paginated.\n\n    Args:\n        ctx: MCP context for error reporting\n        provider_type_filter: Optional filter by Git provider type\n        max_results: Maximum number of results to return (default: 100)\n        next_token: Token for pagination from a previous response\n\n    Returns:\n        Dictionary containing:\n        - connections: List of connection objects with connection_arn, connection_name,\n          connection_status, provider_type, and ready_for_workflows flag\n        - nextToken: Token for retrieving the next page (if more results exist)\n\n    Raises:\n        ValueError: If provider_type_filter is invalid\n        botocore.exceptions.BotoCoreError: If AWS API call fails\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "provider_type_filter": {
+            "type": "string",
+            "description": "Filter by provider type: Bitbucket, GitHub, GitHubEnterpriseServer, GitLab, GitLabSelfManaged"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination from a previous response"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "CreateCodeConnection",
+      "description": "Create a new CodeConnection.\n\n    This function creates a new AWS CodeConnection for connecting to a\n    third-party Git provider. The connection will be created in PENDING\n    status and requires OAuth authorization in the AWS Console to become\n    AVAILABLE.\n\n    Args:\n        ctx: MCP context for error reporting\n        connection_name: Name for the new connection\n        provider_type: Git provider type (Bitbucket, GitHub, GitHubEnterpriseServer,\n            GitLab, GitLabSelfManaged)\n        tags: Optional tags to apply to the connection\n\n    Returns:\n        Dictionary containing:\n        - connection_arn: ARN of the created connection\n        - console_url: AWS Console URL for completing OAuth authorization\n        - guidance: Instructions for completing the connection setup\n\n    Raises:\n        ValueError: If provider_type is invalid\n        botocore.exceptions.BotoCoreError: If AWS API call fails\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "connection_name": {
+            "type": "string",
+            "description": "Name for the new connection"
+          },
+          "provider_type": {
+            "type": "string",
+            "description": "Git provider type: Bitbucket, GitHub, GitHubEnterpriseServer, GitLab, GitLabSelfManaged"
+          },
+          "tags": {
+            "type": "string",
+            "description": "Optional tags to apply to the connection"
+          }
+        },
+        "required": [
+          "connection_name",
+          "provider_type"
+        ]
+      }
+    },
+    {
+      "name": "GetCodeConnection",
+      "description": "Get details about a specific CodeConnection.\n\n    This function retrieves detailed information about a specific AWS\n    CodeConnection, including its current status and guidance on next steps.\n    Use this to check if a connection is ready for use with HealthOmics\n    workflows or if OAuth authorization is still required.\n\n    Args:\n        ctx: MCP context for error reporting\n        connection_arn: ARN of the connection to retrieve\n\n    Returns:\n        Dictionary containing:\n        - connection_arn: ARN of the connection\n        - connection_name: Name of the connection\n        - connection_status: Status (PENDING, AVAILABLE, ERROR)\n        - provider_type: Git provider type\n        - owner_account_id: AWS account that owns the connection\n        - host_arn: ARN of the host (for self-managed providers, if present)\n        - guidance: Status-based guidance message for the user\n\n    Raises:\n        ValueError: If connection_arn format is invalid\n        botocore.exceptions.ClientError: If connection is not found or AWS API call fails\n        botocore.exceptions.BotoCoreError: If AWS API call fails\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "connection_arn": {
+            "type": "string",
+            "description": "ARN of the connection to retrieve"
+          }
+        },
+        "required": [
+          "connection_arn"
+        ]
+      }
+    },
+    {
+      "name": "ListECRRepositories",
+      "description": "List ECR repositories with HealthOmics accessibility status.\n\n    Lists all ECR repositories in the current region and checks each repository's\n    policy to determine if HealthOmics has the required permissions to pull images.\n\n    Args:\n        ctx: MCP context for error reporting\n        max_results: Maximum number of results to return (default: 100, max: 1000)\n        next_token: Pagination token from a previous response\n        filter_healthomics_accessible: If True, only return repositories that are\n            accessible by HealthOmics\n\n    Returns:\n        Dictionary containing:\n        - repositories: List of ECR repositories with accessibility status\n        - next_token: Pagination token if more results are available\n        - total_count: Total number of repositories returned\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Pagination token from a previous response"
+          },
+          "filter_healthomics_accessible": {
+            "type": "boolean",
+            "description": "Only return repositories accessible by HealthOmics"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "CheckContainerAvailability",
+      "description": "Check if a container image is available in ECR and accessible by HealthOmics.\n\n    Queries ECR to determine if a specific container image exists in a repository\n    and whether HealthOmics has the required permissions to pull the image.\n    For pull-through cache repositories, indicates that the image may be pulled\n    on first access even if not currently cached.\n\n    When initiate_pull_through is True and the image is not found in a pull-through\n    cache repository that is accessible to HealthOmics, this function will attempt\n    to initiate the pull-through using ECR's batch_get_image API call. This triggers\n    ECR to pull the image from the upstream registry and cache it locally.\n\n    Args:\n        ctx: MCP context for error reporting\n        repository_name: ECR repository name (e.g., \"my-repo\" or \"docker-hub/library/ubuntu\")\n        image_tag: Image tag to check (default: \"latest\")\n        image_digest: Image digest (sha256:...) - if provided, takes precedence over tag\n        initiate_pull_through: If True, attempt to initiate pull-through cache for\n            missing images in accessible pull-through cache repositories\n\n    Returns:\n        Dictionary containing:\n        - available: Whether the image is available\n        - image: Image details if available (digest, size, push timestamp)\n        - repository_exists: Whether the repository exists\n        - is_pull_through_cache: Whether this is a pull-through cache repository\n        - healthomics_accessible: Whether HealthOmics can access the image\n        - missing_permissions: List of missing ECR permissions for HealthOmics\n        - message: Human-readable status message\n        - pull_through_initiated: Whether a pull-through was initiated\n        - pull_through_initiation_message: Message about pull-through initiation result\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "repository_name": {
+            "type": "string",
+            "description": "ECR repository name (e.g., \"my-repo\" or \"docker-hub/library/ubuntu\")"
+          },
+          "image_tag": {
+            "type": "string",
+            "description": "Image tag to check (default: \"latest\")"
+          },
+          "image_digest": {
+            "type": "string",
+            "description": "Image digest (sha256:...) - if provided, takes precedence over tag"
+          },
+          "initiate_pull_through": {
+            "type": "boolean",
+            "description": "If True and the image is not found in a pull-through cache repository that is accessible to HealthOmics, attempt to initiate the pull-through using batch_get_image API call"
+          }
+        },
+        "required": [
+          "repository_name"
+        ]
+      }
+    },
+    {
+      "name": "CloneContainerToECR",
+      "description": "Clone a container image to a private ECR repository for HealthOmics use.\n\n    This tool copies a container image from an upstream registry (Docker Hub, Quay.io,\n    ECR Public) to your private ECR repository with appropriate HealthOmics access\n    permissions. It uses ECR pull-through cache to perform the copy.\n\n    The tool will:\n    1. Parse the source image reference (handling Docker Hub shorthand like \"ubuntu:latest\")\n    2. Find an existing pull-through cache rule for the source registry\n    3. Use the pull-through cache to pull the image into ECR\n    4. Grant HealthOmics access permissions to the repository\n    5. Return the ECR URI and digest for use in workflows\n\n    Image reference formats supported:\n    - \"ubuntu:latest\" -> registry-1.docker.io/library/ubuntu:latest\n    - \"myorg/myimage:v1\" -> registry-1.docker.io/myorg/myimage:v1\n    - \"quay.io/biocontainers/samtools:1.17\" -> quay.io/biocontainers/samtools:1.17\n    - \"public.ecr.aws/lts/ubuntu:22.04\" -> public.ecr.aws/lts/ubuntu:22.04\n\n    Args:\n        ctx: MCP context for error reporting\n        source_image: Source container image reference\n        target_repository_name: Target ECR repository name (only used if no pull-through\n            cache exists; optional)\n        target_image_tag: Target image tag (optional)\n\n    Returns:\n        Dictionary containing:\n        - success: Whether the operation was successful\n        - source_image: Original source image reference\n        - source_registry: Source registry URL\n        - source_digest: Source image digest (if available)\n        - ecr_uri: ECR URI of the cloned image\n        - ecr_digest: ECR image digest\n        - repository_created: Whether a new repository was created\n        - used_pull_through_cache: Whether pull-through cache was used\n        - pull_through_cache_prefix: The pull-through cache prefix used (if any)\n        - healthomics_accessible: Whether HealthOmics can access the image\n        - message: Human-readable status message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "source_image": {
+            "type": "string",
+            "description": "Source container image reference (e.g., \"ubuntu:latest\", \"myorg/myimage:v1\", \"quay.io/org/image:tag\")"
+          },
+          "target_repository_name": {
+            "type": "string",
+            "description": "Target ECR repository name. Only used if no pull-through cache exists. If not provided, derives from source image."
+          },
+          "target_image_tag": {
+            "type": "string",
+            "description": "Target image tag. If not provided, uses source tag or \"latest\"."
+          }
+        },
+        "required": [
+          "source_image"
+        ]
+      }
+    },
+    {
+      "name": "GrantHealthOmicsRepositoryAccess",
+      "description": "Grant HealthOmics access to an ECR repository.\n\n    Updates the repository policy to allow the HealthOmics service principal\n    (omics.amazonaws.com) to pull images. This adds the required permissions:\n    - ecr:BatchGetImage\n    - ecr:GetDownloadUrlForLayer\n\n    If the repository already has a policy, the HealthOmics permissions are added\n    while preserving existing statements. If no policy exists, a new policy is created.\n\n    Args:\n        ctx: MCP context for error reporting\n        repository_name: ECR repository name to grant access to\n\n    Returns:\n        Dictionary containing:\n        - success: Whether the operation was successful\n        - repository_name: The repository that was updated\n        - policy_updated: Whether an existing policy was updated\n        - policy_created: Whether a new policy was created\n        - previous_healthomics_accessible: Previous accessibility status\n        - current_healthomics_accessible: Current accessibility status after update\n        - message: Human-readable status message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "repository_name": {
+            "type": "string",
+            "description": "ECR repository name to grant HealthOmics access to"
+          }
+        },
+        "required": [
+          "repository_name"
+        ]
+      }
+    },
+    {
+      "name": "ListPullThroughCacheRules",
+      "description": "List pull-through cache rules with HealthOmics usability status.\n\n    Lists all ECR pull-through cache rules in the current region and evaluates\n    each rule's usability by HealthOmics. A pull-through cache is usable by\n    HealthOmics if:\n    1. The registry permissions policy grants HealthOmics the required permissions\n    2. A repository creation template exists for the prefix\n    3. The template grants HealthOmics the required image pull permissions\n\n    Args:\n        ctx: MCP context for error reporting\n        max_results: Maximum number of results to return (default: 100, max: 1000)\n        next_token: Pagination token from a previous response\n\n    Returns:\n        Dictionary containing:\n        - rules: List of pull-through cache rules with usability status\n        - next_token: Pagination token if more results are available\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Pagination token from a previous response"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "CreatePullThroughCacheForHealthOmics",
+      "description": "Create a pull-through cache rule configured for HealthOmics.\n\n    Creates an ECR pull-through cache rule for the specified upstream registry\n    and configures the necessary permissions for HealthOmics to use it. This includes:\n    1. Creating the pull-through cache rule\n    2. Updating the registry permissions policy to allow HealthOmics to create\n       repositories and import images\n    3. Creating a repository creation template that grants HealthOmics the\n       required permissions to pull images\n\n    Args:\n        ctx: MCP context for error reporting\n        upstream_registry: Upstream registry type (docker-hub, quay, or ecr-public)\n        ecr_repository_prefix: ECR repository prefix (defaults to registry type name)\n        credential_arn: Secrets Manager ARN for registry credentials\n                       (required for docker-hub, optional for others)\n\n    Returns:\n        Dictionary containing:\n        - success: Whether the operation was successful\n        - rule: Created pull-through cache rule details\n        - registry_policy_updated: Whether the registry policy was updated\n        - repository_template_created: Whether the repository template was created\n        - message: Human-readable status message\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "upstream_registry": {
+            "type": "string",
+            "description": "Upstream registry type: docker-hub, quay, or ecr-public"
+          },
+          "ecr_repository_prefix": {
+            "type": "string",
+            "description": "ECR repository prefix (defaults to registry type name)"
+          },
+          "credential_arn": {
+            "type": "string",
+            "description": "Secrets Manager ARN for registry credentials (required for docker-hub)"
+          }
+        },
+        "required": [
+          "upstream_registry"
+        ]
+      }
+    },
+    {
+      "name": "CreateContainerRegistryMap",
+      "description": "Create a container registry map for HealthOmics workflows.\n\n    Creates a container registry map file that can be used when creating HealthOmics\n    workflows. Registry mappings allow workflows to use container images from upstream\n    registries (Docker Hub, Quay.io, ECR Public) without modifying the workflow\n    definition. The mappings redirect container pulls to your private ECR pull-through\n    caches.\n\n    By default, this tool discovers all HealthOmics-usable pull-through cache rules\n    in your ECR registry and creates mappings for them. You can also provide additional\n    registry mappings or specific image mappings for container overrides.\n\n    Args:\n        ctx: MCP context for error reporting\n        ecr_account_id: AWS account ID for ECR repositories. If not provided,\n            uses the current AWS account.\n        ecr_region: AWS region for ECR repositories. If not provided,\n            uses the current configured region.\n        include_pull_through_caches: If true, automatically discovers HealthOmics-usable\n            ECR pull-through cache rules and creates registry mappings for them.\n        additional_registry_mappings: Additional registry mappings to include beyond\n            discovered pull-through caches. Each mapping should have 'upstreamRegistryUrl'\n            and 'ecrRepositoryPrefix' keys.\n        image_mappings: List of specific image mappings for container overrides.\n            Each mapping should have 'sourceImage' and 'destinationImage' keys.\n            These take precedence over registry mappings.\n        output_format: Output format - 'json' for raw JSON string, 'dict' for dictionary.\n\n    Returns:\n        Dictionary containing:\n        - success: Whether the operation was successful\n        - account_id: AWS account ID used\n        - region: AWS region used\n        - discovered_healthomics_usable_caches: Number of HealthOmics-usable caches found\n        - container_registry_map: The generated container registry map\n        - json_output: Pretty-printed JSON string ready for use\n        - usage_hint: Instructions for using the generated map\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "ecr_account_id": {
+            "type": "string",
+            "description": "AWS account ID for ECR repositories. If not provided, uses the current AWS account."
+          },
+          "ecr_region": {
+            "type": "string",
+            "description": "AWS region for ECR repositories. If not provided, uses the current configured region."
+          },
+          "include_pull_through_caches": {
+            "type": "boolean",
+            "description": "If true, automatically discovers HealthOmics-usable ECR pull-through cache rules and creates registry mappings for them."
+          },
+          "additional_registry_mappings": {
+            "type": "string",
+            "description": "Additional registry mappings to include beyond discovered pull-through caches. Each mapping has 'upstreamRegistryUrl' and 'ecrRepositoryPrefix'."
+          },
+          "image_mappings": {
+            "type": "string",
+            "description": "List of specific image mappings for container overrides. Each mapping has 'sourceImage' and 'destinationImage'. These take precedence over registry mappings."
+          },
+          "output_format": {
+            "type": "string",
+            "description": "Output format: 'json' for raw JSON string, 'dict' for Python dictionary"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "ValidateHealthOmicsECRConfig",
+      "description": "Validate ECR configuration for HealthOmics workflows.\n\n    Performs a comprehensive validation of the ECR configuration to ensure\n    HealthOmics workflows can access container images through pull-through caches.\n    This includes checking:\n    1. All pull-through cache rules in the region\n    2. Registry permissions policy for HealthOmics principal\n    3. Repository creation templates for each pull-through cache prefix\n    4. Template permissions include required actions\n\n    For each issue found, provides specific remediation steps.\n\n    Args:\n        ctx: MCP context for error reporting\n\n    Returns:\n        Dictionary containing:\n        - valid: Whether the configuration is valid for HealthOmics\n        - issues: List of validation issues with remediation steps\n        - pull_through_caches_checked: Number of pull-through cache rules checked\n        - repositories_checked: Number of repositories checked\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "CreateAHOSequenceStore",
+      "description": "Create a new HealthOmics sequence store.\n\n    Args:\n        ctx: MCP context for error reporting\n        name: Name for the new sequence store\n        description: Optional description for the sequence store\n        sse_kms_key_arn: KMS key ARN for server-side encryption\n        fallback_location: S3 URI for the fallback location\n        tags: Tags as a JSON string or dict\n\n    Returns:\n        Dictionary containing the created sequence store information\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name for the new sequence store"
+          },
+          "description": {
+            "type": "string",
+            "description": "Optional description for the sequence store"
+          },
+          "sse_kms_key_arn": {
+            "type": "string",
+            "description": "KMS key ARN for server-side encryption of the sequence store"
+          },
+          "fallback_location": {
+            "type": "string",
+            "description": "S3 URI for the fallback location of the sequence store"
+          },
+          "tags": {
+            "type": "string",
+            "description": "Tags to apply to the sequence store as a JSON string or object, e.g. {\"key\": \"value\"}"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "ListAHOSequenceStores",
+      "description": "List HealthOmics sequence stores.\n\n    Args:\n        ctx: MCP context for error reporting\n        name_filter: Filter stores by name\n        max_results: Maximum number of results to return\n        next_token: Token for pagination\n\n    Returns:\n        Dictionary containing sequence store list and optional next token\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "name_filter": {
+            "type": "string",
+            "description": "Filter stores by name"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination from a previous response"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "GetAHOSequenceStore",
+      "description": "Get details about a specific HealthOmics sequence store.\n\n    Args:\n        ctx: MCP context for error reporting\n        sequence_store_id: The ID of the sequence store\n\n    Returns:\n        Dictionary containing sequence store details\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "sequence_store_id": {
+            "type": "string",
+            "description": "The ID of the sequence store"
+          }
+        },
+        "required": [
+          "sequence_store_id"
+        ]
+      }
+    },
+    {
+      "name": "UpdateAHOSequenceStore",
+      "description": "Update a HealthOmics sequence store.\n\n    Internally fetches the current ETag before performing the update to handle\n    optimistic concurrency control.\n\n    Args:\n        ctx: MCP context for error reporting\n        sequence_store_id: The ID of the sequence store to update\n        name: New name for the sequence store\n        description: New description for the sequence store\n        fallback_location: New S3 URI for the fallback location\n\n    Returns:\n        Dictionary containing the updated sequence store details\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "sequence_store_id": {
+            "type": "string",
+            "description": "The ID of the sequence store to update"
+          },
+          "name": {
+            "type": "string",
+            "description": "New name for the sequence store"
+          },
+          "description": {
+            "type": "string",
+            "description": "New description for the sequence store"
+          },
+          "fallback_location": {
+            "type": "string",
+            "description": "New S3 URI for the fallback location"
+          }
+        },
+        "required": [
+          "sequence_store_id"
+        ]
+      }
+    },
+    {
+      "name": "ListAHOReadSets",
+      "description": "List read sets in a HealthOmics sequence store with optional filtering.\n\n    Args:\n        ctx: MCP context for error reporting\n        sequence_store_id: The ID of the sequence store\n        sample_id: Filter by sample ID\n        subject_id: Filter by subject ID\n        reference_arn: Filter by reference ARN\n        status: Filter by read set status\n        file_type: Filter by file type\n        created_after: Filter for read sets created after this datetime\n        created_before: Filter for read sets created before this datetime\n        max_results: Maximum number of results to return\n        next_token: Token for pagination\n\n    Returns:\n        Dictionary containing read set list and optional next token\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "sequence_store_id": {
+            "type": "string",
+            "description": "The ID of the sequence store"
+          },
+          "sample_id": {
+            "type": "string",
+            "description": "Filter by sample ID"
+          },
+          "subject_id": {
+            "type": "string",
+            "description": "Filter by subject ID"
+          },
+          "reference_arn": {
+            "type": "string",
+            "description": "Filter by reference ARN"
+          },
+          "status": {
+            "type": "string",
+            "description": "Filter by read set status (e.g., ACTIVE, ARCHIVED)"
+          },
+          "file_type": {
+            "type": "string",
+            "description": "Filter by file type (FASTQ, BAM, CRAM, or UBAM)"
+          },
+          "created_after": {
+            "type": "string",
+            "description": "Filter for read sets created after this ISO 8601 datetime"
+          },
+          "created_before": {
+            "type": "string",
+            "description": "Filter for read sets created before this ISO 8601 datetime"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination from a previous response"
+          }
+        },
+        "required": [
+          "sequence_store_id"
+        ]
+      }
+    },
+    {
+      "name": "GetAHOReadSetMetadata",
+      "description": "Get metadata for a specific read set in a HealthOmics sequence store.\n\n    Args:\n        ctx: MCP context for error reporting\n        sequence_store_id: The ID of the sequence store\n        read_set_id: The ID of the read set\n\n    Returns:\n        Dictionary containing read set metadata\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "sequence_store_id": {
+            "type": "string",
+            "description": "The ID of the sequence store"
+          },
+          "read_set_id": {
+            "type": "string",
+            "description": "The ID of the read set"
+          }
+        },
+        "required": [
+          "sequence_store_id",
+          "read_set_id"
+        ]
+      }
+    },
+    {
+      "name": "StartAHOReadSetImportJob",
+      "description": "Start a read set import job to import genomic files from S3 into a sequence store.\n\n    Args:\n        ctx: MCP context for error reporting\n        sequence_store_id: The ID of the sequence store\n        role_arn: IAM role ARN for the import job\n        sources: JSON list of import sources\n        tags: Tags as a JSON string or dict\n\n    Returns:\n        Dictionary containing the import job information\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "sequence_store_id": {
+            "type": "string",
+            "description": "The ID of the sequence store"
+          },
+          "role_arn": {
+            "type": "string",
+            "description": "IAM role ARN for the import job"
+          },
+          "sources": {
+            "type": "string",
+            "description": "JSON list of import sources. Each source requires: sourceFileType (FASTQ|BAM|CRAM|UBAM), sourceFiles (object with source1 required, source2 optional for paired-end FASTQ), subjectId, sampleId. Optional fields: referenceArn, name, description, generatedFrom, tags. Example: [{\"sourceFileType\": \"FASTQ\", \"sourceFiles\": {\"source1\": \"s3://bucket/sample_R1.fastq.gz\", \"source2\": \"s3://bucket/sample_R2.fastq.gz\"}, \"subjectId\": \"subject-1\", \"sampleId\": \"sample-1\", \"referenceArn\": \"arn:aws:omics:us-east-1:123456789012:referenceStore/123/reference/456\", \"name\": \"my-reads\"}]"
+          },
+          "tags": {
+            "type": "string",
+            "description": "Tags to apply to the import job as a JSON string or object, e.g. {\"key\": \"value\"}"
+          }
+        },
+        "required": [
+          "sequence_store_id",
+          "role_arn",
+          "sources"
+        ]
+      }
+    },
+    {
+      "name": "GetAHOReadSetImportJob",
+      "description": "Get details about a read set import job.\n\n    Args:\n        ctx: MCP context for error reporting\n        sequence_store_id: The ID of the sequence store\n        import_job_id: The ID of the import job\n\n    Returns:\n        Dictionary containing the import job details\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "sequence_store_id": {
+            "type": "string",
+            "description": "The ID of the sequence store"
+          },
+          "import_job_id": {
+            "type": "string",
+            "description": "The ID of the import job"
+          }
+        },
+        "required": [
+          "sequence_store_id",
+          "import_job_id"
+        ]
+      }
+    },
+    {
+      "name": "ListAHOReadSetImportJobs",
+      "description": "List read set import jobs for a sequence store.\n\n    Args:\n        ctx: MCP context for error reporting\n        sequence_store_id: The ID of the sequence store\n        max_results: Maximum number of results to return\n        next_token: Token for pagination\n\n    Returns:\n        Dictionary containing import job list and optional next token\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "sequence_store_id": {
+            "type": "string",
+            "description": "The ID of the sequence store"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination from a previous response"
+          }
+        },
+        "required": [
+          "sequence_store_id"
+        ]
+      }
+    },
+    {
+      "name": "StartAHOReadSetExportJob",
+      "description": "Start a read set export job to export read sets from a sequence store to S3.\n\n    Args:\n        ctx: MCP context for error reporting\n        sequence_store_id: The ID of the sequence store\n        destination_s3_uri: S3 URI for the export destination\n        role_arn: IAM role ARN for the export job\n        read_set_ids: List of read set IDs to export\n\n    Returns:\n        Dictionary containing the export job information\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "sequence_store_id": {
+            "type": "string",
+            "description": "The ID of the sequence store"
+          },
+          "destination_s3_uri": {
+            "type": "string",
+            "description": "S3 URI for the export destination"
+          },
+          "role_arn": {
+            "type": "string",
+            "description": "IAM role ARN for the export job"
+          },
+          "read_set_ids": {
+            "type": "string",
+            "description": "List of read set IDs to export as a JSON list or array, e.g. [\"id1\", \"id2\"]"
+          }
+        },
+        "required": [
+          "sequence_store_id",
+          "destination_s3_uri",
+          "role_arn",
+          "read_set_ids"
+        ]
+      }
+    },
+    {
+      "name": "GetAHOReadSetExportJob",
+      "description": "Get details about a read set export job.\n\n    Args:\n        ctx: MCP context for error reporting\n        sequence_store_id: The ID of the sequence store\n        export_job_id: The ID of the export job\n\n    Returns:\n        Dictionary containing the export job details\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "sequence_store_id": {
+            "type": "string",
+            "description": "The ID of the sequence store"
+          },
+          "export_job_id": {
+            "type": "string",
+            "description": "The ID of the export job"
+          }
+        },
+        "required": [
+          "sequence_store_id",
+          "export_job_id"
+        ]
+      }
+    },
+    {
+      "name": "ListAHOReadSetExportJobs",
+      "description": "List read set export jobs for a sequence store.\n\n    Args:\n        ctx: MCP context for error reporting\n        sequence_store_id: The ID of the sequence store\n        max_results: Maximum number of results to return\n        next_token: Token for pagination\n\n    Returns:\n        Dictionary containing export job list and optional next token\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "sequence_store_id": {
+            "type": "string",
+            "description": "The ID of the sequence store"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination from a previous response"
+          }
+        },
+        "required": [
+          "sequence_store_id"
+        ]
+      }
+    },
+    {
+      "name": "ActivateAHOReadSets",
+      "description": "Activate archived read sets in a HealthOmics sequence store.\n\n    Starts an activation job to move read sets from archive storage back to active storage.\n\n    Args:\n        ctx: MCP context for error reporting\n        sequence_store_id: The ID of the sequence store\n        read_set_ids: List of read set IDs to activate\n\n    Returns:\n        Dictionary containing the activation job information\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "sequence_store_id": {
+            "type": "string",
+            "description": "The ID of the sequence store"
+          },
+          "read_set_ids": {
+            "type": "string",
+            "description": "List of read set IDs to activate as a JSON list or array, e.g. [\"id1\", \"id2\"]"
+          }
+        },
+        "required": [
+          "sequence_store_id",
+          "read_set_ids"
+        ]
+      }
+    },
+    {
+      "name": "ListAHOReferenceStores",
+      "description": "List HealthOmics reference stores.\n\n    Args:\n        ctx: MCP context for error reporting\n        name_filter: Filter stores by name\n        max_results: Maximum number of results to return\n        next_token: Token for pagination\n\n    Returns:\n        Dictionary containing reference store list and optional next token\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "name_filter": {
+            "type": "string",
+            "description": "Filter stores by name"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination from a previous response"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "GetAHOReferenceStore",
+      "description": "Get details about a specific HealthOmics reference store.\n\n    AWS HealthOmics allows only one reference store per account per region.\n    If reference_store_id is not provided, it will be automatically resolved.\n\n    Args:\n        ctx: MCP context for error reporting\n        reference_store_id: The ID of the reference store (auto-resolved if omitted)\n\n    Returns:\n        Dictionary containing reference store details\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "reference_store_id": {
+            "type": "string",
+            "description": "The ID of the reference store. If not provided, auto-resolves the single store in the account/region."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "ListAHOReferences",
+      "description": "List references in a HealthOmics reference store with optional filtering.\n\n    AWS HealthOmics allows only one reference store per account per region.\n    If reference_store_id is not provided, it will be automatically resolved.\n\n    Args:\n        ctx: MCP context for error reporting\n        reference_store_id: The ID of the reference store (auto-resolved if omitted)\n        name_filter: Filter references by name\n        status_filter: Filter references by status\n        max_results: Maximum number of results to return\n        next_token: Token for pagination\n\n    Returns:\n        Dictionary containing reference list and optional next token\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "reference_store_id": {
+            "type": "string",
+            "description": "The ID of the reference store. If not provided, auto-resolves the single store in the account/region."
+          },
+          "name_filter": {
+            "type": "string",
+            "description": "Filter references by name"
+          },
+          "status_filter": {
+            "type": "string",
+            "description": "Filter references by status (e.g., ACTIVE, DELETING)"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination from a previous response"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "GetAHOReferenceMetadata",
+      "description": "Get metadata for a specific reference in a HealthOmics reference store.\n\n    AWS HealthOmics allows only one reference store per account per region.\n    If reference_store_id is not provided, it will be automatically resolved.\n\n    Args:\n        ctx: MCP context for error reporting\n        reference_id: The ID of the reference\n        reference_store_id: The ID of the reference store (auto-resolved if omitted)\n\n    Returns:\n        Dictionary containing reference metadata\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "reference_id": {
+            "type": "string",
+            "description": "The ID of the reference"
+          },
+          "reference_store_id": {
+            "type": "string",
+            "description": "The ID of the reference store. If not provided, auto-resolves the single store in the account/region."
+          }
+        },
+        "required": [
+          "reference_id"
+        ]
+      }
+    },
+    {
+      "name": "StartAHOReferenceImportJob",
+      "description": "Start a reference import job to import reference files from S3 into a reference store.\n\n    AWS HealthOmics allows only one reference store per account per region.\n    If reference_store_id is not provided, it will be automatically resolved.\n\n    Each source in the sources list is validated against the ReferenceImportSource model\n    and must include:\n      - sourceFile: S3 URI pointing to a FASTA reference file (e.g. \"s3://bucket/GRCh38.fasta\")\n      - name: A name for the reference (e.g. \"GRCh38\")\n      - description (optional): A description of the reference\n      - tags (optional): Key-value tags as {\"key\": \"value\"}\n\n    Example sources JSON:\n        [{\"sourceFile\": \"s3://bucket/GRCh38.fasta\", \"name\": \"GRCh38\",\n          \"description\": \"Human reference genome build 38\",\n          \"tags\": {\"build\": \"38\", \"species\": \"human\"}}]\n\n    Args:\n        ctx: MCP context for error reporting\n        role_arn: IAM role ARN for the import job\n        sources: JSON list of import sources (validated against ReferenceImportSource)\n        reference_store_id: The ID of the reference store (auto-resolved if omitted)\n\n    Returns:\n        Dictionary containing the import job information\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "role_arn": {
+            "type": "string",
+            "description": "IAM role ARN for the import job"
+          },
+          "sources": {
+            "type": "string",
+            "description": "JSON list of import sources. Each source requires: sourceFile (S3 URI to a FASTA reference file), name. Optional fields: description, tags. Example: [{\"sourceFile\": \"s3://bucket/GRCh38.fasta\", \"name\": \"GRCh38\", \"description\": \"Human reference genome build 38\", \"tags\": {\"build\": \"38\", \"species\": \"human\"}}]"
+          },
+          "reference_store_id": {
+            "type": "string",
+            "description": "The ID of the reference store. If not provided, auto-resolves the single store in the account/region."
+          }
+        },
+        "required": [
+          "role_arn",
+          "sources"
+        ]
+      }
+    },
+    {
+      "name": "GetAHOReferenceImportJob",
+      "description": "Get details about a reference import job.\n\n    AWS HealthOmics allows only one reference store per account per region.\n    If reference_store_id is not provided, it will be automatically resolved.\n\n    Args:\n        ctx: MCP context for error reporting\n        import_job_id: The ID of the import job\n        reference_store_id: The ID of the reference store (auto-resolved if omitted)\n\n    Returns:\n        Dictionary containing the import job details\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "import_job_id": {
+            "type": "string",
+            "description": "The ID of the import job"
+          },
+          "reference_store_id": {
+            "type": "string",
+            "description": "The ID of the reference store. If not provided, auto-resolves the single store in the account/region."
+          }
+        },
+        "required": [
+          "import_job_id"
+        ]
+      }
+    },
+    {
+      "name": "ListAHOReferenceImportJobs",
+      "description": "List reference import jobs for a reference store.\n\n    AWS HealthOmics allows only one reference store per account per region.\n    If reference_store_id is not provided, it will be automatically resolved.\n\n    Args:\n        ctx: MCP context for error reporting\n        reference_store_id: The ID of the reference store (auto-resolved if omitted)\n        max_results: Maximum number of results to return\n        next_token: Token for pagination\n\n    Returns:\n        Dictionary containing import job list and optional next token\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "reference_store_id": {
+            "type": "string",
+            "description": "The ID of the reference store. If not provided, auto-resolves the single store in the account/region."
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to return"
+          },
+          "next_token": {
+            "type": "string",
+            "description": "Token for pagination from a previous response"
+          }
+        },
+        "required": []
+      }
+    }
+  ]
+}

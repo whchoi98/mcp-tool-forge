@@ -1,0 +1,498 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "cache_get",
+        "description": "Get a value from the cache.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_gets",
+        "description": "Get a value and its CAS token from the cache.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_get_many",
+        "description": "Get multiple values from the cache.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "keys": {
+                "type": "array",
+                "description": ""
+              }
+            },
+            "required": [
+              "keys"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_get_multi",
+        "description": "Get multiple values from the cache (alias for get_many).",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "keys": {
+                "type": "array",
+                "description": ""
+              }
+            },
+            "required": [
+              "keys"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_set",
+        "description": "Set a value in the cache.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              },
+              "expire": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_cas",
+        "description": "Set a value using CAS (Check And Set).",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              },
+              "cas": {
+                "type": "integer",
+                "description": ""
+              },
+              "expire": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "value",
+              "cas"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_set_many",
+        "description": "Set multiple values in the cache.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "mapping": {
+                "type": "object",
+                "description": ""
+              },
+              "expire": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "mapping"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_set_multi",
+        "description": "Set multiple values in the cache (alias for set_many).",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "mapping": {
+                "type": "object",
+                "description": ""
+              },
+              "expire": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "mapping"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_add",
+        "description": "Add a value to the cache only if the key doesn't exist.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              },
+              "expire": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_replace",
+        "description": "Replace a value in the cache only if the key exists.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              },
+              "expire": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_append",
+        "description": "Append a string to an existing value.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_prepend",
+        "description": "Prepend a string to an existing value.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "value"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_delete",
+        "description": "Delete a value from the cache.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_delete_many",
+        "description": "Delete multiple values from the cache.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "keys": {
+                "type": "array",
+                "description": ""
+              }
+            },
+            "required": [
+              "keys"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_delete_multi",
+        "description": "Delete multiple values from the cache (alias for delete_many).",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "keys": {
+                "type": "array",
+                "description": ""
+              }
+            },
+            "required": [
+              "keys"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_incr",
+        "description": "Increment a counter in the cache.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "integer",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_decr",
+        "description": "Decrement a counter in the cache.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "value": {
+                "type": "integer",
+                "description": ""
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_touch",
+        "description": "Update the expiration time for a key.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": ""
+              },
+              "expire": {
+                "type": "integer",
+                "description": ""
+              }
+            },
+            "required": [
+              "key",
+              "expire"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_stats",
+        "description": "Get cache statistics.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "args": {
+                "type": "string",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_flush_all",
+        "description": "Flush all cache entries.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "delay": {
+                "type": "integer",
+                "description": ""
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_quit",
+        "description": "Close the connection to the cache server.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {},
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "cache_version",
+        "description": "Get the version of the cache server.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {},
+            "required": []
+          }
+        }
+      }
+    }
+  ]
+}

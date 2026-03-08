@@ -1,0 +1,152 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "lookup_events",
+        "description": "Look up CloudTrail events based on various criteria.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "start_time": {
+                "type": "string",
+                "description": "Start time for event lookup (ISO format or relative like \"1 day ago\"). IMPORTANT: When using pagination (next_token), you must provide the exact same start_time as the original request."
+              },
+              "end_time": {
+                "type": "string",
+                "description": "End time for event lookup (ISO format or relative like \"1 hour ago\"). IMPORTANT: When using pagination (next_token), you must provide the exact same end_time as the original request."
+              },
+              "attribute_key": {
+                "type": "string",
+                "description": "Attribute to search by"
+              },
+              "attribute_value": {
+                "type": "string",
+                "description": "Value to search for in the specified attribute"
+              },
+              "max_results": {
+                "type": "string",
+                "description": "Maximum number of events to return (1-50, default: 10)"
+              },
+              "next_token": {
+                "type": "string",
+                "description": "Token for pagination to fetch the next page of events. IMPORTANT: When using this token, all other parameters (start_time, end_time, attribute_key, attribute_value) must match exactly the original request that generated this token."
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region to query. Defaults to us-east-1."
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "lake_query",
+        "description": "Execute a SQL query against CloudTrail Lake for complex analytics and filtering.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "sql": {
+                "type": "string",
+                "description": "SQL query to execute against CloudTrail Lake. IMPORTANT: You must include a valid Event Data Store (EDS) ID in the FROM clause of your SQL query. Use list_event_data_stores tool to get available EDS IDs first. CloudTrail Lake only supports SELECT statements using Trino-compatible SQL syntax. Example: SELECT * FROM 0233062b-51c6-4d18-8dec-a8c90da840d9 WHERE eventname = 'ConsoleLogin'"
+              },
+              "wait_for_completion": {
+                "type": "boolean",
+                "description": "Whether to wait for query completion and return results. If False, returns immediately with query_id for manual result fetching using get_query_results. Default: True"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region to query. Defaults to us-east-1."
+              }
+            },
+            "required": [
+              "sql"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_query_status",
+        "description": "Get the status of a CloudTrail Lake query.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "query_id": {
+                "type": "string",
+                "description": "The ID of the query to check status for"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region to query. Defaults to us-east-1."
+              }
+            },
+            "required": [
+              "query_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_query_results",
+        "description": "Get the results of a completed CloudTrail Lake query with pagination support.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "query_id": {
+                "type": "string",
+                "description": "The ID of the query to get results for"
+              },
+              "max_results": {
+                "type": "string",
+                "description": "Maximum number of results to return per page (1-50, default: 50)"
+              },
+              "next_token": {
+                "type": "string",
+                "description": "Token for pagination to fetch the next page of results. Use the next_token returned from a previous call to get successive pages."
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region to query. Defaults to us-east-1."
+              }
+            },
+            "required": [
+              "query_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "list_event_data_stores",
+        "description": "List available CloudTrail Lake Event Data Stores with their capabilities and event selectors.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "include_details": {
+                "type": "boolean",
+                "description": "Whether to include detailed event selector information (default: true)"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region to query. Defaults to us-east-1."
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    }
+  ]
+}

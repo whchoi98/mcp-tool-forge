@@ -1,0 +1,186 @@
+{
+  "server": "aws-cost-explorer-mcp-server",
+  "tools": [
+    {
+      "name": "get_today_date",
+      "description": "Retrieve current date information in UTC time zone.\n\n    This tool retrieves the current date in YYYY-MM-DD format and the current month in YYYY-MM format.\n    It's useful for calculating relevent date when user ask last N months/days.\n\n    Args:\n        ctx: MCP context\n\n    Returns:\n        Dictionary containing today's date and current month\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "get_dimension_values",
+      "description": "Retrieve available dimension values for AWS Cost Explorer.\n\n    This tool retrieves all available and valid values for a specified dimension (e.g., SERVICE, REGION)\n    over a period of time. This is useful for validating filter values or exploring available options\n    for cost analysis.\n\n    Args:\n        ctx: MCP context\n        date_range: The billing period start and end dates in YYYY-MM-DD format\n        dimension: The dimension key to retrieve values for (e.g., SERVICE, REGION, LINKED_ACCOUNT)\n\n    Returns:\n        Dictionary containing the dimension name and list of available values\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "date_range": {
+            "type": "string",
+            "description": ""
+          },
+          "dimension": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "date_range",
+          "dimension"
+        ]
+      }
+    },
+    {
+      "name": "get_tag_values",
+      "description": "Retrieve available tag values for AWS Cost Explorer.\n\n    This tool retrieves all available values for a specified tag key over a period of time.\n    This is useful for validating tag filter values or exploring available tag options for cost analysis.\n\n    Args:\n        ctx: MCP context\n        date_range: The billing period start and end dates in YYYY-MM-DD format\n        tag_key: The tag key to retrieve values for\n\n    Returns:\n        Dictionary containing the tag key and list of available values\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "date_range": {
+            "type": "string",
+            "description": ""
+          },
+          "tag_key": {
+            "type": "string",
+            "description": "The tag key to retrieve values for"
+          }
+        },
+        "required": [
+          "date_range",
+          "tag_key"
+        ]
+      }
+    },
+    {
+      "name": "get_cost_forecast",
+      "description": "Retrieve AWS cost forecasts based on historical usage patterns.\n\n    This tool generates cost forecasts for future periods using AWS Cost Explorer's machine learning models.\n    Forecasts are based on your historical usage patterns and can help with budget planning and cost optimization.\n\n    Important granularity limits:\n    - DAILY forecasts: Maximum 3 months into the future\n    - MONTHLY forecasts: Maximum 12 months into the future\n\n    Note: The forecast start date must be equal to or no later than the current date, while the end date\n    must be in the future. AWS automatically uses available historical data to generate forecasts.\n    Forecasts return total costs and cannot be grouped by dimensions like services or regions.\n\n    Example: Get monthly cost forecast for EC2 services for next quarter\n        await get_cost_forecast(\n            ctx=context,\n            date_range={\n                \"start_date\": \"2025-06-19\",  # Today or earlier\n                \"end_date\": \"2025-09-30\"     # Future date\n            },\n            granularity=\"MONTHLY\",\n            filter_expression={\n                \"Dimensions\": {\n                    \"Key\": \"SERVICE\",\n                    \"Values\": [\"Amazon Elastic Compute Cloud - Compute\"],\n                    \"MatchOptions\": [\"EQUALS\"]\n                }\n            },\n            metric=\"UNBLENDED_COST\",\n            prediction_interval_level=80\n        )\n\n    Args:\n        ctx: MCP context\n        date_range: The forecast period dates in YYYY-MM-DD format (start_date <= today, end_date > today)\n        granularity: The granularity at which forecast data is aggregated (DAILY, MONTHLY)\n        filter_expression: Filter criteria as a Python dictionary\n        metric: Cost metric to forecast (UNBLENDED_COST, AMORTIZED_COST, etc.)\n        prediction_interval_level: Confidence level for prediction intervals (80 or 95)\n\n    Returns:\n        Dictionary containing forecast data with confidence intervals and metadata\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "date_range": {
+            "type": "string",
+            "description": ""
+          },
+          "granularity": {
+            "type": "string",
+            "description": "The granularity at which forecast data is aggregated. Valid values are DAILY and MONTHLY. DAILY forecasts support up to 3 months, MONTHLY forecasts support up to 12 months. If not provided, defaults to MONTHLY."
+          },
+          "filter_expression": {
+            "type": "string",
+            "description": "Filter criteria as a Python dictionary to narrow down AWS cost forecasts. Supports filtering by Dimensions (SERVICE, REGION, etc.), Tags, or CostCategories. You can use logical operators (And, Or, Not) for complex filters. Same format as get_cost_and_usage filter_expression."
+          },
+          "metric": {
+            "type": "string",
+            "description": "The metric to forecast. Valid values are AMORTIZED_COST,BLENDED_COST,NET_AMORTIZED_COST,NET_UNBLENDED_COST,UNBLENDED_COST. Note: UsageQuantity forecasting is not supported by AWS Cost Explorer."
+          },
+          "prediction_interval_level": {
+            "type": "integer",
+            "description": "The confidence level for the forecast prediction interval. Valid values are 80 and 95. Higher values provide wider confidence ranges."
+          }
+        },
+        "required": [
+          "date_range"
+        ]
+      }
+    },
+    {
+      "name": "get_cost_and_usage_comparisons",
+      "description": "Compare AWS costs and usage between two time periods.\n\n    This tool compares cost and usage data between a baseline period and a comparison period,\n    providing percentage changes and absolute differences. Both periods must be exactly one month\n    and start/end on the first day of a month. The tool also provides detailed cost drivers\n    when available, showing what specific factors contributed to cost changes.\n\n    Important requirements:\n    - Both periods must be exactly one month duration\n    - Dates must start and end on the first day of a month (e.g., 2025-01-01 to 2025-02-01)\n    - Maximum lookback of 13 months (38 months if multi-year data enabled)\n    - Start dates must be equal to or no later than current date\n\n    Example: Compare January 2025 vs December 2024 EC2 costs\n        await get_cost_and_usage_comparisons(\n            ctx=context,\n            baseline_date_range={\n                \"start_date\": \"2024-12-01\",  # December 2024\n                \"end_date\": \"2025-01-01\"\n            },\n            comparison_date_range={\n                \"start_date\": \"2025-01-01\",  # January 2025\n                \"end_date\": \"2025-02-01\"\n            },\n            metric_for_comparison=\"UnblendedCost\",\n            group_by={\"Type\": \"DIMENSION\", \"Key\": \"SERVICE\"},\n            filter_expression={\n                \"Dimensions\": {\n                    \"Key\": \"SERVICE\",\n                    \"Values\": [\"Amazon Elastic Compute Cloud - Compute\"],\n                    \"MatchOptions\": [\"EQUALS\"]\n                }\n            }\n        )\n\n    Args:\n        ctx: MCP context\n        baseline_date_range: The reference period for comparison (exactly one month)\n        comparison_date_range: The comparison period (exactly one month)\n        metric_for_comparison: Cost metric to compare (UnblendedCost, BlendedCost, etc.)\n        group_by: Either a dictionary with Type and Key, or simply a string key to group by\n        filter_expression: Filter criteria as a Python dictionary\n\n    Returns:\n        Dictionary containing comparison data with percentage changes, absolute differences,\n        and detailed cost drivers when available\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "baseline_date_range": {
+            "type": "string",
+            "description": ""
+          },
+          "comparison_date_range": {
+            "type": "string",
+            "description": ""
+          },
+          "metric_for_comparison": {
+            "type": "string",
+            "description": "The cost and usage metric to compare. Valid values are AmortizedCost, BlendedCost, NetAmortizedCost, NetUnblendedCost, UnblendedCost, UsageQuantity."
+          },
+          "group_by": {
+            "type": "string",
+            "description": "Either a dictionary with Type and Key for grouping comparisons, or simply a string key to group by (which will default to DIMENSION type). Example dictionary: {'Type': 'DIMENSION', 'Key': 'SERVICE'}. Example string: 'SERVICE'."
+          },
+          "filter_expression": {
+            "type": "string",
+            "description": "Filter criteria as a Python dictionary to narrow down AWS cost comparisons. Supports filtering by Dimensions (SERVICE, REGION, etc.), Tags, or CostCategories. You can use logical operators (And, Or, Not) for complex filters. Same format as get_cost_and_usage filter_expression."
+          }
+        },
+        "required": [
+          "baseline_date_range",
+          "comparison_date_range"
+        ]
+      }
+    },
+    {
+      "name": "get_cost_comparison_drivers",
+      "description": "Analyze what drove cost changes between two time periods.\n\n    This tool provides detailed analysis of the TOP 10 most significant cost drivers\n    that caused changes between periods. AWS returns only the most impactful drivers\n    to focus on the changes that matter most for cost optimization.\n\n    The tool provides rich insights including:\n    - Top 10 most significant cost drivers across all services (or filtered subset)\n    - Specific usage types that drove changes (e.g., \"BoxUsage:c5.large\", \"NatGateway-Hours\")\n    - Multiple driver types: usage changes, savings plan impacts, enterprise discounts, support fees\n    - Both cost and usage quantity changes with units (hours, GB-months, etc.)\n    - Context about what infrastructure components changed\n    - Detailed breakdown of usage patterns vs pricing changes\n\n    Can be used with or without filters:\n    - Without filters: Shows top 10 cost drivers across ALL services\n    - With filters: Shows top 10 cost drivers within the filtered scope\n    - Multiple services: Can filter to multiple services and get top 10 within that scope\n\n    Both periods must be exactly one month and start/end on the first day of a month.\n\n    Important requirements:\n    - Both periods must be exactly one month duration\n    - Dates must start and end on the first day of a month (e.g., 2025-01-01 to 2025-02-01)\n    - Maximum lookback of 13 months (38 months if multi-year data enabled)\n    - Start dates must be equal to or no later than current date\n    - Results limited to top 10 most significant drivers (no pagination)\n\n    Example: Analyze top 10 cost drivers across all services\n        await get_cost_comparison_drivers(\n            ctx=context,\n            baseline_date_range={\n                \"start_date\": \"2024-12-01\",  # December 2024\n                \"end_date\": \"2025-01-01\"\n            },\n            comparison_date_range={\n                \"start_date\": \"2025-01-01\",  # January 2025\n                \"end_date\": \"2025-02-01\"\n            },\n            metric_for_comparison=\"UnblendedCost\",\n            group_by={\"Type\": \"DIMENSION\", \"Key\": \"SERVICE\"}\n            # No filter = top 10 drivers across all services\n        )\n\n    Example: Analyze top 10 cost drivers for specific services\n        await get_cost_comparison_drivers(\n            ctx=context,\n            baseline_date_range={\n                \"start_date\": \"2024-12-01\",\n                \"end_date\": \"2025-01-01\"\n            },\n            comparison_date_range={\n                \"start_date\": \"2025-01-01\",\n                \"end_date\": \"2025-02-01\"\n            },\n            metric_for_comparison=\"UnblendedCost\",\n            group_by={\"Type\": \"DIMENSION\", \"Key\": \"SERVICE\"},\n            filter_expression={\n                \"Dimensions\": {\n                    \"Key\": \"SERVICE\",\n                    \"Values\": [\"Amazon Elastic Compute Cloud - Compute\", \"Amazon Simple Storage Service\"],\n                    \"MatchOptions\": [\"EQUALS\"]\n                }\n            }\n        )\n\n    Args:\n        ctx: MCP context\n        baseline_date_range: The reference period for comparison (exactly one month)\n        comparison_date_range: The comparison period (exactly one month)\n        metric_for_comparison: Cost metric to analyze drivers for (UnblendedCost, BlendedCost, etc.)\n        group_by: Either a dictionary with Type and Key, or simply a string key to group by\n        filter_expression: Filter criteria as a Python dictionary\n\n    Returns:\n        with specific usage types, usage quantity changes, driver types (savings plans, discounts, usage changes, support fees), and contextual information\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "baseline_date_range": {
+            "type": "string",
+            "description": ""
+          },
+          "comparison_date_range": {
+            "type": "string",
+            "description": ""
+          },
+          "metric_for_comparison": {
+            "type": "string",
+            "description": "The cost and usage metric to analyze drivers for. Valid values are AmortizedCost, BlendedCost, NetAmortizedCost, NetUnblendedCost, UnblendedCost, UsageQuantity."
+          },
+          "group_by": {
+            "type": "string",
+            "description": "Either a dictionary with Type and Key for grouping driver analysis, or simply a string key to group by (which will default to DIMENSION type). Example dictionary: {'Type': 'DIMENSION', 'Key': 'SERVICE'}. Example string: 'SERVICE'."
+          },
+          "filter_expression": {
+            "type": "string",
+            "description": "Filter criteria as a Python dictionary to narrow down AWS cost driver analysis. Supports filtering by Dimensions (SERVICE, REGION, etc.), Tags, or CostCategories. You can use logical operators (And, Or, Not) for complex filters. Same format as get_cost_and_usage filter_expression."
+          }
+        },
+        "required": [
+          "baseline_date_range",
+          "comparison_date_range"
+        ]
+      }
+    },
+    {
+      "name": "get_cost_and_usage",
+      "description": "Retrieve AWS cost and usage data.\n\n    This tool retrieves AWS cost and usage data for AWS services during a specified billing period,\n    with optional filtering and grouping. It dynamically generates cost reports tailored to specific needs\n    by specifying parameters such as granularity, billing period dates, and filter criteria.\n\n    Note: The end_date is treated as inclusive in this tool, meaning if you specify an end_date of\n    \"2025-01-31\", the results will include data for January 31st. This differs from the AWS Cost Explorer\n    API which treats end_date as exclusive.\n\n    IMPORTANT: When using UsageQuantity metric, AWS aggregates usage numbers without considering units.\n    This makes results meaningless when different usage types have different units (e.g., EC2 compute hours\n    vs data transfer GB). For meaningful UsageQuantity results, you MUST be very specific with filtering, including USAGE_TYPE or USAGE_TYPE_GROUP.\n\n    Example: Get monthly costs for EC2 and S3 services in us-east-1 for May 2025\n        await get_cost_and_usage(\n            ctx=context,\n            date_range={\n                \"start_date\": \"2025-05-01\",\n                \"end_date\": \"2025-05-31\"\n            },\n            granularity=\"MONTHLY\",\n            group_by={\"Type\": \"DIMENSION\", \"Key\": \"SERVICE\"},\n            filter_expression={\n                \"And\": [\n                    {\n                        \"Dimensions\": {\n                            \"Key\": \"SERVICE\",\n                            \"Values\": [\"Amazon Elastic Compute Cloud - Compute\", \"Amazon Simple Storage Service\"],\n                            \"MatchOptions\": [\"EQUALS\"]\n                        }\n                    },\n                    {\n                        \"Dimensions\": {\n                            \"Key\": \"REGION\",\n                            \"Values\": [\"us-east-1\"],\n                            \"MatchOptions\": [\"EQUALS\"]\n                        }\n                    }\n                ]\n            },\n            metric=\"UnblendedCost\"\n        )\n\n    Example: Get meaningful UsageQuantity for specific EC2 instance usage\n        await get_cost_and_usage(\n            ctx=context,\n            {\n            \"date_range\": {\n                \"start_date\": \"2025-05-01\",\n                \"end_date\": \"2025-05-31\"\n            },\n            \"filter_expression\": {\n                \"And\": [\n                {\n                    \"Dimensions\": {\n                    \"Values\": [\n                        \"Amazon Elastic Compute Cloud - Compute\"\n                    ],\n                    \"Key\": \"SERVICE\",\n                    \"MatchOptions\": [\n                        \"EQUALS\"\n                    ]\n                    }\n                },\n                {\n                    \"Dimensions\": {\n                    \"Values\": [\n                        \"EC2: Running Hours\"\n                    ],\n                    \"Key\": \"USAGE_TYPE_GROUP\",\n                    \"MatchOptions\": [\n                        \"EQUALS\"\n                    ]\n                    }\n                }\n                ]\n            },\n            \"metric\": \"UsageQuantity\",\n            \"group_by\": \"USAGE_TYPE\",\n            \"granularity\": \"MONTHLY\"\n            }\n\n    Args:\n        ctx: MCP context\n        date_range: The billing period start and end dates in YYYY-MM-DD format (end date is inclusive)\n        granularity: The granularity at which cost data is aggregated (DAILY, MONTHLY, HOURLY)\n        group_by: Either a dictionary with Type and Key, or simply a string key to group by\n        filter_expression: Filter criteria as a Python dictionary\n        metric: Cost metric to use (UnblendedCost, BlendedCost, etc.)\n\n    Returns:\n        Dictionary containing cost report data grouped according to the specified parameters\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "date_range": {
+            "type": "string",
+            "description": ""
+          },
+          "granularity": {
+            "type": "string",
+            "description": "The granularity at which cost data is aggregated. Valid values are DAILY, MONTHLY, HOURLY. If not provided, defaults to MONTHLY."
+          },
+          "group_by": {
+            "type": "string",
+            "description": "Either a dictionary with Type and Key for grouping costs, or simply a string key to group by (which will default to DIMENSION type). Example dictionary: {'Type': 'DIMENSION', 'Key': 'SERVICE'}. Example string: 'SERVICE'."
+          },
+          "filter_expression": {
+            "type": "string",
+            "description": "Filter criteria as a Python dictionary to narrow down AWS costs. Supports filtering by Dimensions (SERVICE, REGION, etc.), Tags, or CostCategories. You can use logical operators (And, Or, Not) for complex filters. MatchOptions validation: For Dimensions, valid values are ['EQUALS', 'CASE_SENSITIVE']. For Tags and CostCategories, valid values are ['EQUALS', 'ABSENT', 'CASE_SENSITIVE'] (defaults to EQUALS and CASE_SENSITIVE). Examples: 1) Simple service filter: {'Dimensions': {'Key': 'SERVICE', 'Values': ['Amazon Elastic Compute Cloud - Compute', 'Amazon Simple Storage Service'], 'MatchOptions': ['EQUALS']}}. 2) Region filter: {'Dimensions': {'Key': 'REGION', 'Values': ['us-east-1'], 'MatchOptions': ['EQUALS']}}. 3) Combined filter: {'And': [{'Dimensions': {'Key': 'SERVICE', 'Values': ['Amazon Elastic Compute Cloud - Compute'], 'MatchOptions': ['EQUALS']}}, {'Dimensions': {'Key': 'REGION', 'Values': ['us-east-1'], 'MatchOptions': ['EQUALS']}}]}."
+          },
+          "metric": {
+            "type": "string",
+            "description": "The metric to return in the query. Valid values are AmortizedCost, BlendedCost, NetAmortizedCost, NetUnblendedCost, UnblendedCost, UsageQuantity. IMPORTANT: For UsageQuantity, the service aggregates usage numbers without considering units, making results meaningless when mixing different unit types (e.g., compute hours + data transfer GB). To get meaningful UsageQuantity metrics, you MUST filter by USAGE_TYPE or group by USAGE_TYPE/USAGE_TYPE_GROUP to ensure consistent units."
+          }
+        },
+        "required": [
+          "date_range"
+        ]
+      }
+    }
+  ]
+}

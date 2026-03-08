@@ -1,0 +1,43 @@
+{
+  "server": "amazon-kendra-index-mcp-server",
+  "tools": [
+    {
+      "name": "KendraListIndexesTool",
+      "description": "List all Amazon Kendra indexes in the specified region.\n\n    This tool lists all the Kendra indexes available in the region specified in the mcp configuration.\n\n    Parameters:\n        region (str, optional): The AWS region to list Kendra indexes from.\n\n    Returns:\n        Dict containing the list of Kendra indexes.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "KendraQueryTool",
+      "description": "Query Amazon Kendra and retrieve content from the response.\n\n    This tool queries the specified Amazon Kendra index with the provided query\n    and returns the search results. The specified Kendra Index is either provided by the user in the chat, or the default index configured in the environemnt variables\n\n    Parameters:\n        query (str): The search query to send to Amazon Kendra.\n        region (str): The region of the Kendra Index to send the search query to.\n        indexId (str): The indexId of the Kendra index to send the search query to.\n\n    Returns:\n        Dict containing the query results from Amazon Kendra.\n    ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": ""
+          },
+          "region": {
+            "type": "string",
+            "description": ""
+          },
+          "indexId": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    }
+  ]
+}

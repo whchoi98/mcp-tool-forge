@@ -1,0 +1,258 @@
+{
+  "tools": [
+    {
+      "toolSpec": {
+        "name": "analyze_cdk_project",
+        "description": "Analyze a CDK project to identify AWS services used. This tool dynamically extracts service information from CDK constructs without relying on hardcoded service mappings.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "project_path": {
+                "type": "string",
+                "description": "Path to the project directory"
+              }
+            },
+            "required": [
+              "project_path"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "analyze_terraform_project",
+        "description": "Analyze a Terraform project to identify AWS services used. This tool dynamically extracts service information from Terraform resource declarations.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "project_path": {
+                "type": "string",
+                "description": "Path to the project directory"
+              }
+            },
+            "required": [
+              "project_path"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_pricing",
+        "description": "",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "service_code": {
+                "type": "string",
+                "description": "AWS service code (e.g., \"AmazonEC2\", \"AmazonS3\", \"AmazonES\")"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region(s) - single region string (e.g., \"us-east-1\") or list for multi-region comparison (e.g., [\"us-east-1\", \"us-west-2\", \"eu-west-1\"]). Optional: omit for global services like DataTransfer or CloudFront that don't have region-specific pricing."
+              },
+              "filters": {
+                "type": "string",
+                "description": "Optional list of filters to apply to the pricing query"
+              },
+              "max_allowed_characters": {
+                "type": "integer",
+                "description": "Maximum response length in characters (default: 100,000, use -1 for unlimited)"
+              },
+              "output_options": {
+                "type": "string",
+                "description": "Optional output filtering options to reduce response size. Use {\"pricing_terms\": [\"OnDemand\", \"FlatRate\"]} to significantly reduce response size for large services like EC2."
+              },
+              "max_results": {
+                "type": "integer",
+                "description": "Maximum number of results to return per page (default: 100, max: 100)"
+              },
+              "next_token": {
+                "type": "string",
+                "description": "Pagination token from previous response to get next page of results"
+              }
+            },
+            "required": [
+              "service_code"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_bedrock_patterns",
+        "description": "Get architecture patterns for Amazon Bedrock applications, including component relationships and cost considerations",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {},
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "generate_cost_report",
+        "description": "Generate a detailed cost analysis report based on pricing data for one or more AWS services.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "pricing_data": {
+                "type": "object",
+                "description": "Raw pricing data from AWS pricing tools"
+              },
+              "service_name": {
+                "type": "string",
+                "description": "Name of the AWS service"
+              },
+              "related_services": {
+                "type": "string",
+                "description": "List of related AWS services"
+              },
+              "pricing_model": {
+                "type": "string",
+                "description": "Pricing model (e.g., \"ON DEMAND\", \"Reserved\")"
+              },
+              "assumptions": {
+                "type": "string",
+                "description": "List of assumptions for cost analysis"
+              },
+              "exclusions": {
+                "type": "string",
+                "description": "List of items excluded from cost analysis"
+              },
+              "output_file": {
+                "type": "string",
+                "description": "Path to save the report file"
+              },
+              "format": {
+                "type": "string",
+                "description": "Output format (\"markdown\" or \"csv\")"
+              },
+              "detailed_cost_data": {
+                "type": "string",
+                "description": "Detailed cost information for complex scenarios"
+              },
+              "recommendations": {
+                "type": "string",
+                "description": "Direct recommendations or guidance for generation"
+              }
+            },
+            "required": [
+              "pricing_data",
+              "service_name"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_pricing_service_codes",
+        "description": "Get AWS service codes available in the Price List API.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "filter": {
+                "type": "string",
+                "description": "Optional case-insensitive regex pattern to filter service codes"
+              }
+            },
+            "required": []
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_pricing_service_attributes",
+        "description": "Get filterable attributes available for an AWS service in the Pricing API.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "service_code": {
+                "type": "string",
+                "description": "AWS service code (e.g., \"AmazonEC2\", \"AmazonS3\", \"AmazonES\")"
+              },
+              "filter": {
+                "type": "string",
+                "description": "Optional case-insensitive regex pattern to filter service attribute names"
+              }
+            },
+            "required": [
+              "service_code"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_pricing_attribute_values",
+        "description": "Get valid values for pricing filter attributes.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "service_code": {
+                "type": "string",
+                "description": "AWS service code (e.g., \"AmazonEC2\", \"AmazonS3\", \"AmazonES\")"
+              },
+              "attribute_names": {
+                "type": "array",
+                "description": "List of attribute names (e.g., [\"instanceType\", \"location\", \"storageClass\"])"
+              },
+              "filters": {
+                "type": "string",
+                "description": "Optional dictionary mapping attribute names to regex patterns for filtering their values (e.g., {\"instanceType\": \"t3\", \"operatingSystem\": \"Linux\"})"
+              }
+            },
+            "required": [
+              "service_code",
+              "attribute_names"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "toolSpec": {
+        "name": "get_price_list_urls",
+        "description": "Get download URLs for bulk pricing data files.",
+        "inputSchema": {
+          "json": {
+            "type": "object",
+            "properties": {
+              "service_code": {
+                "type": "string",
+                "description": "AWS service code (e.g., \"AmazonEC2\", \"AmazonS3\", \"AmazonES\")"
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region (e.g., \"us-east-1\", \"eu-west-1\")"
+              },
+              "effective_date": {
+                "type": "string",
+                "description": "Effective date for pricing in format \"YYYY-MM-DD HH:MM\" (default: current timestamp)"
+              }
+            },
+            "required": [
+              "service_code",
+              "region"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
