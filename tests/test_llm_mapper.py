@@ -1,6 +1,6 @@
 import json
 import pytest
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import MagicMock, patch
 from mcp_to_cli.llm_mapper import LLMMapper
 from mcp_to_cli.models import ToolDefinition, ToolParam
 
@@ -12,18 +12,24 @@ async def test_llm_mapper_returns_mapping():
         description="Describe an EKS cluster",
         params=[ToolParam(name="cluster_name", type="string", description="Cluster name", required=True)],
     )
-    mock_response = MagicMock()
-    mock_response.content = [MagicMock()]
-    mock_response.content[0].text = json.dumps({
-        "boto3_client": "eks", "boto3_method": "describe_cluster",
-        "boto3_params": {"name": "cluster_name"},
-        "cli_command": "aws eks describe-cluster",
-        "cli_params": {"--name": "cluster_name"},
-    })
-    with patch("mcp_to_cli.llm_mapper.anthropic") as mock_anthropic:
+    mock_response = {
+        "output": {
+            "message": {
+                "content": [
+                    {"text": json.dumps({
+                        "boto3_client": "eks", "boto3_method": "describe_cluster",
+                        "boto3_params": {"name": "cluster_name"},
+                        "cli_command": "aws eks describe-cluster",
+                        "cli_params": {"--name": "cluster_name"},
+                    })}
+                ]
+            }
+        }
+    }
+    with patch("mcp_to_cli.llm_mapper.boto3") as mock_boto3:
         mock_client = MagicMock()
-        mock_client.messages.create = AsyncMock(return_value=mock_response)
-        mock_anthropic.AsyncAnthropic.return_value = mock_client
+        mock_client.converse.return_value = mock_response
+        mock_boto3.client.return_value = mock_client
         mapper = LLMMapper()
         result = await mapper.map_tool(tool)
         assert result is not None
