@@ -10,7 +10,7 @@ Code generators that produce 5 output formats.
 - `cli_gen.py` - Bash AWS CLI function generation / Bash AWS CLI 함수 생성
 - `schema_gen.py` - OpenAPI JSON schema generation / OpenAPI JSON 스키마 생성
 - `agentcore_gen.py` - AgentCore Gateway toolSpec generation / AgentCore Gateway toolSpec 생성
-- `skill_gen.py` - Claude Code skill markdown generation / Claude Code skill 마크다운 생성
+- `skill_gen.py` - Claude Code / Kiro-CLI skill markdown generation / Claude Code / Kiro-CLI skill 마크다운 생성
 
 ## Pattern / 패턴
 

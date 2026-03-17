@@ -42,14 +42,14 @@ MCP Server (stdio)  -->  Connector  -->  Parser  -->  Pipeline  -->  Generators
 
 ### Mapping / 매핑 (`mapping_loader.py` + `llm_mapper.py`)
 - Static: YAML files for known services (IAM 29, DynamoDB 6) / 정적: 알려진 서비스 YAML 파일 (IAM 29, DynamoDB 6)
-- LLM: Bedrock Claude 3.5 Haiku for unmapped tools / LLM: 매핑 없는 도구용 Bedrock Claude 3.5 Haiku
+- LLM: Bedrock Claude Opus 4.6 for unmapped tools / LLM: 매핑 없는 도구용 Bedrock Claude Opus 4.6
 
 ### Generators / 생성기 (`generators/`)
 - boto3: Python functions with type hints / 타입 힌트 포함 Python 함수
 - cli: Bash shell functions / Bash 셸 함수
 - schema: OpenAPI-compatible JSON / OpenAPI 호환 JSON
 - agentcore: AgentCore Gateway toolSpec format / AgentCore Gateway toolSpec 형식
-- skill: Claude Code skill markdown / Claude Code 스킬 마크다운
+- skill: Claude Code / Kiro-CLI skill markdown / Claude Code / Kiro-CLI 스킬 마크다운
 
 ### Validator / 검증기 (`validator.py`)
 - Post-generation syntax validation / 생성 후 구문 검증
@@ -67,5 +67,6 @@ MCP Server (stdio)  -->  Connector  -->  Parser  -->  Pipeline  -->  Generators
 
 - Python 3.11 package (hatchling build)
 - Schema cache / 스키마 캐시: `~/.mcp-tool-forge/cache/`
-- Plugin output / 플러그인 출력: `~/.claude/plugins/mcp-tool-forge-tools/`
-- LLM: Bedrock `us.anthropic.claude-3-5-haiku` in us-east-1
+- Plugin output (Claude) / 플러그인 출력 (Claude): `~/.claude/plugins/mcp-tool-forge/`
+- Plugin output (Kiro) / 플러그인 출력 (Kiro): `~/.kiro/plugins/mcp-tool-forge/`
+- LLM: Bedrock Claude Opus 4.6

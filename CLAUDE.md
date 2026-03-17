@@ -1,9 +1,6 @@
 # MCP Tool Forge
-# MCP Tool Forge - MCP 도구 변환 도구
 
-A Python CLI tool that extracts tool schemas from MCP servers and converts them to 5 formats: boto3/CLI/schema/agentcore/skill.
-
-MCP 서버의 tool schema를 추출하여 boto3/CLI/schema/agentcore/skill 5가지 형식으로 변환하는 Python CLI 도구.
+MCP 서버의 tool schema를 추출하여 boto3/CLI/schema/agentcore/skill 5가지 형식으로 변환하는 Python CLI 도구. Claude Code와 Kiro-CLI 모두 지원.
 
 ## Tech Stack / 기술 스택
 
@@ -31,7 +28,7 @@ mcp-tool-forge/
 │   ├── llm_mapper.py        # Bedrock Claude LLM mapping (Phase 3) / Bedrock Claude LLM 매핑
 │   ├── cache.py             # Schema cache (~/.mcp-tool-forge/cache/) / 스키마 캐시
 │   ├── validator.py         # Generated code syntax validator/fixer / 생성 코드 검증/수정
-│   ├── skill_registrar.py   # Claude Code skill registration / Claude Code 스킬 등록
+│   ├── skill_registrar.py   # Claude Code / Kiro-CLI skill registration (--target claude|kiro)
 │   ├── models.py            # Dataclasses (ToolParam, ToolDefinition, etc.) / 데이터 클래스
 │   ├── generators/          # 5 output generators / 5가지 출력 생성기
 │   │   ├── boto3_gen.py     # Python boto3 functions / Python boto3 함수 생성
@@ -62,6 +59,7 @@ python3.11 -m mcp_to_cli.cli list-tools --server aws-iam-mcp-server
 python3.11 -m mcp_to_cli.cli convert --server aws-iam-mcp-server --output all
 python3.11 -m mcp_to_cli.cli convert --server <name> --llm-assist
 python3.11 -m mcp_to_cli.cli register --server <name> -d output
+python3.11 -m mcp_to_cli.cli register --server <name> -d output --target kiro
 ```
 
 ## Conventions / 규칙
@@ -69,7 +67,7 @@ python3.11 -m mcp_to_cli.cli register --server <name> -d output
 ### Pipeline Phases / 파이프라인 단계
 1. **Extract / 추출**: MCP SDK `tools/list` (cached in ~/.mcp-tool-forge/cache/)
 2. **Map - Static / 정적 매핑**: `mappings/*.yaml` for known boto3/CLI mappings
-3. **Map - LLM / LLM 매핑**: Bedrock Haiku (`us.anthropic.claude-3-5-haiku-20241022-v1:0`)
+3. **Map - LLM / LLM 매핑**: Bedrock Claude Opus 4.6 (`--llm-assist` 플래그)
 4. **Generate / 생성**: Jinja2 templates -> 5 output formats
 
 ### Registry / 레지스트리
