@@ -1,5 +1,5 @@
 # MCP Server Registry / MCP 서버 레지스트리
-# 63 AWS MCP server configurations / 63개 AWS MCP 서버 설정
+# 64 AWS MCP server configurations / 64개 AWS MCP 서버 설정
 servers:
   # Essential Setup / 필수 설정
   aws-mcp-server:
@@ -87,6 +87,15 @@ servers:
     transport: stdio
     category: "Infrastructure & Deployment"
     description: "AWS Support case management"
+
+  aws-network-mcp-server:
+    package: "awslabs.aws-network-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Infrastructure & Deployment"
+    env:
+      AWS_REGION: "us-east-1"
+    description: "AWS networking troubleshooting - Cloud WAN, Transit Gateway, VPC, Network Firewall, VPN"
 
   # AI & Machine Learning / AI 및 머신러닝
   amazon-bedrock-kb-retrieval-mcp-server:
