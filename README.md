@@ -231,10 +231,10 @@ mcp-tool-forge register --server aws-iam-mcp-server -d output --target kiro
 
 | 지표 | 값 |
 |------|------|
-| 연결 성공 | **51 / 63** (81%) |
-| 도구 추출 | **755** |
-| boto3 함수 | **480** |
-| 생성된 스킬 | **755** |
+| 연결 성공 | **55 / 67** (82%) |
+| 도구 추출 | **792** |
+| boto3 함수 | **480+** |
+| 생성된 스킬 | **792** |
 | 구문 통과율 | **91.4%** (자동 수정 후) |
 
 ---
@@ -244,12 +244,13 @@ mcp-tool-forge register --server aws-iam-mcp-server -d output --target kiro
 | 카테고리 | 수 | 서버 |
 |----------|---|------|
 | Data & Analytics | 18 | DynamoDB, Aurora, Redshift, ElastiCache, Neptune |
+| Infrastructure & Deployment | 11 | EKS, ECS, CDK, CloudFormation, Network, Terraform, Serverless |
 | AI & Machine Learning | 10 | Bedrock, SageMaker, Kendra, Nova Canvas |
-| Infrastructure & Deployment | 9 | EKS, ECS, CloudFormation, Terraform, Serverless |
 | Cost & Operations | 8 | CloudWatch, CloudTrail, Cost Explorer, Billing |
 | Developer Tools & Support | 7 | IAM, MSK, Diagram, Code Doc Gen |
 | Integration & Messaging | 5 | SNS/SQS, MQ, Step Functions, Location |
 | Healthcare & Lifesciences | 3 | HealthOmics, HealthImaging, HealthLake |
+| Core | 2 | AWS API, Core MCP |
 | Documentation | 2 | AWS Documentation, Knowledge |
 | Essential Setup | 1 | AWS MCP (unified proxy) |
 
@@ -332,7 +333,7 @@ mcp-tool-forge/
 │   ├── cli.py                  # Click CLI 진입점
 │   ├── pipeline.py             # 3단계 오케스트레이터
 │   ├── connector.py            # MCP SDK stdio_client
-│   ├── registry.yaml           # 63개 서버 설정
+│   ├── registry.yaml           # 67개 서버 설정
 │   ├── llm_mapper.py           # Bedrock Claude Opus 4.6
 │   ├── validator.py            # 생성 코드 검증/수정
 │   ├── generators/             # 5가지 출력 생성기
@@ -596,10 +597,10 @@ mcp-tool-forge register --server aws-iam-mcp-server -d output --target kiro
 
 | Metric | Value |
 |--------|-------|
-| Servers connected | **51 / 63** (81%) |
-| Tools extracted | **755** |
-| boto3 functions | **480** |
-| Skills generated | **755** |
+| Servers connected | **55 / 67** (82%) |
+| Tools extracted | **792** |
+| boto3 functions | **480+** |
+| Skills generated | **792** |
 | Syntax pass rate | **91.4%** (after auto-fix) |
 
 ---
@@ -609,12 +610,13 @@ mcp-tool-forge register --server aws-iam-mcp-server -d output --target kiro
 | Category | Count | Servers |
 |----------|-------|---------|
 | Data & Analytics | 18 | DynamoDB, Aurora, Redshift, ElastiCache, Neptune |
+| Infrastructure & Deployment | 11 | EKS, ECS, CDK, CloudFormation, Network, Terraform, Serverless |
 | AI & Machine Learning | 10 | Bedrock, SageMaker, Kendra, Nova Canvas |
-| Infrastructure & Deployment | 9 | EKS, ECS, CloudFormation, Terraform, Serverless |
 | Cost & Operations | 8 | CloudWatch, CloudTrail, Cost Explorer, Billing |
 | Developer Tools & Support | 7 | IAM, MSK, Diagram, Code Doc Gen |
 | Integration & Messaging | 5 | SNS/SQS, MQ, Step Functions, Location |
 | Healthcare & Lifesciences | 3 | HealthOmics, HealthImaging, HealthLake |
+| Core | 2 | AWS API, Core MCP |
 | Documentation | 2 | AWS Documentation, Knowledge |
 | Essential Setup | 1 | AWS MCP (unified proxy) |
 
@@ -697,7 +699,7 @@ mcp-tool-forge/
 │   ├── cli.py                  # Click CLI entry point
 │   ├── pipeline.py             # 3-phase orchestrator
 │   ├── connector.py            # MCP SDK stdio_client
-│   ├── registry.yaml           # 63 server configs
+│   ├── registry.yaml           # 67 server configs
 │   ├── llm_mapper.py           # Bedrock Claude Opus 4.6
 │   ├── validator.py            # Generated code fixer
 │   ├── generators/             # 5 output generators
