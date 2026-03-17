@@ -1,5 +1,5 @@
-"""Skill registrar for Claude Code plugin integration.
-Claude Code 플러그인 통합을 위한 스킬 등록기."""
+"""Skill registrar for Claude Code / Kiro-CLI plugin integration.
+Claude Code / Kiro-CLI 플러그인 통합을 위한 스킬 등록기."""
 from __future__ import annotations
 import json
 import shutil
@@ -8,16 +8,20 @@ from rich.console import Console
 
 console = Console()
 
-# Default plugin directory for Claude Code / Claude Code 기본 플러그인 디렉터리
-DEFAULT_PLUGIN_DIR = Path.home() / ".claude" / "plugins" / "mcp-tool-forge"
+# Default plugin directories per target / 타겟별 기본 플러그인 디렉터리
+PLUGIN_DIRS = {
+    "claude": Path.home() / ".claude" / "plugins" / "mcp-tool-forge",
+    "kiro": Path.home() / ".kiro" / "plugins" / "mcp-tool-forge",
+}
 
 
 class SkillRegistrar:
-    """Manages registration of generated skills into the Claude Code plugin directory.
-    생성된 스킬을 Claude Code 플러그인 디렉터리에 등록하는 것을 관리한다."""
+    """Manages registration of generated skills into Claude Code / Kiro-CLI plugin directory.
+    생성된 스킬을 Claude Code / Kiro-CLI 플러그인 디렉터리에 등록하는 것을 관리한다."""
 
-    def __init__(self, plugin_dir: Path | None = None):
-        self._plugin_dir = plugin_dir or DEFAULT_PLUGIN_DIR  # Target plugin directory / 대상 플러그인 디렉터리
+    def __init__(self, plugin_dir: Path | None = None, target: str = "claude"):
+        self._target = target
+        self._plugin_dir = plugin_dir or PLUGIN_DIRS.get(target, PLUGIN_DIRS["claude"])
 
     def register_skills(self, skills_dir: Path, server_name: str) -> int:
         """Copy generated skills into Claude Code plugin structure.
@@ -42,12 +46,12 @@ class SkillRegistrar:
             shutil.copy2(skill_file, dest)
             count += 1
 
-        console.print(f"  [green]Registered:[/] {count} skills for {server_name}")
+        console.print(f"  [green]Registered:[/] {count} skills for {server_name} ({self._target})")
         return count
 
     def _create_plugin_json(self, path: Path) -> None:
-        """Create a minimal plugin.json for Claude Code.
-        Claude Code용 최소 plugin.json을 생성한다."""
+        """Create a minimal plugin.json for Claude Code / Kiro-CLI.
+        Claude Code / Kiro-CLI용 최소 plugin.json을 생성한다."""
         plugin_config = {
             "name": "mcp-tool-forge",
             "version": "0.1.0",

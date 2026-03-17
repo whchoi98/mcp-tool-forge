@@ -140,14 +140,16 @@ def convert(server, all_flag, output, llm_assist, output_dir):
 @click.option("--server", "-s", help="Server name to register skills for")
 @click.option("--all-servers", "all_flag", is_flag=True, help="Register all generated skills")
 @click.option("--output-dir", "-d", default="output", help="Directory with generated outputs")
-@click.option("--plugin-dir", "-p", default=None, help="Claude Code plugin directory")
-def register(server, all_flag, output_dir, plugin_dir):
-    """Register generated skills with Claude Code.
-    생성된 스킬을 Claude Code에 등록한다."""
+@click.option("--target", "-t", type=click.Choice(["claude", "kiro"]), default="claude",
+              help="Target platform: claude (default) or kiro")
+@click.option("--plugin-dir", "-p", default=None, help="Custom plugin directory (overrides --target)")
+def register(server, all_flag, output_dir, target, plugin_dir):
+    """Register generated skills with Claude Code or Kiro-CLI.
+    생성된 스킬을 Claude Code 또는 Kiro-CLI에 등록한다."""
     from mcp_to_cli.skill_registrar import SkillRegistrar
 
     out_path = Path(output_dir)
-    registrar = SkillRegistrar(Path(plugin_dir) if plugin_dir else None)
+    registrar = SkillRegistrar(Path(plugin_dir) if plugin_dir else None, target=target)
 
     if not server and not all_flag:
         # List currently registered skills / 현재 등록된 스킬 목록 표시
