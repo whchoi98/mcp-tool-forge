@@ -1,5 +1,5 @@
 # MCP Server Registry / MCP 서버 레지스트리
-# 64 AWS MCP server configurations / 64개 AWS MCP 서버 설정
+# 67 AWS MCP server configurations / 67개 AWS MCP 서버 설정
 servers:
   # Essential Setup / 필수 설정
   aws-mcp-server:
@@ -8,6 +8,21 @@ servers:
     transport: stdio
     category: Essential Setup
     description: "Secure AWS operations with API access and docs"
+
+  # Core / 코어
+  aws-api-mcp-server:
+    package: "awslabs.aws-api-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: Core
+    description: "Interact with AWS services via API calls"
+
+  core-mcp-server:
+    package: "awslabs.core-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: Core
+    description: "Intelligent planning and cost estimation for AWS"
 
   # Documentation / 문서
   aws-documentation-mcp-server:
@@ -31,6 +46,13 @@ servers:
     transport: stdio
     category: "Infrastructure & Deployment"
     description: "AWS resource management with CRUDL and security scanning"
+
+  aws-cdk-mcp-server:
+    package: "awslabs.cdk-mcp-server"
+    runtime: uvx
+    transport: stdio
+    category: "Infrastructure & Deployment"
+    description: "AWS CDK infrastructure development and deployment"
 
   aws-cloudformation-mcp-server:
     package: "awslabs.cfn-mcp-server"
