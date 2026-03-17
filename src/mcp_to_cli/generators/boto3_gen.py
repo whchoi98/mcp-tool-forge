@@ -9,8 +9,9 @@ class Boto3Generator:
     """Generates boto3-based Python functions from MCP tool definitions.
     MCP 도구 정의에서 boto3 기반 Python 함수를 생성한다."""
 
-    def __init__(self):
+    def __init__(self, default_profile: str | None = None):
         self._env = get_template_env()  # Jinja2 template environment / Jinja2 템플릿 환경
+        self._default_profile = default_profile  # Default AWS profile for generated code / 생성 코드의 기본 AWS 프로필
 
     def _param_signature(self, tool: ToolDefinition, mapping: MappingResult) -> str:
         """Build a Python function parameter signature string.
@@ -26,6 +27,11 @@ class Boto3Generator:
         for p in tool.params:
             if not p.required:
                 parts.append(f"{p.name}: {type_map.get(p.type, 'Any')} | None = None")
+        # Add profile_name for AWS multi-profile support / AWS 다중 프로필 지원을 위한 profile_name 추가
+        if self._default_profile:
+            parts.append(f'profile_name: str | None = "{self._default_profile}"')
+        else:
+            parts.append("profile_name: str | None = None")
         # Allow extra keyword arguments / 추가 키워드 인수 허용
         parts.append("**kwargs")
         return ", ".join(parts)
