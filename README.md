@@ -84,6 +84,21 @@ cp -r mcp-tool-forge/.claude/skills/aws-cost .claude/skills/
 
 **17/17 통과** — 모든 스킬이 표준 AWS 자격 증명으로 동작합니다.
 
+### Skills 커버리지
+
+9개 수동 스킬은 67개 MCP 서버 중 **52개 서버 (78%)**를 커버합니다. 미커버 15개 서버는 아래와 같습니다:
+
+| 카테고리 | 미커버 서버 | 사유 |
+|----------|-----------|------|
+| Core | aws-api-mcp-server, core-mcp-server | 범용 AWS API 호출/플래닝 도구 — 특정 서비스가 아닌 MCP 프록시 역할 |
+| Essential Setup | aws-mcp-server | MCP 통합 프록시 — 스킬 대상 아님 |
+| Documentation | aws-documentation, aws-knowledge | 문서 검색 전용 — boto3/CLI 대상 아님 |
+| Developer Tools | aws-diagram, aws-msk, code-doc-gen, frontend, git-repo-research, synthetic-data | 개발 도구 (다이어그램, Kafka, 코드 문서화, 프론트엔드, Git 분석, 합성 데이터) |
+| Healthcare | aws-healthomics, healthimaging, healthlake | 헬스케어 전문 서비스 (HealthOmics, Medical Imaging, FHIR) |
+| Cost & Operations | aws-managed-prometheus | Prometheus 모니터링 |
+
+> **참고**: 미커버 서버도 `mcp-tool-forge convert`로 자동 생성된 **792개 개별 스킬**을 통해 사용할 수 있습니다. 수동 스킬은 가장 자주 사용하는 AWS 핵심 서비스에 집중합니다.
+
 ---
 
 ## Kiro-CLI용 AWS Skills
@@ -455,6 +470,21 @@ Tested on a real AWS account (Seoul region, IAM role auth):
 | 17 | aws-infra | Lambda functions | OK |
 
 **17/17 passed** — All skills work with standard AWS credentials.
+
+### Skills Coverage
+
+The 9 hand-crafted skills cover **52 of 67 MCP servers (78%)**. The remaining 15 servers are not covered:
+
+| Category | Uncovered Servers | Reason |
+|----------|------------------|--------|
+| Core | aws-api-mcp-server, core-mcp-server | Generic AWS API call/planning tools — MCP proxy role, not a specific service |
+| Essential Setup | aws-mcp-server | Unified MCP proxy — not a skill target |
+| Documentation | aws-documentation, aws-knowledge | Documentation search only — not a boto3/CLI target |
+| Developer Tools | aws-diagram, aws-msk, code-doc-gen, frontend, git-repo-research, synthetic-data | Dev tools (diagrams, Kafka, code docs, frontend, Git analysis, synthetic data) |
+| Healthcare | aws-healthomics, healthimaging, healthlake | Specialized healthcare services (HealthOmics, Medical Imaging, FHIR) |
+| Cost & Operations | aws-managed-prometheus | Prometheus monitoring |
+
+> **Note**: Uncovered servers can still be used through the **792 auto-generated skills** created by `mcp-tool-forge convert`. Hand-crafted skills focus on the most frequently used core AWS services.
 
 ---
 
