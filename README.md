@@ -238,11 +238,37 @@ mcp-tool-forge convert --server aws-iam-mcp-server --output all
 # LLM 매핑 (Bedrock Claude)
 mcp-tool-forge convert --server amazon-cloudwatch-mcp-server --output all --llm-assist
 
+# 멀티 AWS 프로필 지원 (생성 코드에 기본 프로필 설정)
+mcp-tool-forge convert --server aws-iam-mcp-server --output boto3 --aws-profile prod-account
+
 # Claude Code에 스킬 등록
 mcp-tool-forge register --server aws-iam-mcp-server -d output
 
 # Kiro-CLI에 스킬 등록
 mcp-tool-forge register --server aws-iam-mcp-server -d output --target kiro
+```
+
+### 멀티 AWS 프로필 지원
+
+`--aws-profile` 옵션으로 생성되는 boto3 코드에 AWS 프로필을 설정할 수 있습니다.
+AWS Organizations + SSO 환경에서 여러 계정을 사용하는 경우 유용합니다.
+
+```python
+# --aws-profile 없이 생성 (기본)
+def list_users(profile_name: str | None = None, **kwargs) -> dict:
+    session = boto3.Session(profile_name=profile_name)
+    client = session.client('iam')
+    ...
+
+# --aws-profile prod-account 으로 생성
+def list_users(profile_name: str | None = "prod-account", **kwargs) -> dict:
+    session = boto3.Session(profile_name=profile_name)
+    client = session.client('iam')
+    ...
+
+# 호출 시 프로필 오버라이드 가능
+list_users()                                  # 기본 프로필 사용
+list_users(profile_name="staging-account")    # 다른 계정으로 전환
 ```
 
 ### 출력 형식
@@ -615,11 +641,37 @@ mcp-tool-forge convert --server aws-iam-mcp-server --output all
 # LLM mapping (Bedrock Claude)
 mcp-tool-forge convert --server amazon-cloudwatch-mcp-server --output all --llm-assist
 
+# Multi-profile support (set default profile in generated code)
+mcp-tool-forge convert --server aws-iam-mcp-server --output boto3 --aws-profile prod-account
+
 # Register skills to Claude Code
 mcp-tool-forge register --server aws-iam-mcp-server -d output
 
 # Register skills to Kiro-CLI
 mcp-tool-forge register --server aws-iam-mcp-server -d output --target kiro
+```
+
+### Multi AWS Profile Support
+
+Use `--aws-profile` to set a default AWS profile in generated boto3 code.
+Useful for AWS Organizations + SSO environments with multiple accounts.
+
+```python
+# Generated without --aws-profile (default)
+def list_users(profile_name: str | None = None, **kwargs) -> dict:
+    session = boto3.Session(profile_name=profile_name)
+    client = session.client('iam')
+    ...
+
+# Generated with --aws-profile prod-account
+def list_users(profile_name: str | None = "prod-account", **kwargs) -> dict:
+    session = boto3.Session(profile_name=profile_name)
+    client = session.client('iam')
+    ...
+
+# Override profile at call time
+list_users()                                  # Uses default profile
+list_users(profile_name="staging-account")    # Switch to another account
 ```
 
 ### Output Formats
