@@ -19,14 +19,15 @@ class Pipeline:
     """Main pipeline that extracts, maps, and generates outputs from MCP servers.
     MCP 서버에서 도구를 추출, 매핑, 출력물을 생성하는 메인 파이프라인."""
 
-    def __init__(self, output_dir: Path | None = None):
+    def __init__(self, output_dir: Path | None = None, aws_profile: str | None = None):
         self._output_dir = output_dir or Path("output")  # Default output directory / 기본 출력 디렉터리
+        self._aws_profile = aws_profile  # AWS profile for generated boto3 code / 생성된 boto3 코드용 AWS 프로필
         self._connector = MCPConnector()  # MCP server connector / MCP 서버 커넥터
         self._cache = SchemaCache()  # Tool schema cache / 도구 스키마 캐시
         self._mapping_loader = MappingLoader()  # Static mapping loader / 정적 매핑 로더
         self._llm_mapper = LLMMapper()  # LLM-based mapper / LLM 기반 매퍼
         # Output generators / 출력 생성기
-        self._boto3_gen = Boto3Generator()
+        self._boto3_gen = Boto3Generator(default_profile=aws_profile)
         self._cli_gen = CliGenerator()
         self._schema_gen = SchemaGenerator()
         self._skill_gen = SkillGenerator()

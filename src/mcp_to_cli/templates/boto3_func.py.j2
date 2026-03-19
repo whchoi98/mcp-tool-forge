@@ -1,7 +1,8 @@
 {# Auto-generated boto3 function template / 자동 생성 boto3 함수 템플릿 #}
 def {{ tool.name }}({{ param_signature }}) -> dict:
     """{{ tool.description }}"""
-    client = boto3.client('{{ mapping.boto3_client }}')
+    session = boto3.Session(profile_name=profile_name)
+    client = session.client('{{ mapping.boto3_client }}')
     params = {}
 {% for boto3_key, param_name in mapping.boto3_params.items() %}
     if {{ param_name }} is not None:

@@ -43,10 +43,12 @@ def test_boto3_generator_produces_valid_python():
     Boto3Generator가 유효한 Python 코드를 생성하는지 테스트합니다."""
     gen = Boto3Generator()
     code = gen.generate_function(_make_tool(), _make_mapping())
-    # Verify function definition and boto3 client call / 함수 정의와 boto3 클라이언트 호출 확인
+    # Verify function definition and boto3 session/client call / 함수 정의와 boto3 세션/클라이언트 호출 확인
     assert "def dynamodb_put_item(" in code
-    assert "boto3.client('dynamodb')" in code
+    assert "boto3.Session(profile_name=profile_name)" in code
+    assert "session.client('dynamodb')" in code
     assert "put_item(" in code
+    assert "profile_name: str | None = None" in code
 
 
 def test_boto3_generator_module():

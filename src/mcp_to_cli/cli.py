@@ -82,7 +82,8 @@ def list_tools(server):
 @click.option("--output", "-o", default="all", help="Output formats: boto3,cli,schema,skill,all")
 @click.option("--llm-assist", is_flag=True, help="Use LLM for unmapped tools (Phase 3)")
 @click.option("--output-dir", "-d", default="output", help="Output directory")
-def convert(server, all_flag, output, llm_assist, output_dir):
+@click.option("--aws-profile", default=None, help="AWS profile name for generated boto3 code")
+def convert(server, all_flag, output, llm_assist, output_dir, aws_profile):
     """Convert MCP tools to boto3/CLI/schema/skill outputs.
     MCP 도구를 boto3/CLI/스키마/스킬 출력으로 변환한다."""
     if not server and not all_flag:
@@ -105,7 +106,7 @@ def convert(server, all_flag, output, llm_assist, output_dir):
         configs = [config]
 
     async def _convert():
-        pipeline = Pipeline(output_dir=out_path)
+        pipeline = Pipeline(output_dir=out_path, aws_profile=aws_profile)
         results = []
         for cfg in configs:
             try:
